@@ -1,0 +1,27 @@
+{% extends 'base/main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="login">
+    <div class="right">
+      <img class="right-img" src="{%static 'images/ships.jpg' %}" alt="Company Image"/>
+    </div>
+    <div class="login-form">
+        <span style="display:flex; width:100%; align-items:center;justify-content:center;scale:0.8">
+            <img class="logo" src="{%static 'images/Logo-KAI.png' %}" alt="Log"/>
+            <h1 style="display:flex;margin-left:20px; flex-direction:column;font-size:30px; font-weight:700; color:orange; ">KAI-SEV 
+                <span style="color:black; font-size:25px;">LIMITED</span>
+            </h1>
+        </span>
+        <h1 class='head'>Login</h1>
+        <form class= "form" method="POST">
+            {% csrf_token %}
+            {{ form.as_p}}
+             <button type="submit" value="Login" class="login-submit-button">Log In</button> 
+
+            <!--<input type="submit" value="Login"/>-->
+    </div>
+        
+</div>
+
+{% endblock content %}

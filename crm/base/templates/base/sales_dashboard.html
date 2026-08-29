@@ -1,0 +1,90 @@
+{% extends 'base/main.html' %}
+{% load static %}
+
+{% block content %}
+<span style="width:95%; padding:15px 25px;border-bottom:1px solid #6f7172;display:flex; align-items:center;justify-content:end;">
+    <a style="text-decoration:none;color:#fff;font-weight:700;padding:7px 15px;background:black;border-radius:14px;"href="{% url 'launchpad'%}">Go Back</a>
+</span>
+<div style="width:1100px;margin:40px auto;">
+    
+    <!-- Top Action Panel -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <div>
+            <h2 style="color: #2C3E50; margin: 0 0 5px 0;align-items:center;display:flex;gap:20px;"><img src="{%static "images/acc.png"%}"alt="icons" style="width:30px; height:30px;"/> Sales Analytics & Billing</h2>
+            <p style="color: #7F8C8D; margin: 0;">Track customer estimates, manage financial transactions, and download official PDF document sheets.</p>
+        </div>
+        <!-- Link placeholder for creation form later -->
+        <a href="{% url 'sales_issue' %}" class="login-btn" style="padding:10px 15px; border-radius:14px; cursor:pointer;font-weight:700;text-decoration: none; width: auto; background-color: orange;color:#fff;">➕ Create Invoice / Quote</a>
+    </div>
+
+    <!-- Main Documents Log Grid -->
+    <div style="background: white; border: 1px solid #EFEBE4; border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+        {% if documents %}
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #EFEBE4; color: #7F8C8D; font-size: 14px;">
+                        <th style="padding: 15px 12px;">Type</th>
+                        <th style="padding: 15px 12px;">Doc Number</th>
+                        <th style="padding: 15px 12px;">Client Details</th>
+                        <th style="padding: 15px 12px;">Due Date</th>
+                        <th style="padding: 15px 12px;">Status</th>
+                        <th style="padding: 15px 12px; text-align: right;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doc in documents %}
+                        <tr style="border-bottom: 1px solid #EFEBE4; font-size: 15px; color: #2C3E50;">
+                            <!-- Type Badge Split -->
+                            <td style="padding: 15px 12px;">
+                                {% if doc.doc_type == 'invoice' %}
+                                    <span style="background: #EAF2F8; color: #2980B9; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold;">Invoice</span>
+                                {% else %}
+                                    <span style="background: #FEF9E7; color: #D35400; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold;">Quotation</span>
+                                {% endif %}
+                            </td>
+                            
+                            <td style="padding: 15px 12px; font-weight: 600;">#{{ doc.document_number }}</td>
+                            
+                            <td style="padding: 15px 12px;">
+                                <strong>{{ doc.client_name }}</strong><br/>
+                                <span style="font-size: 12px; color: #7F8C8D;">{{ doc.client_email }}</span>
+                            </td>
+                            
+                            <td style="padding: 15px 12px; color: #7F8C8D;">{{ doc.due_date|date:"M d, Y" }}</td>
+                            
+                            <!-- Status Indicators -->
+                            <td style="padding: 15px 12px;">
+                                {% if doc.status == 'paid' %}
+                                    <span style="color: #27AE60; font-weight: bold;">● Paid / Accepted</span>
+                                {% elif doc.status == 'sent' %}
+                                    <span style="color: #2980B9; font-weight: bold;">● Sent</span>
+                                {% elif doc.status == 'cancelled' %}
+                                    <span style="color: #95A5A6; font-weight: bold;">● Cancelled</span>
+                                {% else %}
+                                    <span style="color: #F39C12; font-weight: bold;">● Draft</span>
+                                {% endif %}
+                            </td>
+                            
+                            <!-- Download PDF Route Link Trigger -->
+                            <td style="padding: 15px 12px; text-align: right;display:flex;justify-content:end;">
+                                <a href="{% url 'export_billing_pdf' doc.id %}" style="width:fit-content;align-items:center; justify-content:end;border-radius:15px;display:flex;padding:10px 15px;background-color: orange;color:#fff; text-decoration: none; font-size: 13px;font-weight:700;gap:10px;">
+                                    <img src="{%static "images/download.png"%}"alt="icons"/> Download
+                                </a >
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <!-- Clean Empty State view block -->
+            <div style="text-align: center; padding: 40px 0; color: #7F8C8D;">
+                <span style="font-size: 48px; display: block; margin-bottom: 15px;">📊</span>
+                <h3>No financial documents issued yet</h3>
+                <p>Invoices and client quotations you create will appear inside this transactional monitoring grid log.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+
+{% endblock %}

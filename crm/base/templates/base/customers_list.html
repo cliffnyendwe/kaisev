@@ -1,0 +1,227 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block content %}
+<div style="position:relative;"> 
+    <div class="profile">
+    <span style="color:orange; font-weight:700; font-size:25px;margin:0 auto;">KAI-SEV <span style="color:black;">LIMITED</span></span>
+    <span style="padding:10px 15px; border-radius:14px;cursor:pointer;background:black;">
+      <a style="text-decoration:none;color:#fff;font-weight:700;"href="{% url 'launchpad'%}">Go Back</a>
+    </span>
+   <!-- {% if user.is_authenticated %}
+    <span class="user-avatar" onClick="toggleUserDropdown(event)">
+        {{user.username.0 | upper}}
+    </span>
+    {% endif %}
+    <div id="userDropdown" class="user-dropdown-card">
+        {% if request.user.is_authenticated %}
+        <div class="dropdown-user-info">
+            <p class="user-label">Logged in as: </p>
+            <p class="user-name"><strong>{{request.user}}</strong></p>
+        </div>
+        <div  class="dropdown-divider"></div>
+        <form action="{% url 'logout' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="logout-action-btn" value="Submit">Log Out</button>
+        </form>
+        {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+     </div>-->
+    </div>
+    <div>
+        <div style="display:flex;align-items:center;gap:30px;">
+            <div class="add" style="margin-right:50px;">
+                <a  class='new' href={% url 'customer-create' %}>Add </a>
+                <p>Customer Pipeline</p>
+            </div>
+            <form style="width:500px;padding:7px 10px; border-radius:25px;border:1px solid #7F8C8D; background:#fff;display:flex;algn-items:center;justify-content:space-between;" method="GET">
+                <input style="height:27px;border:none; outline:none;background:transparent;font-weight:600;" type='text' name='search'value="{{request.GET.search|default:''}}">
+                <div style="display:flex; align-items:center; ">
+                    {% if request.GET.search %}
+                         <a style="font-weight:700; text-decoration:none;" href="{% url 'customers' %}" style="color: #7F8C8D; align-self: center; text-decoration: none; font-size: 14px;">
+                             <img src="{%static 'images/x.png' %}" alt="search"/>
+                         </a>
+                    {% endif %}
+                    <button style="border:none; outline:none;background:transparent; cursor:pointer;"type="submit" class="login-btn" style="width: auto; padding: 8px 16px; border-radius: 20px;">
+                       <img src="{%static 'images/search.png' %}" alt="search"/>
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    
+       <!-- <table>
+            <tr>
+                <th>Customer</th>
+                <th></th>
+                {% for customer in customers %}
+                <tr>
+                    <td>{{ customer.contact_name}}</td>
+                    <td>{{ customer.opportunity_name}}</td>
+                    <td><a href="{% url 'customer' customer.id %}">View</a></td>
+                    <td><a href="{% url 'customer-update' customer.id %}">Edit</a></td>
+                </tr>
+                {% empty %}
+                <h3>No items in list</h3>
+                {% endfor %}
+            </tr>
+        </table>-->
+        <div id="csrf-token-carrier" style="display: none;">{% csrf_token %}</div>
+        <div class="kanban-wrapper">
+            <div class="kanban-container">
+                <!--Stage 1: New -->
+                <div class='kanban-column' ondragover="allowDrop(event)" ondrop="drop(event)" data-stage="new">
+                    <div class="column-header">
+                        <h3>New</h3>
+                        <span class="badge"></span>
+                    </div>
+                    <div class="card-list">
+                        {% for customer in customers %}
+                        {%if customer.stage == 'new'%}
+                        <a href="{% url 'customer' customer.id %}" style="text-decoration:none;">
+                            <div class="kanban-card"  draggable="true" ondragstart="drag(event)" id="customer-{{customer.id}}">
+                                <div class="card-title">{{customer.opportunity_name}}</div>
+                                <div class="card-contact">{{customer.contact_name}}</div>
+                                <div class="card-footer">
+                                      <p style="margin:0;" class="type {%  if customer_priority == 'medium' %} medium {% elif customer_priority == 'high' %} high {% else %} very_high {% endif %}">{{customer.priority}}</p>
+                                </div>
+                                <div style="display: flex; gap: 4px;z-index:1000; justify-content:end;margin-top:15px;">
+                                    <a href="{% url 'sales_issue' %}?from_opp={{ deal.id }}&type=quotation" title="Issue Quote" style="text-decoration: none; font-size: 11px; background: #EFEBE4; padding: 2px 6px; border-radius: 4px; color: #D35400; font-weight: bold;">📝 +Quotation</a>
+                                </div>
+                            </div>
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class='kanban-column' ondragover="allowDrop(event)" ondrop="drop(event)" data-stage="qualification">
+                    <div class="column-header">
+                        <h3>Qualified</h3>
+                        <span class="badge"></span>
+                    </div>
+                    <div class="card-list">
+                        {% for customer in customers %}
+                        {%if customer.stage == 'qualification'%}
+                        <a href="{% url 'customer' customer.id %}" style="text-decoration:none;">
+                            <div class="kanban-card" style="border-left:4px solid #d3be00" draggable="true" ondragstart="drag(event)" id="customer-{{customer.id}}">
+                                <div class="card-title">{{customer.opportunity_name}}</div>
+                                <div class="card-contact">{{customer.contact_name}}</div>
+                                <div class="card-footer">
+                                      <p style="margin:0;" class="type {%  if customer_priority == 'medium' %} medium {% elif customer_priority == 'high' %} high {% else %} very_high {% endif %}">{{customer.priority}}</p>
+                                </div>
+                                <div style="display: flex; gap: 4px;z-index:1000; justify-content:end;margin-top:15px;">
+                                    <a href="{% url 'sales_issue' %}?from_opp={{ deal.id }}&type=quotation" title="Issue Quote" style="text-decoration: none; font-size: 11px; background: #EFEBE4; padding: 2px 6px; border-radius: 4px; color: #D35400; font-weight: bold;">📝 +Quotation</a>
+                                </div>
+                            </div>
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class='kanban-column' ondragover="allowDrop(event)" ondrop="drop(event)" data-stage="proposal">
+                    <div class="column-header">
+                        <h3>Proposition</h3>
+                        <span class="badge"></span>
+                    </div>
+                    <div class="card-list">
+                        {% for customer in customers %}
+                        {%if customer.stage == 'proposal'%}
+                        <a href="{% url 'customer' customer.id %}" style="text-decoration:none;">
+                            <div class="kanban-card" style="border-left:4px solid #66d300" draggable="true" ondragstart="drag(event)" id="customer-{{customer.id}}">
+                                <div class="card-title">{{customer.opportunity_name}}</div>
+                                <div class="card-contact">{{customer.contact_name}}</div>
+                                <div class="card-footer">
+                                      <p style="margin:0;" class="type {%  if customer_priority == 'medium' %} medium {% elif customer_priority == 'high' %} high {% else %} very_high {% endif %}">{{customer.priority}}</p>
+                                </div>
+                                <div style="display: flex; gap: 4px;z-index:1000; justify-content:end;margin-top:15px;">
+                                    <a href="{% url 'sales_issue' %}?from_opp={{ deal.id }}&type=quotation" title="Issue Quote" style="text-decoration: none; font-size: 11px; background: #EFEBE4; padding: 2px 6px; border-radius: 4px; color: #D35400; font-weight: bold;">📝 +Quotation</a>
+                                </div>
+                            </div>
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class='kanban-column' ondragover="allowDrop(event)" ondrop="drop(event)" data-stage="negotiation">
+                    <div class="column-header">
+                        <h3>Negotiation</h3>
+                        <span class="badge"></span>
+                    </div>
+                    <div class="card-list">
+                        {% for customer in customers %}
+                        {%if customer.stage == 'negotiation'%}
+                        <a href="{% url 'customer' customer.id %}" style="text-decoration:none;">
+                            <div class="kanban-card" style="border-left:4px solid #0054d3" draggable="true" ondragstart="drag(event)" id="customer-{{customer.id}}">
+                                <div class="card-title">{{customer.opportunity_name}}</div>
+                                <div class="card-contact">{{customer.contact_name}}</div>
+                                <div class="card-footer">
+                                    <p style="margin:0;" class="type {%  if customer_priority == 'medium' %} medium {% elif customer_priority == 'high' %} high {% else %} very_high {% endif %}">{{customer.priority}}</p>
+                                </div>
+                                <div style="display: flex; gap: 4px;z-index:1000; justify-content:end;margin-top:15px;">
+                                    <a href="{% url 'sales_issue' %}?from_opp={{ deal.id }}&type=quotation" title="Issue Quote" style="text-decoration: none; font-size: 11px; background: #EFEBE4; padding: 2px 6px; border-radius: 4px; color: #D35400; font-weight: bold;">📝 +Quotation</a>
+                                </div>
+                            </div>
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class='kanban-column' ondragover="allowDrop(event)" ondrop="drop(event)" data-stage="won">
+                    <div class="column-header">
+                        <h3>Won</h3>
+                        <span class="badge"></span>
+                    </div>
+                    <div class="card-list">
+                        {% for customer in customers %}
+                        {%if customer.stage == 'won'%}
+                        <a href="{% url 'customer' customer.id %}" style="text-decoration:none;">
+                            <div class="kanban-card" style="border-left:4px solid #00d35f" draggable="true" ondragstart="drag(event)" id="customer-{{customer.id}}">
+                                <div class="card-title">{{customer.opportunity_name}}</div>
+                                <div class="card-contact">{{customer.contact_name}}</div>
+                                <div class="card-footer">
+                                    <p style="margin:0;" class="type {%  if customer_priority == 'medium' %} medium {% elif customer_priority == 'high' %} high {% else %} very_high {% endif %}">{{customer.priority}}</p>
+                                </div>
+                                <div style="display: flex; gap: 4px;z-index:1000; justify-content:end;margin-top:15px;">
+                                    <a href="{% url 'sales_issue' %}?from_opp={{ deal.id }}&type=quotation" title="Issue Quote" style="text-decoration: none; font-size: 11px; background: #EFEBE4; padding: 2px 6px; border-radius: 4px; color: #D35400; font-weight: bold;">📝 +Quotation</a>
+                                </div>
+                            </div>
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class='kanban-column' ondragover="allowDrop(event)" ondrop="drop(event)" data-stage="lost">
+                    <div class="column-header">
+                        <h3>Lost</h3>
+                        <span class="badge"></span>
+                    </div>
+                    <div class="card-list">
+                        {% for customer in customers %}
+                        {%if customer.stage == 'lost'%}
+                        <a href="{% url 'customer' customer.id %}" style="text-decoration:none;">
+                            <div class="kanban-card" style="border-left:4px solid #d3000b" draggable="true" ondragstart="drag(event)" id="customer-{{customer.id}}">
+                                <div class="card-title">{{customer.opportunity_name}}</div>
+                                <div class="card-contact">{{customer.contact_name}}</div>
+                                <div class="card-footer">
+                                    <p style="margin:0;" class="type {%  if customer_priority == 'medium' %} medium {% elif customer_priority == 'high' %} high {% else %} very_high {% endif %}">{{customer.priority}}</p>
+                                </div>
+                                <div style="display: flex; gap: 4px;z-index:1000; justify-content:end;margin-top:15px;">
+                                    <a href="{% url 'sales_issue' %}?from_opp={{ deal.id }}&type=quotation" title="Issue Quote" style="text-decoration: none; font-size: 11px; background: #EFEBE4; padding: 2px 6px; border-radius: 4px; color: #D35400; font-weight: bold;">📝 +Quotation</a>
+                                </div>
+                            </div>
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+               </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content%}
+
+

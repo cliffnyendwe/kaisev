@@ -1,0 +1,21 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block content %}
+<div style="position:relative;">
+     <span style="position:absolute;top:10px;left:10px;margin-top:40px;width:fit-content;">
+          <a class="back" style="background:black;" href={% url 'customers' %}>Go Back</a>
+     </span>
+     <div style="width:100%; display:flex; flex-direction:column; align-items:center;">
+          <h1>Create Customer</h1>
+          <div class="customer_form">
+               <form class="cus_form" method="POST" action="">
+                    {% csrf_token %}
+                    {{ form.as_p}}
+                    <!--<input type='submit' value="Submit">-->
+                    <button type="submit" value="Submit" class="login-submit-button">Submit</button> 
+               </form>
+          </div>
+     </div>
+</div>
+
+{% endblock content%}

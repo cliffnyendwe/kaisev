@@ -1,0 +1,111 @@
+{% extends 'base/main.html' %}
+{% load static %}
+
+{% block content %}
+
+<div style="position:relative;max-width: 800px; margin: 40px auto; background: white; padding: 35px; border-radius: 12px; border: 1px solid #EFEBE4; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+    <span style="position:absolute; right:10px; top:10px;"><a href={% url "dashboard"%}><img src="{%static 'images/x.png' %}"/></a></span>
+    <h2 style="color: #2C3E50; margin-top: 0;align-items:center; display:flex;gap:20px;"><img src="{%static "images/sales.png"%}"alt="icons" style="width:30px; height:30px;"/>Generate Invoice /  Quotation</h2>
+    <p style="color: #7F8C8D; margin-bottom: 25px;">Fill out client records and append financial ledger entries dynamically below.</p>
+    
+    <form method="post" id="billingForm" style="display: flex; flex-direction: column; gap: 20px;">
+        {% csrf_token %}
+        
+        <!-- Header Info Row split -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+                <label style="font-weight: 600; color: #2C3E50; display: block; margin-bottom: 5px;">Document Profile Type</label>
+                <select name="doc_type" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #BDC3C7;">
+                    <option value="quotation" {% if type_param == 'quotation' %}selected{% endif %}>Quotation / Estimate</option>
+                    <option value="invoice" {% if type_param == 'invoice' %}selected{% endif %}>Invoice</option>
+                </select>
+            </div>
+            <div>
+                <label style="font-weight: 600; color: #2C3E50; display: block; margin-bottom: 5px;">Due Date</label>
+                <input type="date" name="due_date" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #BDC3C7;">
+            </div>
+        </div>
+
+
+        <!-- Client Data Row Split -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+                <label style="font-weight: 600; color: #2C3E50; display: block; margin-bottom: 5px;">Client Name</label>
+                <input type="text" name="client_name" value="{{ opp_param.contact_name|default:'' }}" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #BDC3C7;">
+            </div>
+            <div>
+                <label style="font-weight: 600; color: #2C3E50; display: block; margin-bottom: 5px;">Client Email</label>
+                <input type="email" name="client_email" value="{{ opp_param.contact_email|default:'' }}" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #BDC3C7;">
+            </div>
+        </div>
+
+       <div id="quotationExtraFields" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
+            <div>
+                <label style="font-weight: 600; color: #2C3E50; display: block; margin-bottom: 5px;">Payment Terms</label>
+                <input type="text" name="payment_terms" placeholder="e.g., Net 30, 50% upfront" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #BDC3C7;">
+            </div>
+            <div>
+                <label style="font-weight: 600; color: #2C3E50; display: block; margin-bottom: 5px;">Estimated Delivery Date</label>
+                <input type="date" name="delivery_date" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #BDC3C7;">
+            </div>
+        </div>
+
+
+        <!-- Hidden input connecting the CRM tracking model context if triggered via the Kanban shortcut button -->
+        <input type="hidden" name="opportunity_id" value="{{ cus.id|default:'' }}">
+
+        <div style="border-top: 2px dashed #EFEBE4; margin-top: 15px; padding-top: 20px;">
+            <h3 style="color: #2C3E50; margin: 0 0 15px 0; font-size: 16px;">📊 Invoice Line Items Matrix</h3>
+            
+            <table style="width: 100%; border-collapse: collapse; text-align: left;" id="itemsTable">
+                <thead>
+                    <tr style="color: #7F8C8D; font-size: 13px; border-bottom: 1px solid #EFEBE4;">
+                        <th style="padding: 8px;">Description</th>
+                        <th style="padding: 8px; width: 80px;">Qty</th>
+                        <th style="padding: 8px; width: 130px;">Unit Price ($)</th>
+                        <th style="padding: 8px; width: 40px; text-align: right;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Seed row generated instantly matching context details -->
+                    <tr style="border-bottom: 1px solid #EFEBE4;">
+                        <td style="padding: 8px;"><input type="text" name="desc[]" value="{{ opp_param.opportunity_name|default:'' }}" required style="width:100%; padding:6px; border-radius:4px; border:1px solid #BDC3C7;"></td>
+                        <td style="padding: 8px;"><input type="number" name="qty[]" value="1" min="1" required style="width:100%; padding:6px; border-radius:4px; border:1px solid #BDC3C7;"></td>
+                        <td style="padding: 8px;"><input type="number" name="price[]" value="{{ opp_param.money|default:'0.00' }}" step="0.01" required style="width:100%; padding:6px; border-radius:4px; border:1px solid #BDC3C7;"></td>
+                        <td style="padding: 8px; text-align: right;"><button type="button" onclick="deleteItemRow(this)" style="background:none; border:none; color:#C0392B; cursor:pointer; font-weight:bold;">&times;</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <button type="button" onclick="addItemRow()" class="file-open-btn" style="background-color: #7F8C8D; margin-top: 15px; border: none; cursor: pointer;">➕ Add Item Row</button>
+        </div>
+
+        <button type="submit" style="width:fit-content;background-color:orange;padding:10px 15px;border-radius:14px;font-weight:700; margin:25px auto; border: none;cursor:pointer;">Generate & Save Document</button>
+    </form>
+</div>
+
+<!-- Inline JavaScript Row Generator factory -->
+<script>
+    function addItemRow() {
+        const tbody = document.querySelector("#itemsTable tbody");
+        const rowHtml = `
+            <tr style="border-bottom: 1px solid #EFEBE4;">
+                <td style="padding: 8px;"><input type="text" name="desc[]" required style="width:100%; padding:6px; border-radius:4px; border:1px solid #BDC3C7;"></td>
+                <td style="padding: 8px;"><input type="number" name="qty[]" value="1" min="1" required style="width:100%; padding:6px; border-radius:4px; border:1px solid #BDC3C7;"></td>
+                <td style="padding: 8px;"><input type="number" name="price[]" step="0.01" required style="width:100%; padding:6px; border-radius:4px; border:1px solid #BDC3C7;"></td>
+                <td style="padding: 8px; text-align: right;"><button type="button" onclick="deleteItemRow(this)" style="background:none; border:none; color:#C0392B; cursor:pointer; font-weight:bold;">&times;</button></td>
+            </tr>
+        `;
+        tbody.insertAdjacentHTML('beforeend', rowHtml);
+    }
+
+    function deleteItemRow(button) {
+        const rows = document.querySelectorAll("#itemsTable tbody tr");
+        if (rows.length > 1) {
+            button.closest("tr").remove();
+        } else {
+            alert("An invoice document requires at least one functional line item.");
+        }
+    }
+</script>
+{% endblock %}

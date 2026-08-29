@@ -1,0 +1,67 @@
+{% extends 'base/main.html' %}
+{% load  static %}
+
+{% block content %}
+<div sytle="position:relative;">
+    {% if user.is_authenticated %}
+       <span class="user-avatar"style="position:absolute; right:10px; top:10px;" onClick="toggleUserDropdown(event)">
+           {{user.username.0 | upper}}
+       </span>
+       {% endif %}
+       <div id="userDropdown" class="user-dropdown-card">
+           {% if request.user.is_authenticated %}
+           <div class="dropdown-user-info">
+               <p class="user-label">Logged in as: </p>
+               <p class="user-name"><strong>{{request.user}}</strong></p>
+           </div>
+           <div  class="dropdown-divider"></div>
+           <form action="{% url 'logout' %}" method="POST">
+               {% csrf_token %}
+               <button type="submit" class="logout-action-btn" value="Submit">Log Out</button>
+           </form>
+           {% else %}
+           <a href="{% url 'login' %}">Login</a>
+           {% endif %}
+        </div>
+       </div>
+
+</div>
+<div class="hub-wrapper">
+    <div class="hub-header">
+        <h1>Welcome back, {{user.username}} 🤝</h1>
+        <p style="font-size:25px; color:black; font-weight:600;">Select a service to manage your workspace</p>
+    </div>
+
+    <div class="hub-grid">
+        <a href="{% url 'customers' %}" class="service-card opportunity-theme">
+            <div class="service-icon"><img src="{%static "images/crm.png"%}"alt="icons" style="width:40px; height:40px;"/></div>
+            <div class="service-details">
+                <h2>CRM</h2>
+                <p>Manage your sales pipeline.move contact deal records,and track your active Kanban boards.</p>
+            </div>
+            <span class="action-arrow">➡</span>
+        </a>
+
+        <!-- DOCUMENTS CARD -->
+         <a href="{% url 'document_list' %}" class="service-card docs-theme">
+            <div class="service-icon"><img src="{%static "images/folder.png"%}"alt="icons" style="width:40px; height:40px;"/></div>
+            <div class="service-details">
+                <h2>Documents</h2>
+                <p>Access user templates, upload file attachments, and organize system contracts safely.</p>
+            </div>
+            <span class="action-arrow">➡</span>
+        </a>
+
+         <!--SALES-->
+         <a href="{% url 'dashboard' %}" class="service-card sale-theme">
+            <div class="service-icon"><img src="{%static "images/sales.png"%}"alt="icons" style="width:40px; height:40px;"/></div>
+            <div class="service-details">
+                <h2>Sales</h2>
+                <p>Generate and manage Quotations and Invoices</p>
+            </div>
+            <span class="action-arrow">➡</span>
+        </a>
+    </div>
+</div>
+
+{% endblock %}

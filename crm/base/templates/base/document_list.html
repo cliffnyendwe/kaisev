@@ -1,0 +1,135 @@
+{% extends 'base/main.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hidden CSRF token carrier for background upload requests -->
+<div id="csrf-token-carrier" style="display: none;">{% csrf_token %}</div>
+<div style="position:relative;border-bottom:1px solid rgba(0, 0, 0, 0.15);padding-left:20px;" >
+    <a class="back_btn" style="position:absolute; top:10px;right:10px;font-weight:700; cursor:pointer;margin-top:20px; text-decoration:none;padding:10px 15px; background:black; color:#ffff; border-radius:14px;"href={% url 'launchpad' %}>
+        Go Back
+    </a>
+    <div style="height:100px;">
+        <div style="align-items:center;display:flex;gap:20px;font-size:30px;font-weight:700;padding-top:20px;"> <img src="{%static 'images/folder.png'%}" alt="icon"  style="width:30px; height:30px;"/> Documents</div>
+        <span style="font-size:24px;">Upload and Share documents with colleagues.</span>
+    </div>
+    <!-- 🌟 THE SHARING MODAL CONTROLLER -->
+    <div id="shareModal" class="sharing-modal-overlay">
+        <div class="sharing-modal-card">
+            <div class="modal-header">
+                <h3>🔗 Share Document</h3>
+                <span class="close-modal-btn" onclick="closeShareModal()">&times;</span>
+            </div>
+            
+            <div class="modal-body">
+                <p id="modalDocTitle" style="font-weight: 600; color: #2C3E50; margin-bottom: 15px; font-size: 14px;"></p>
+                
+                <!-- Hidden tracker to hold the document ID being shared -->
+                     <input type="hidden" id="modalDocId" value="">
+
+                <div class="search-dropdown-wrapper">
+                    <!-- Search Input Field -->
+                    <input 
+                        type="text" 
+                        id="userSearchInput" 
+                        placeholder="Type name or username..." 
+                        oninput="searchUsersLive()"
+                        autocomplete="off"
+                    >
+                    <!-- Live Results Dropdown Container -->
+                    <div id="searchResultsDropdown" class="results-dropdown-box"></div>
+                </div>
+                
+                <div id="shareStatusMessage" class="modal-status-text"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="doc-layout-grid">
+    
+    <!-- LEFT SIDEBAR: Live Document Directory Feed -->
+    <div class="document-sidebar" style="border-right:1px solid rgba(0, 0, 0, 0.15);">
+        
+
+        <div class="sidebar-folder-navigation">
+            <button class="sidebar-folder-tab active" style="display:flex; align-items:center;" id="tabMyDrive" onClick="switchFolder('mydrive')">
+                 <img class="logo" style="margin-right:10px;"src="{%static 'images/folder.png' %}" alt="Log"/> Documents(<span id="myDriveCount">{{ documents| length}}</span>)
+            </button>
+            <button class="sidebar-folder-tab" style="display:flex; align-items:center;" id="tabCompany" onClick="switchFolder('company')">
+                <img class="logo" style="margin-right:10px;" src="{%static 'images/warehouse.png' %}" alt="Log"/> Company (<span id="companyCount">{{ billing_documents | length}}</span>)
+            </button>
+        </div>
+            
+        <div class="sidebar-header" style="align-items:center; gap:15px;">
+            <h3 id="sidebarDirectoryTitle" style="display:flex; algin-items:center;gap:15px;"><img class="icon" src="{%static 'images/folder.png'%}" /> My Documents</h3>          
+        </div>
+        
+        <div class="sidebar-scroll-list" id="documentFeed">
+            <div id="myDriveFileSegment">
+                {% if documents %}
+                    {% for doc in documents %}
+                        <div class="sidebar-file-item" id="doc-card-{{ doc.id }}" style="box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;">
+                            <a href="{{ doc.uploaded_file.url }}" target="_blank" style="text-decoration:none">
+                                <div class="file-icon-thumb">📄</div>
+                                <div class="file-meta">
+                                    <span class="file-title"><strong>{{ doc.title }}</strong></span>
+                                   {% if doc.uploaded_by != user %}
+                                      <span class="file-date" style="color: #2980B9;">📥 From: {{ doc.uploaded_by.username }}</span>
+                                   {% else %}
+                                    <span class="file-date">{{ doc.uploaded_at|date:"M d, Y • H:i" }}</span>
+                                   {% endif %}
+                                </div>
+                            </a>
+                                {% if doc.uploaded_by == user %}
+                                  <button class="file-share-btn" onclick="promptShare('{{ doc.id }}')">
+                                    <img src={% static 'images/send.png'%}/>
+                                    <span class="label">Share</span>
+                                  </button>
+                                {% endif%}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="empty-state-text" id="emptyState">No documents uploaded yet.</p>
+                {% endif %}
+            </div>
+            
+            <div id="companyFileSegment" style="display:none;">
+                {% if billing_documents %}
+                {% for bill in billing_documents %}
+                <div class="sidebar-file-item bill-item" id="bill-card-{{ bill.id}}" data-filename=".pdf">
+                    <div class="file-icon-thumb font-invoice">📃</div>
+                    <div class="file-meta">
+                        <span class="file-title"><strong>{{ bill.get_doc_type_display}} #{{ bill.document_number }}</strong></span>
+                        <span class="file-date">Client: {{ bill.client_name }} • {{ bill.created_at|date:"M d, Y" }}</span>
+                    </div>
+                    <div>
+                        <div class="file-share-btn">
+                            <a href="{% url 'export_billing_pdf' bill.id %}"><img src="{%static "images/download.png"%}"alt="icons"/></a>
+                            <span class="label">Download</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p class="empty-state-text">No generate invoices or estimates found. </p>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+    <!-- RIGHT PANEL: Massive Interactive Drag-and-Drop Area -->
+    <div class="upload-canvas-area" id="dropZone">
+        <div class="drop-zone-content">
+            <span class="cloud-icon">☁️</span>
+            <h2>Drag & Drop Files Here</h2>
+            <p>or click anywhere inside this box to choose files to upload</p>
+            <input type="file" id="fileInput" multiple style="display: none;">
+            
+            <!-- Dynamic Uploading Progress Visual Indicator -->
+            <div id="uploadStatus" class="upload-status-indicator"></div>
+        </div>
+    </div>
+
+</div>
+
+{%  endblock %}
