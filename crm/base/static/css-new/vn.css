@@ -1,0 +1,609 @@
+@charset "utf-8";
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    src: url(../fonts/Inter-Regular.woff2) format('woff2'), url(../fonts/Inter-Regular.woff) format('woff'),
+        url(../fonts/Inter-Regular.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    src: url(../fonts/Inter-Medium.woff2) format('woff2'), url(../fonts/Inter-Medium.woff) format('woff'),
+        url(../fonts/Inter-Medium.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    src: url(../fonts/Inter-Bold.woff2) format('woff2'), url(../fonts/Inter-Bold.woff) format('woff'),
+        url(../fonts/Inter-Bold.otf) format('opentype');
+}
+
+/*기본 폼*//*H50*/
+html[lang=vn] footer input[type=text]::placeholder {
+    font-size: 15px;
+}
+
+html[lang=vn] footer input[type=text]:-ms-input-placeholder {
+    font-size: 15px;
+}
+
+/*header*/
+html[lang=vn] .lang-list > a,
+html[lang=vn] .lnb-list a {
+    white-space: nowrap;
+}
+
+html[lang=vn] .lang-list .lang-sub-list {
+    left: -20px;
+}
+
+html[lang=vn] .nav-sub-list .sub-menu-list {
+    width: 200px;
+    margin-right: -100px;
+}
+
+/*검색*/
+html[lang=vn] .search-layer .word-area {
+    padding-left: 200px;
+}
+
+/*footer*/
+html[lang=vn] footer .footer-memu-list {
+    margin-right: 35px;
+}
+
+html[lang=vn] footer .footer-memu-list > a {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+html[lang=vn] footer .footer-newletter {
+    max-width: 456px;
+}
+
+html[lang=vn] footer .newletter-btn .btn {
+    padding-left: 16px;
+    padding-right: 16px;
+    min-width: 190px;
+    font-size: 14px;
+}
+
+html[lang=vn] footer .newletter-btn .btn span {
+    display: inline-block;
+}
+
+html[lang=vn] footer .newletter-btn .btn span::after {
+    right: 0;
+}
+
+/*main*/
+html[lang=vn] .main-service-list .title {
+    bottom: 30px;
+    font-size: 24px;
+    line-height: 1.25;
+}
+
+/*main*//*견적조회*/
+html[lang=vn] .estimate-module-wrap .country em {
+    font-size: 17px;
+}
+
+html[lang=vn] .quote-content .estimate-module-wrap .country em {
+    font-size: 20px;
+}
+
+html[lang=vn] .estimate-module-wrap .form-row {
+    margin-top: 16px;
+}
+
+html[lang=vn] .terms-list.agree-form-box input[type="checkbox"] + label {
+    font-size: 14px;
+    padding-left: 24px;
+}
+
+html[lang=vn] .terms-list .agree-form-box ul > li + li {
+    margin-left: 10px;
+}
+
+html[lang=vn] .info-box-head strong {
+    font-size: 17px;
+}
+
+html[lang=vn] .personal-info-wrap .form-text {
+    margin-bottom: 8px;
+}
+
+html[lang=vn] .personal-info-wrap .form-con {
+    margin-top: 0;
+}
+
+html[lang=vn] .personal-info-wrap .btn-box {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+html[lang=vn] .personal-info-wrap .btn-blue {
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: 15px;
+}
+
+html[lang=vn] .form-quote .btn.btn-sm {
+    width: 130px;
+    text-align: center;
+}
+
+html[lang=vn] .popup .personal-info-wrap .inner {
+    height: 600px;
+    overflow-y: scroll;
+}
+
+html[lang=vn] .transport-type input[type="radio"] + label:before {
+    margin-right: 8px;
+}
+
+html[lang=vn] .transport-type input[type="radio"] + label {
+    font-size: 15px;
+}
+
+html[lang=vn] .transport-type input[type="radio"] + label i {
+    display: inline-block;
+    line-height: 18px;
+    vertical-align: middle;
+    width: calc(84% - 40px);
+    color: #8d9291;
+}
+
+html[lang=vn] .transport-type input[type="radio"]:checked + label i {
+    color: #121212;
+}
+
+/*모션*/
+html[lang=vn] .main-special-01 .img2 {
+    padding: 57px 38px 0 50px;
+    width: 420px;
+}
+
+html[lang=vn] .main-special-01 .img2 ul li {
+    font-size: 11px;
+    letter-spacing: -.2px;
+    width: 65px;
+}
+
+html[lang=vn] .main-special-02 .img1 .tit {
+    font-size: 15px;
+    width: 460px;
+}
+
+html[lang=vn] .main-special-02 .img3 .card .tit {
+    font-size: 10px;
+    padding-left: 8px;
+    padding-right: 2px;
+}
+
+html[lang=vn] .main-special-03 .tit {
+    font-size: 10.6px;
+    padding-left: 12px;
+}
+
+html[lang=vn] .sub-special-03 .tit {
+    font-size: 11.4px;
+}
+
+html[lang=vn] .sub-special-01 .img4 .tit {
+    width: 500px;
+}
+
+/*상품*/
+html[lang=vn] .service-list .service-item .desc {
+    font-size: 18px;
+    padding: 40px;
+}
+
+html[lang=vn] .transport-content .intro-list li p {
+    font-size: 23px;
+}
+
+html[lang=vn] .transport-content .intro-list li .desc {
+    font-size: 16px;
+}
+
+/*리소스*/
+html[lang=vn] .nav-tab li {
+    padding: 0 14px;
+}
+
+html[lang=vn] .nav-tab li:first-child {
+    padding-left: 16px;
+}
+
+html[lang=vn] .nav-tab a h2 {
+    font-size: 17px;
+}
+
+html[lang=vn] .new-content-list .category {
+    font-size: 16px;
+}
+
+/*첼로스퀘어*/
+html[lang=vn] .cello-detail .circle-o .desc-list li {
+    font-size: 15px;
+}
+
+html[lang=vn] .cello-detail .step-list li {
+    font-size: 13px;
+    padding-left: 45px;
+}
+
+html[lang=vn] .cello-detail .step-list li:first-child {
+    padding-left: 0;
+}
+
+html[lang=vn] .cello-detail .step-list li + li:before {
+    left: 15px;
+}
+
+html[lang=vn] .brand-intro04 .intro04-btn .btn {
+    width: 280px;
+    font-size: 13px;
+    padding-left: 18px;
+    padding-right: 18px;
+}
+
+html[lang=vn] .brand-intro04 .intro04-btn .arr-download {
+    right: 18px;
+}
+
+html[lang=vn] .cello-detail .circle-o p i {
+    font-size: 14px;
+    color: #1428A0;
+    line-height: 26px;
+    display: inline-block;
+}
+
+/*문의하기 : 견적문의 선택*/
+html[lang=vn] .estimate-con .form-con .form-title {
+    top: 10px;
+    width: 158px;
+    font-size: 13px;
+}
+
+/*팝업*/
+html[lang=vn] .popup.collect-cookies .popup-foot {
+    margin-top: 24px;
+}
+
+html[lang=vn] .popup.collect-cookies .popup-foot .btn.gray {
+    background: rgba(153, 153, 153, .15);
+}
+
+html[lang=vn] .popup.collect-cookies .popup-foot .btn-mint {
+    color: #fff
+}
+
+html[lang=vn] .aside-menu-area {
+    width: 320px;
+}
+
+html[lang=vn] .aside-menu-area a {
+    font-size: 18px;
+    padding-right: 16px;
+}
+
+/*241023 추가*/
+html[lang=vn] .estimate-con .terms-con .check-box{margin-right:30px;}
+html[lang=vn] .estimate-con .terms-con>.check-box input[type=checkbox]+label{font-size:14px;}
+html[lang=vn] .estimate-con .terms-con .check-box:last-child{margin-right:0}
+html[lang=vn], html[lang=vn] body, html[lang=vn] div, html[lang=vn] span, html[lang=vn] applet, html[lang=vn] object, html[lang=vn] iframe,
+html[lang=vn] h1, html[lang=vn] h2, html[lang=vn] h3, html[lang=vn] h4, html[lang=vn] h5, html[lang=vn] h6, html[lang=vn] p, html[lang=vn] blockquote, html[lang=vn] pre,
+html[lang=vn] a, html[lang=vn] abbr, html[lang=vn] acronym, html[lang=vn] address, html[lang=vn] big, html[lang=vn] cite, html[lang=vn] code,
+html[lang=vn] del, html[lang=vn] dfn, html[lang=vn] em, html[lang=vn] img, html[lang=vn] ins, html[lang=vn] kbd, html[lang=vn] q, html[lang=vn] s, html[lang=vn] samp,
+html[lang=vn] small, html[lang=vn] strike, html[lang=vn] strong, html[lang=vn] sub, html[lang=vn] sup, html[lang=vn] tt, html[lang=vn] var,
+html[lang=vn] b, html[lang=vn] u, html[lang=vn] i, html[lang=vn] center,
+html[lang=vn] dl, html[lang=vn] dt, html[lang=vn] dd, html[lang=vn] ol, html[lang=vn] ul, html[lang=vn] li,
+html[lang=vn] fieldset, html[lang=vn] form, html[lang=vn] label, html[lang=vn] legend,
+html[lang=vn] table, html[lang=vn] caption, html[lang=vn] tbody, html[lang=vn] tfoot, html[lang=vn] thead, html[lang=vn] tr, html[lang=vn] th, html[lang=vn] td,
+html[lang=vn] article, html[lang=vn] aside, html[lang=vn] canvas, html[lang=vn] details, html[lang=vn] embed,
+html[lang=vn] figure, html[lang=vn] figcaption, html[lang=vn] footer, html[lang=vn] header, html[lang=vn] hgroup,
+html[lang=vn] menu, html[lang=vn] nav, html[lang=vn] output, html[lang=vn] ruby, html[lang=vn] section, html[lang=vn] summary,
+html[lang=vn] time, html[lang=vn] mark, html[lang=vn] audio, html[lang=vn] video, html[lang=vn] textarea{font-family:'Inter', 'NotoSansKR','맑은 고딕','malgun gothic','돋움','dotum',sans-serif !important;}
+html[lang=vn] .main-company-info .info-no strong::after{
+    top: 7px;
+    right: -2px;
+}
+/*end 241023 추가*/
+
+@media screen and (max-width: 1440px) {
+    /*footer*/
+    html[lang=vn] footer .footer-memu-list {
+        margin-right: 45px;
+    }
+
+    html[lang=vn] footer .inner.d-flex.items-start {
+        display: block;
+    }
+
+    html[lang=vn] .footer-add .add-info {
+        width: 100%;
+    }
+
+    html[lang=vn] .policy-list {
+        float: left;
+        margin-top: 30px;
+    }
+
+    html[lang=vn] .family-site {
+        float: left;
+        margin-top: 20px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    /*기본 폼*//*H50*/
+    html[lang=vn] footer input[type=text]::placeholder {
+        font-size: 13px;
+    }
+
+    html[lang=vn] footer input[type=text]:-ms-input-placeholder {
+        font-size: 13px;
+    }
+
+    /*header*/
+    html[lang=vn] .nav-sub-list .sub-menu-list a {
+        font-size: 14px;
+        line-height: 34px;
+    }
+
+    html[lang=vn] .nav-sub-list .sub-menu-list {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    /*검색*/
+    html[lang=vn] .search-layer .word-area {
+        padding-left: 0;
+    }
+
+    /*footer*/
+    html[lang=vn] footer {
+        min-height: 374px;
+    }
+
+    html[lang=vn] footer .newletter-btn .btn {
+        min-width: 140px;
+        font-size: 11px;
+    }
+
+    html[lang=vn] .policy-list {
+        float: initial;
+        margin-top: 0;
+    }
+
+    html[lang=vn] .footer-add .policy-list a {
+        margin-left: 0;
+        margin-right: 20px;
+        font-size: 13px;
+        padding-bottom: 6px;
+    }
+
+    html[lang=vn] .footer-add .add-info {
+        top: 95px;
+        width: auto;
+    }
+
+    html[lang=vn] footer .footer-newletter {
+        top: 220px;
+    }
+
+    html[lang=vn] footer .footer-newletter p {
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    html[lang=vn] footer .sns-list {
+        top: 316px;
+    }
+
+    html[lang=vn] .footer-add .family-site {
+        top: 318px;
+        float: initial;
+        margin-top: 0;
+    }
+
+    /*main*/
+    html[lang=vn] .main-service-list .title {
+        bottom: 22px;
+        font-size: 20px;
+    }
+
+    html[lang=vn] .banner-join .inner {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    /*main*//*견적조회*/
+    html[lang=vn] .estimate-module-wrap .country .mo-word {
+        display: inline-block !important;
+        font-size: 15px;
+        word-break: keep-all;
+    }
+
+    html[lang=vn] .quote-content .estimate-module-wrap .country em {
+        font-size: 15px;
+    }
+
+    html[lang=vn] .personal-info-wrap .form-text {
+        margin-bottom: -8px;
+    }
+
+    html[lang=vn] .personal-info-wrap .form-con {
+        margin-top: 16px;
+    }
+
+    html[lang=vn] .personal-info-wrap .btn-box {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    html[lang=vn] .personal-info-wrap .btn-blue {
+        font-size: 12px;
+        height: initial;
+    }
+
+    html[lang=vn] .form-quote .btn.btn-sm {
+        width: 120px;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    html[lang=vn] .transport-type input[type="radio"] + label {
+        font-size: 12px;
+    }
+
+    html[lang=vn] .transport-type input[type="radio"] + label i {
+        line-height: 16px;
+        vertical-align: middle;
+        width: calc(88% - 32px);
+    }
+
+    /*모션*/
+    html[lang=vn] .main-special-01 .img2 {
+        padding: 9.5vw 6.3333vw 0 8.3333vw;
+        width: 70vw;
+    }
+
+    html[lang=vn] .main-special-01 .img2 ul li {
+        font-size: 1.9667vw;
+        letter-spacing: -0.0333vw;
+        width: 10.8333vw;
+    }
+
+    html[lang=vn] .main-special-02 .img1 .tit {
+        font-size: 2.2222vw;
+        width: 66.5556vw;
+    }
+
+    html[lang=vn] .main-special-02 .img3 .card .tit {
+        font-size: 1.45vw;
+    }
+
+    html[lang=vn] .main-special-03 .tit {
+        font-size: 1.68vw;
+    }
+
+    html[lang=vn] .sub-special-03 .tit {
+        font-size: 1.9vw;
+    }
+
+    html[lang=vn] .sub-special-01 .img4 .tit {
+        width: 82vw;
+    }
+
+    /*상품*/
+    html[lang=vn] .service-list .service-item .desc {
+        font-size: 14px;
+        padding: 24px 32px;
+    }
+
+    html[lang=vn] .service-list .service-item .desc > div {
+        -webkit-line-clamp: 5;
+        max-height: 126px;
+    }
+
+    html[lang=vn] .banner-quote .btn-sm {
+        width: 120px;
+    }
+
+    html[lang=vn] .transport-content .intro-list li p {
+        font-size: 20px;
+    }
+
+    html[lang=vn] .transport-content .intro-list li .desc {
+        font-size: 15px;
+    }
+
+    /*리소스*/
+    html[lang=vn] .nav-tab li {
+        padding: 0 10px;
+    }
+
+    html[lang=vn] .nav-tab li:first-child {
+        padding-left: 14px;
+    }
+
+    html[lang=vn] .nav-tab a h2 {
+        font-size: 16px;
+    }
+
+    html[lang=vn] .new-content-list .category {
+        font-size: 14px;
+    }
+
+    /*첼로스퀘어*/
+    html[lang=vn] .brand-intro04 .intro04-btn .btn {
+        width: 100%;
+        font-size: 14px;
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+
+    /*문의하기 : 견적문의 선택*/
+    html[lang=vn] .estimate-con .form-con .form-title {
+        width: 100%;
+        font-size: 18px;
+    }
+
+    /*팝업*/
+    html[lang=vn] .popup.collect-cookies .popup-foot .btn {
+        width: 100%;
+    }
+
+    html[lang=vn] .popup.collect-cookies .popup-foot .btn + .btn {
+        margin: 12px 0 0 0;
+    }
+
+    html[lang=vn] .popup.collect-cookies .popup-foot a.btn.gray {
+        float: none;
+        text-align: center
+    }
+
+    html[lang=vn] .aside-menu-area {
+        width: 100%;
+    }
+
+    html[lang=vn] .result-list-area .title-box {
+        font-size: 16px;
+    }
+
+    html[lang=vn] .result-list-area .title-box b {
+        font-size: 20px;
+    }
+
+    html[lang=vn] .aside-menu-area a {
+        font-size: 16px;
+        padding-right: 24px;
+    }
+
+    html[lang=vn] .aside-sub-sub a {
+        font-size: 14px;
+    }
+
+    /*Global Network*//*240826 추가*/
+    html[lang=vn] .micro-menu .inner .micro-nav{justify-content:flex-start;padding-right:110px;}
+    html[lang=vn] .micro-menu .micro-nav li:first-child a{font-size:15px;}
+    html[lang=vn] .micro-menu .micro-nav li a{font-size:15px;}
+    html[lang=vn] .micro-menu .micro-nav li + li::before{margin:0 4px;}
+    html[lang=vn] .micro-menu .lang-list > a {padding-right:18px;font-size:12px;}
+    /*end 240826 추가*/
+
+    /*241023 추가*/
+    html[lang=vn] .estimate-con .terms-con .check-box{margin-right:40px;}
+    html[lang=vn] .estimate-con .terms-con>.check-box input[type=checkbox]+label{font-size:16px;}
+    /*end 241023 추가*/
+}

@@ -27,6 +27,9 @@ from reportlab.lib import colors
 from .models import customers , Document, BillingDocument , BillingItem
 
 # Create your views here.
+def landing_page(request):
+    return render(request, 'base/landing.html')
+
 def export_billing_pdf(request, doc_id):
     # Fetch data safely
     doc = get_object_or_404(BillingDocument, id=doc_id, created_by=request.user )
