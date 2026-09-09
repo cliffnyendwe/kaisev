@@ -1,0 +1,164 @@
+@charset "utf-8";
+/*기본 폼*//*H50*/
+html[lang=es] footer input[type=text]::placeholder{font-size:15px;}
+html[lang=es] footer input[type=text]:-ms-input-placeholder{font-size:15px;}
+
+/*header*/
+html[lang=es] .lang-list>a,
+html[lang=es] .lnb-list a {white-space:nowrap;}
+html[lang=es] .lang-list .lang-sub-list {left:-20px;}
+html[lang=es] .nav-sub-list .sub-menu-list {width:190px;margin-right:-100px;}
+
+/*검색*/
+html[lang=es] .search-layer .word-area {padding-left:200px;}
+
+/*footer*/
+html[lang=es] footer .footer-memu-list {margin-right:35px;}
+html[lang=es] footer .footer-memu-list > a {font-size:13px;font-weight:600;}
+html[lang=es] footer .footer-newletter {max-width:456px;}
+html[lang=es] footer .newletter-btn .btn {padding-left:16px;padding-right:16px;padding-top:6px;line-height:1.25;min-width:180px;font-size:14px;}
+html[lang=es] footer .newletter-btn .btn span {display:inline-block;}
+html[lang=es] footer .newletter-btn .btn span::after {right:0;}
+
+/*main*/
+html[lang=es] .main-service-list .title {bottom:30px;font-size:24px;line-height:1.25;}
+
+/*main*//*견적조회*/
+html[lang=es] .estimate-module-wrap .country em {font-size:17px;}
+html[lang=es] .quote-content .estimate-module-wrap .country em {font-size:20px;}
+html[lang=es] .estimate-module-wrap .form-row {margin-top:16px;}
+html[lang=es] .terms-list.agree-form-box input[type="checkbox"] + label {font-size:14px;padding-left:24px;}
+html[lang=es] .terms-list .agree-form-box ul > li + li {margin-left:10px;}
+html[lang=es] .info-box-head strong {font-size:17px;}
+html[lang=es] .personal-info-wrap .form-text {margin-bottom:8px;}
+html[lang=es] .personal-info-wrap .form-con {margin-top:0;}
+html[lang=es] .personal-info-wrap .btn-box {padding-left:30px;padding-right:30px;}/*240524 추가*/
+html[lang=es] .personal-info-wrap .btn-blue {padding-left:12px;padding-right:12px;font-size:15px;}/*240524 추가*/
+html[lang=es] .form-quote .btn.btn-sm {width:130px;text-align: center;}/*240524 추가*/
+html[lang=es] .popup .personal-info-wrap .inner {height:600px;overflow-y:scroll;}
+
+/*모션*/
+html[lang=es] .main-special-01 .img2 {padding:57px 38px 0 50px;width:420px;}
+html[lang=es] .main-special-01 .img2 ul li {font-size:10px;letter-spacing: -.8px; width:65px;}
+html[lang=es] .main-special-02 .img1 .tit {font-size:15px;width:400px;}
+html[lang=es] .main-special-02 .img3 .card .tit {font-size:9.8px;padding-left:10px;padding-right:10px;}
+html[lang=es] .main-special-03 .tit {font-size:11.6px;padding-left:12px;}
+html[lang=es] .sub-special-03 .tit {font-size:11.4px;}
+
+/*상품*/
+html[lang=es] .service-list .service-item .desc {font-size:18px;padding:40px;}
+html[lang=es] .transport-content .intro-list li p {font-size:23px;}
+html[lang=es] .transport-content .intro-list li .desc {font-size:16px;}
+
+/*리소스*/
+html[lang=es] .nav-tab li {padding:0 14px;}
+html[lang=es] .nav-tab li:first-child {padding-left:16px;}
+html[lang=es] .nav-tab a h2 {font-size:17px;}/*240524 수정*/
+html[lang=es] .new-content-list .category {font-size:16px;}/*240524 추가*/
+
+/*첼로스퀘어*/
+html[lang=es] .cello-detail .circle-o .desc-list li{font-size:15px;}
+html[lang=es] .cello-detail .step-list li{font-size:13px;padding-left:45px;}
+html[lang=es] .cello-detail .step-list li:first-child{padding-left:0;}
+html[lang=es] .cello-detail .step-list li + li:before{left:15px;}
+
+html[lang=es] .brand-intro04 .intro04-btn .btn {width:260px;font-size: 14px;padding-left: 22px;padding-right: 22px;}
+html[lang=es] .brand-intro04 .intro04-btn .arr-download {right:18px;}
+
+/*문의하기 : 견적문의 선택*/
+html[lang=es] .estimate-con .form-con .form-title{top:10px;width:158px;font-size:13px;}/*240524 추가*/
+
+/*팝업*/
+html[lang=es] .popup.collect-cookies .popup-foot {margin-top:24px;}/*240524 추가*/
+html[lang=es] .popup.collect-cookies .popup-foot .btn.gray {background: rgba(153, 153, 153, .15);}/*240524 추가*/
+html[lang=es] .popup.collect-cookies .popup-foot .btn-mint {color:#fff}/*240531 추가*/
+
+html[lang=es] .aside-menu-area {width:370px;}/*240723 검색결과 수정*//*240722 검색결과 추가*/
+html[lang=es] .aside-menu-area a {font-size:18px;padding-right:16px;}/*240723 검색결과 수정*//*240722 검색결과 추가*/
+
+@media screen and (max-width:1440px){
+    /*footer*/
+    html[lang=es] footer .footer-memu-list {margin-right:45px;}
+    html[lang=es] footer .inner.d-flex.items-start {display:block;}
+    html[lang=es] .footer-add .add-info {width:100%;}
+    html[lang=es] .policy-list {float:left;margin-top:30px;}
+    html[lang=es] .family-site {float:left;margin-top:20px;}
+}
+
+@media screen and (max-width:767px){
+    /*기본 폼*//*H50*/
+    html[lang=es] footer input[type=text]::placeholder{font-size:13px;}
+    html[lang=es] footer input[type=text]:-ms-input-placeholder{font-size:13px;}
+
+    /*header*/
+    html[lang=es] .nav-sub-list .sub-menu-list a {font-size:14px;line-height:34px;}
+    html[lang=es] .nav-sub-list .sub-menu-list {width:100%;margin-right:0;}
+
+    /*검색*/
+    html[lang=es] .search-layer .word-area {padding-left:0;}
+
+    /*footer*/
+    html[lang=es] footer {min-height:374px;}
+    html[lang=es] footer .newletter-btn .btn {min-width:134px;padding-top:5px;font-size:11px;}
+    html[lang=es] .policy-list {float:initial;margin-top:0;}
+    html[lang=es] .footer-add .policy-list a {margin-left:0;margin-right:20px;font-size:13px;padding-bottom:6px;}
+    html[lang=es] .footer-add .add-info {top:95px;width:auto;}
+    html[lang=es] footer .footer-newletter {top:220px;}
+    html[lang=es] footer .footer-newletter p {font-size:13px;margin-bottom:10px;}
+    html[lang=es] footer .sns-list {top:316px;}
+    html[lang=es] .footer-add .family-site {top:318px;float:initial;margin-top:0;}
+
+    /*main*/
+    html[lang=es] .main-service-list .title {bottom:22px;font-size:20px;}
+    html[lang=es] .banner-join .inner {padding-left:15px;padding-right:15px;}
+
+    /*main*//*견적조회*/
+    html[lang=es] .estimate-module-wrap .country .mo-word {display: inline-block !important;font-size:15px;word-break:keep-all;}
+    html[lang=es] .quote-content .estimate-module-wrap .country em {font-size:15px;}
+    html[lang=es] .personal-info-wrap .form-text {margin-bottom:-8px;}
+    html[lang=es] .personal-info-wrap .form-con {margin-top:16px;}
+    html[lang=es] .personal-info-wrap .btn-box {padding-left:12px;padding-right:12px;}/*240524 추가*/
+    html[lang=es] .personal-info-wrap .btn-blue {font-size:12px;height:initial;}/*240524 추가*/
+    html[lang=es] .form-quote .btn.btn-sm {width:120px;padding-left:12px;padding-right:12px;}/*240524 추가*/
+
+    /*모션*/
+    html[lang=es] .main-special-01 .img2 {padding:9.5vw 6.3333vw 0 8.3333vw;width:70vw;}
+    html[lang=es] .main-special-01 .img2 ul li {font-size:1.6667vw;letter-spacing:-0.1333vw;width:10.8333vw;}
+    html[lang=es] .main-special-02 .img1 .tit {font-size:2.2222vw;width:55.5556vw;}
+    html[lang=es] .main-special-02 .img3 .card .tit {font-size:1.4222vw;}
+    html[lang=es] .main-special-03 .tit {font-size:1.85vw;}
+    html[lang=es] .sub-special-03 .tit {font-size:1.9vw;}
+
+    /*상품*/
+    html[lang=es] .service-list .service-item .desc {font-size:14px;padding:24px 32px;}
+    html[lang=es] .service-list .service-item .desc > div {-webkit-line-clamp:5;max-height:126px;}
+    html[lang=es] .banner-quote .btn-sm{width:120px;}
+    html[lang=es] .transport-content .intro-list li p {font-size:20px;}
+    html[lang=es] .transport-content .intro-list li .desc {font-size:15px;}
+
+    /*리소스*/
+    html[lang=es] .nav-tab li {padding:0 10px;}
+    html[lang=es] .nav-tab li:first-child {padding-left:14px;}
+    html[lang=es] .nav-tab a h2 {font-size:16px;}
+    html[lang=es] .new-content-list .category {font-size:14px;}/*240524 추가*/
+
+    /*첼로스퀘어*/
+    html[lang=es] .brand-intro04 .intro04-btn .btn {width:100%;}
+
+    /*문의하기 : 견적문의 선택*/
+    html[lang=es] .estimate-con .form-con .form-title{width:100%;font-size:18px;}/*240524 추가*/
+
+    /*팝업*/
+    html[lang=es] .popup.collect-cookies .popup-foot .btn{width: 100%;}/*240531 추가*/
+    html[lang=es] .popup.collect-cookies .popup-foot .btn + .btn {margin: 12px 0 0 0;}/*240531 추가*/
+    html[lang=es] .popup.collect-cookies .popup-foot a.btn.gray {float:none;text-align:center}/*240531 추가*/
+
+    html[lang=es] .aside-menu-area {width:100%;}/*240722 검색결과 추가*/
+    html[lang=es] .result-list-area .title-box {font-size:16px;}/*240722 검색결과 추가*/
+    html[lang=es] .result-list-area .title-box b {font-size:20px;}/*240722 검색결과 추가*/
+    html[lang=es] .aside-menu-area a {font-size:16px;padding-right:24px;}/*240723 검색결과 추가*/
+    html[lang=es] .aside-sub-sub a {font-size:14px;}/*240723 검색결과 추가*/
+
+    /*Global Network*/
+    html[lang=es] .micro-menu .inner .micro-nav{justify-content:flex-start;padding-right:102px;}/*240826 추가*/
+}
