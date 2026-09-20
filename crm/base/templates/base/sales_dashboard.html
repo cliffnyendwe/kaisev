@@ -2,89 +2,1217 @@
 {% load static %}
 
 {% block content %}
-<span style="width:95%; padding:15px 25px;border-bottom:1px solid #6f7172;display:flex; align-items:center;justify-content:end;">
-    <a style="text-decoration:none;color:#fff;font-weight:700;padding:7px 15px;background:black;border-radius:14px;"href="{% url 'launchpad'%}">Go Back</a>
-</span>
-<div style="width:1100px;margin:40px auto;">
-    
-    <!-- Top Action Panel -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-        <div>
-            <h2 style="color: #2C3E50; margin: 0 0 5px 0;align-items:center;display:flex;gap:20px;"><img src="{%static "images/acc.png"%}"alt="icons" style="width:30px; height:30px;"/> Sales Analytics & Billing</h2>
-            <p style="color: #7F8C8D; margin: 0;">Track customer estimates, manage financial transactions, and download official PDF document sheets.</p>
-        </div>
-        <!-- Link placeholder for creation form later -->
-        <a href="{% url 'sales_issue' %}" class="login-btn" style="padding:10px 15px; border-radius:14px; cursor:pointer;font-weight:700;text-decoration: none; width: auto; background-color: orange;color:#fff;">➕ Create Invoice / Quote</a>
-    </div>
 
-    <!-- Main Documents Log Grid -->
-    <div style="background: white; border: 1px solid #EFEBE4; border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-        {% if documents %}
-            <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                <thead>
-                    <tr style="border-bottom: 2px solid #EFEBE4; color: #7F8C8D; font-size: 14px;">
-                        <th style="padding: 15px 12px;">Type</th>
-                        <th style="padding: 15px 12px;">Doc Number</th>
-                        <th style="padding: 15px 12px;">Client Details</th>
-                        <th style="padding: 15px 12px;">Due Date</th>
-                        <th style="padding: 15px 12px;">Status</th>
-                        <th style="padding: 15px 12px; text-align: right;">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for doc in documents %}
-                        <tr style="border-bottom: 1px solid #EFEBE4; font-size: 15px; color: #2C3E50;">
-                            <!-- Type Badge Split -->
-                            <td style="padding: 15px 12px;">
-                                {% if doc.doc_type == 'invoice' %}
-                                    <span style="background: #EAF2F8; color: #2980B9; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold;">Invoice</span>
-                                {% else %}
-                                    <span style="background: #FEF9E7; color: #D35400; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold;">Quotation</span>
-                                {% endif %}
-                            </td>
-                            
-                            <td style="padding: 15px 12px; font-weight: 600;">#{{ doc.document_number }}</td>
-                            
-                            <td style="padding: 15px 12px;">
-                                <strong>{{ doc.client_name }}</strong><br/>
-                                <span style="font-size: 12px; color: #7F8C8D;">{{ doc.client_email }}</span>
-                            </td>
-                            
-                            <td style="padding: 15px 12px; color: #7F8C8D;">{{ doc.due_date|date:"M d, Y" }}</td>
-                            
-                            <!-- Status Indicators -->
-                            <td style="padding: 15px 12px;">
-                                {% if doc.status == 'paid' %}
-                                    <span style="color: #27AE60; font-weight: bold;">● Paid / Accepted</span>
-                                {% elif doc.status == 'sent' %}
-                                    <span style="color: #2980B9; font-weight: bold;">● Sent</span>
-                                {% elif doc.status == 'cancelled' %}
-                                    <span style="color: #95A5A6; font-weight: bold;">● Cancelled</span>
-                                {% else %}
-                                    <span style="color: #F39C12; font-weight: bold;">● Draft</span>
-                                {% endif %}
-                            </td>
-                            
-                            <!-- Download PDF Route Link Trigger -->
-                            <td style="padding: 15px 12px; text-align: right;display:flex;justify-content:end;">
-                                <a href="{% url 'export_billing_pdf' doc.id %}" style="width:fit-content;align-items:center; justify-content:end;border-radius:15px;display:flex;padding:10px 15px;background-color: orange;color:#fff; text-decoration: none; font-size: 13px;font-weight:700;gap:10px;">
-                                    <img src="{%static "images/download.png"%}"alt="icons"/> Download
-                                </a >
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <!-- Clean Empty State view block -->
-            <div style="text-align: center; padding: 40px 0; color: #7F8C8D;">
-                <span style="font-size: 48px; display: block; margin-bottom: 15px;">📊</span>
-                <h3>No financial documents issued yet</h3>
-                <p>Invoices and client quotations you create will appear inside this transactional monitoring grid log.</p>
+<style>
+    :root {
+        --kai-blue: #00669b;
+        --kai-dark-blue: #003d61;
+        --kai-deep-blue: #002c48;
+        --kai-orange: #f58220;
+        --kai-orange-dark: #df7017;
+        --kai-light: #f5f7f8;
+        --kai-text: #59656d;
+        --kai-white: #ffffff;
+        --kai-border: #dce4e8;
+
+        --kai-green: #27ae60;
+        --kai-red: #c0392b;
+        --kai-yellow: #f39c12;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    /* =========================================
+       PAGE
+    ========================================= */
+
+    .kai-sales-page {
+        min-height: 100vh;
+        width: 100%;
+        background: var(--kai-light);
+        font-family: Arial, Helvetica, sans-serif;
+        color: var(--kai-text);
+    }
+
+
+    /* =========================================
+       HEADER
+    ========================================= */
+
+    .kai-sales-header {
+        width: 100%;
+        min-height: 82px;
+
+        padding: 0 45px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        background: var(--kai-white);
+        border-bottom: 1px solid var(--kai-border);
+
+        box-shadow: 0 2px 10px rgba(0, 44, 72, 0.05);
+
+        position: relative;
+        z-index: 10;
+    }
+
+
+    /* =========================================
+       BRAND
+    ========================================= */
+
+    .kai-sales-brand {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+    .kai-sales-logo {
+        width: 52px;
+        height: 52px;
+        object-fit: contain;
+    }
+
+    .kai-sales-brand-name {
+        display: flex;
+        flex-direction: column;
+        line-height: 1;
+    }
+
+    .kai-sales-brand-name span {
+        color: var(--kai-dark-blue);
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+    }
+
+    .kai-sales-brand-name small {
+        margin-top: 5px;
+
+        color: var(--kai-orange);
+
+        font-size: 10px;
+        font-weight: 700;
+
+        letter-spacing: 3px;
+    }
+
+
+    /* =========================================
+       BACK BUTTON
+    ========================================= */
+
+    .kai-sales-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 11px 18px;
+
+        background: var(--kai-dark-blue);
+        color: var(--kai-white);
+
+        border-radius: 6px;
+
+        text-decoration: none;
+
+        font-size: 13px;
+        font-weight: 700;
+
+        transition:
+            background 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .kai-sales-back:hover {
+        background: var(--kai-orange);
+        color: var(--kai-white);
+
+        transform: translateY(-1px);
+
+        box-shadow: 0 5px 15px rgba(0, 61, 97, 0.15);
+    }
+
+
+    /* =========================================
+       MAIN CONTENT
+    ========================================= */
+
+    .kai-sales-content {
+        width: 100%;
+        max-width: 1250px;
+
+        margin: 0 auto;
+
+        padding: 55px 45px 80px;
+    }
+
+
+    /* =========================================
+       PAGE INTRO
+    ========================================= */
+
+    .kai-sales-intro {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+
+        gap: 30px;
+
+        margin-bottom: 35px;
+    }
+
+    .kai-sales-intro-left {
+        flex: 1;
+    }
+
+    .kai-sales-eyebrow {
+        display: inline-block;
+
+        margin-bottom: 12px;
+        padding-left: 12px;
+
+        border-left: 4px solid var(--kai-orange);
+
+        color: var(--kai-orange);
+
+        font-size: 11px;
+        font-weight: 800;
+
+        letter-spacing: 2.5px;
+    }
+
+    .kai-sales-title {
+        margin: 0;
+
+        display: flex;
+        align-items: center;
+
+        gap: 13px;
+
+        color: var(--kai-deep-blue);
+
+        font-size: clamp(28px, 4vw, 38px);
+        font-weight: 800;
+
+        line-height: 1.15;
+
+        letter-spacing: -0.5px;
+    }
+
+    .kai-sales-title-icon {
+        width: 38px;
+        height: 38px;
+
+        object-fit: contain;
+    }
+
+    .kai-sales-description {
+        margin: 12px 0 0;
+
+        max-width: 760px;
+
+        color: var(--kai-text);
+
+        font-size: 15px;
+        font-weight: 500;
+
+        line-height: 1.6;
+    }
+
+
+    /* =========================================
+       CREATE DOCUMENT BUTTON
+    ========================================= */
+
+    .kai-create-document-btn {
+        flex-shrink: 0;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        min-height: 46px;
+
+        padding: 0 20px;
+
+        border-radius: 6px;
+
+        background: var(--kai-orange);
+        color: var(--kai-white);
+
+        text-decoration: none;
+
+        font-size: 13px;
+        font-weight: 800;
+
+        box-shadow: 0 5px 15px rgba(245, 130, 32, 0.15);
+
+        transition:
+            background 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .kai-create-document-btn:hover {
+        background: var(--kai-orange-dark);
+        color: var(--kai-white);
+
+        transform: translateY(-2px);
+
+        box-shadow: 0 8px 20px rgba(245, 130, 32, 0.25);
+    }
+
+
+    /* =========================================
+       SUMMARY CARDS
+    ========================================= */
+
+    .kai-sales-summary {
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 18px;
+
+        margin-bottom: 28px;
+    }
+
+    .kai-summary-card {
+        position: relative;
+
+        min-height: 110px;
+
+        padding: 22px;
+
+        background: var(--kai-white);
+
+        border: 1px solid var(--kai-border);
+        border-radius: 8px;
+
+        box-shadow: 0 5px 20px rgba(0, 44, 72, 0.045);
+
+        overflow: hidden;
+    }
+
+    .kai-summary-card::before {
+        content: "";
+
+        position: absolute;
+
+        left: 0;
+        top: 0;
+
+        width: 4px;
+        height: 100%;
+
+        background: var(--kai-blue);
+    }
+
+    .kai-summary-card.orange::before {
+        background: var(--kai-orange);
+    }
+
+    .kai-summary-card.green::before {
+        background: var(--kai-green);
+    }
+
+    .kai-summary-label {
+        margin: 0 0 8px;
+
+        color: #89959b;
+
+        font-size: 11px;
+        font-weight: 700;
+
+        text-transform: uppercase;
+        letter-spacing: 1.3px;
+    }
+
+    .kai-summary-value {
+        margin: 0;
+
+        color: var(--kai-deep-blue);
+
+        font-size: 26px;
+        font-weight: 800;
+    }
+
+
+    /* =========================================
+       DOCUMENT PANEL
+    ========================================= */
+
+    .kai-documents-panel {
+        background: var(--kai-white);
+
+        border: 1px solid var(--kai-border);
+        border-radius: 8px;
+
+        box-shadow: 0 5px 20px rgba(0, 44, 72, 0.045);
+
+        overflow: hidden;
+    }
+
+
+    /* =========================================
+       PANEL HEADER
+    ========================================= */
+
+    .kai-documents-panel-header {
+        min-height: 68px;
+
+        padding: 0 25px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        border-bottom: 1px solid var(--kai-border);
+
+        background: #fbfcfd;
+    }
+
+    .kai-panel-heading {
+        margin: 0;
+
+        color: var(--kai-deep-blue);
+
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+    .kai-panel-count {
+        padding: 5px 10px;
+
+        border-radius: 20px;
+
+        background: #edf5f9;
+        color: var(--kai-blue);
+
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+
+    /* =========================================
+       TABLE WRAPPER
+    ========================================= */
+
+    .kai-table-wrapper {
+        width: 100%;
+
+        overflow-x: auto;
+    }
+
+
+    /* =========================================
+       TABLE
+    ========================================= */
+
+    .kai-sales-table {
+        width: 100%;
+
+        border-collapse: collapse;
+
+        text-align: left;
+    }
+
+    .kai-sales-table thead {
+        background: #f8fafb;
+    }
+
+    .kai-sales-table th {
+        padding: 15px 18px;
+
+        border-bottom: 1px solid var(--kai-border);
+
+        color: #89959b;
+
+        font-size: 10px;
+        font-weight: 800;
+
+        text-transform: uppercase;
+        letter-spacing: 1px;
+
+        white-space: nowrap;
+    }
+
+    .kai-sales-table td {
+        padding: 17px 18px;
+
+        border-bottom: 1px solid #edf1f3;
+
+        color: var(--kai-text);
+
+        font-size: 14px;
+
+        vertical-align: middle;
+    }
+
+    .kai-sales-table tbody tr {
+        transition: background 0.15s ease;
+    }
+
+    .kai-sales-table tbody tr:hover {
+        background: #fafcfd;
+    }
+
+    .kai-sales-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+
+    /* =========================================
+       DOCUMENT TYPE
+    ========================================= */
+
+    .kai-document-type {
+        display: inline-flex;
+        align-items: center;
+
+        padding: 6px 10px;
+
+        border-radius: 20px;
+
+        font-size: 10px;
+        font-weight: 800;
+
+        letter-spacing: 0.4px;
+    }
+
+    .kai-document-type.invoice {
+        background: #eaf5fa;
+        color: var(--kai-blue);
+    }
+
+    .kai-document-type.quotation {
+        background: #fff4e9;
+        color: #d96d13;
+    }
+
+
+    /* =========================================
+       DOCUMENT NUMBER
+    ========================================= */
+
+    .kai-document-number {
+        color: var(--kai-deep-blue);
+
+        font-weight: 800;
+
+        white-space: nowrap;
+    }
+
+
+    /* =========================================
+       CLIENT
+    ========================================= */
+
+    .kai-client-name {
+        display: block;
+
+        margin-bottom: 3px;
+
+        color: var(--kai-deep-blue);
+
+        font-weight: 700;
+    }
+
+    .kai-client-email {
+        color: #89959b;
+
+        font-size: 11px;
+    }
+
+
+    /* =========================================
+       DUE DATE
+    ========================================= */
+
+    .kai-due-date {
+        color: var(--kai-text);
+
+        font-size: 13px;
+
+        white-space: nowrap;
+    }
+
+
+    /* =========================================
+       STATUS
+    ========================================= */
+
+    .kai-status {
+        display: inline-flex;
+        align-items: center;
+
+        gap: 7px;
+
+        font-size: 12px;
+        font-weight: 800;
+
+        white-space: nowrap;
+    }
+
+    .kai-status::before {
+        content: "";
+
+        width: 7px;
+        height: 7px;
+
+        border-radius: 50%;
+
+        background: currentColor;
+    }
+
+    .kai-status.paid {
+        color: var(--kai-green);
+    }
+
+    .kai-status.sent {
+        color: var(--kai-blue);
+    }
+
+    .kai-status.cancelled {
+        color: #95a5a6;
+    }
+
+    .kai-status.draft {
+        color: var(--kai-yellow);
+    }
+
+
+    /* =========================================
+       DOWNLOAD BUTTON
+    ========================================= */
+
+    .kai-download-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 7px;
+
+        padding: 9px 13px;
+
+        border: 1px solid #d9e8ef;
+        border-radius: 5px;
+
+        background: #f3f8fa;
+        color: var(--kai-blue);
+
+        text-decoration: none;
+
+        font-size: 11px;
+        font-weight: 800;
+
+        transition:
+            background 0.2s ease,
+            border-color 0.2s ease,
+            color 0.2s ease;
+    }
+
+    .kai-download-btn img {
+        width: 15px;
+        height: 15px;
+
+        object-fit: contain;
+    }
+
+    .kai-download-btn:hover {
+        background: var(--kai-blue);
+        border-color: var(--kai-blue);
+
+        color: var(--kai-white);
+    }
+
+
+    /* =========================================
+       EMPTY STATE
+    ========================================= */
+
+    .kai-empty-state {
+        padding: 75px 25px;
+
+        text-align: center;
+    }
+
+    .kai-empty-icon {
+        width: 70px;
+        height: 70px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin: 0 auto 20px;
+
+        border-radius: 50%;
+
+        background: #eef6fa;
+
+        color: var(--kai-blue);
+
+        font-size: 30px;
+    }
+
+    .kai-empty-state h3 {
+        margin: 0 0 8px;
+
+        color: var(--kai-deep-blue);
+
+        font-size: 19px;
+        font-weight: 800;
+    }
+
+    .kai-empty-state p {
+        max-width: 500px;
+
+        margin: 0 auto;
+
+        color: #89959b;
+
+        font-size: 13px;
+
+        line-height: 1.6;
+    }
+
+
+    /* =========================================
+       FOOTER
+    ========================================= */
+
+    .kai-sales-footer {
+        width: 100%;
+
+        padding: 22px 45px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        border-top: 1px solid var(--kai-border);
+
+        background: var(--kai-white);
+
+        color: #89959b;
+
+        font-size: 10px;
+        font-weight: 600;
+
+        letter-spacing: 1.5px;
+    }
+
+    .kai-footer-company {
+        color: var(--kai-dark-blue);
+    }
+
+    .kai-footer-location {
+        color: #9aa5aa;
+    }
+
+
+    /* =========================================
+       RESPONSIVE
+    ========================================= */
+
+    @media (max-width: 950px) {
+
+        .kai-sales-intro {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .kai-create-document-btn {
+            width: fit-content;
+        }
+
+        .kai-sales-summary {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+
+    @media (max-width: 700px) {
+
+        .kai-sales-header {
+            min-height: 72px;
+
+            padding: 0 22px;
+        }
+
+        .kai-sales-logo {
+            width: 45px;
+            height: 45px;
+        }
+
+        .kai-sales-brand-name span {
+            font-size: 20px;
+        }
+
+        .kai-sales-brand-name small {
+            font-size: 8px;
+        }
+
+        .kai-sales-content {
+            padding: 40px 22px 60px;
+        }
+
+        .kai-sales-title {
+            font-size: 29px;
+        }
+
+        .kai-sales-description {
+            font-size: 14px;
+        }
+
+        .kai-documents-panel-header {
+            padding: 0 18px;
+        }
+
+        .kai-sales-table th,
+        .kai-sales-table td {
+            padding: 14px;
+        }
+
+        .kai-sales-footer {
+            padding: 20px 22px;
+
+            flex-direction: column;
+            align-items: flex-start;
+
+            gap: 8px;
+        }
+
+    }
+
+
+    @media (max-width: 450px) {
+
+        .kai-sales-brand-name {
+            display: none;
+        }
+
+        .kai-sales-header {
+            padding: 0 18px;
+        }
+
+        .kai-sales-content {
+            padding-left: 18px;
+            padding-right: 18px;
+        }
+
+        .kai-create-document-btn {
+            width: 100%;
+        }
+
+        .kai-sales-intro {
+            gap: 20px;
+        }
+
+        .kai-sales-title {
+            font-size: 27px;
+        }
+
+        .kai-sales-title-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+    }
+
+</style>
+
+
+<div class="kai-sales-page">
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header class="kai-sales-header">
+
+        <div class="kai-sales-brand">
+
+            <img
+                src="{% static 'images/Logo-KAI.png' %}"
+                alt="Kai-Sev Limited"
+                class="kai-sales-logo"
+            >
+
+            <div class="kai-sales-brand-name">
+
+                <span>KAI-SEV</span>
+
+                <small>LIMITED</small>
+
             </div>
-        {% endif %}
-    </div>
+
+        </div>
+
+
+        <a
+            href="{% url 'launchpad' %}"
+            class="kai-sales-back"
+        >
+            ← Go Back
+        </a>
+
+    </header>
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+    <main class="kai-sales-content">
+
+
+        <!-- =========================================
+             PAGE INTRO
+        ========================================== -->
+
+        <section class="kai-sales-intro">
+
+            <div class="kai-sales-intro-left">
+
+                <span class="kai-sales-eyebrow">
+                    SALES & BILLING
+                </span>
+
+                <h1 class="kai-sales-title">
+
+                    <img
+                        src="{% static 'images/acc.png' %}"
+                        alt="Sales"
+                        class="kai-sales-title-icon"
+                    >
+
+                    Sales Analytics & Billing
+
+                </h1>
+
+                <p class="kai-sales-description">
+                    Track customer estimates, manage financial
+                    transactions, and download official PDF
+                    documents.
+                </p>
+
+            </div>
+
+
+            <a
+                href="{% url 'sales_issue' %}"
+                class="kai-create-document-btn"
+            >
+                <span>＋</span>
+                Create Invoice / Quote
+            </a>
+
+        </section>
+
+
+        <!-- =========================================
+             SUMMARY CARDS
+        ========================================== -->
+
+        <section class="kai-sales-summary">
+
+
+            <div class="kai-summary-card">
+
+                <p class="kai-summary-label">
+                    Total Documents
+                </p>
+
+                <p class="kai-summary-value">
+                    {{ documents|length }}
+                </p>
+
+            </div>
+
+
+            <div class="kai-summary-card orange">
+
+                <p class="kai-summary-label">
+                    Quotations
+                </p>
+
+                <p class="kai-summary-value">
+
+                    {% widthratio documents|length 1 1 %}
+
+                </p>
+
+            </div>
+
+
+            <div class="kai-summary-card green">
+
+                <p class="kai-summary-label">
+                    Billing Records
+                </p>
+
+                <p class="kai-summary-value">
+                    {{ documents|length }}
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =========================================
+             DOCUMENTS PANEL
+        ========================================== -->
+
+        <section class="kai-documents-panel">
+
+
+            <div class="kai-documents-panel-header">
+
+                <h2 class="kai-panel-heading">
+                    Financial Documents
+                </h2>
+
+                <span class="kai-panel-count">
+                    {{ documents|length }} RECORDS
+                </span>
+
+            </div>
+
+
+            {% if documents %}
+
+                <div class="kai-table-wrapper">
+
+                    <table class="kai-sales-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Type
+                                </th>
+
+                                <th>
+                                    Document Number
+                                </th>
+
+                                <th>
+                                    Client Details
+                                </th>
+
+                                <th>
+                                    Due Date
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th style="text-align:right;">
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for doc in documents %}
+
+                                <tr>
+
+
+                                    <!-- TYPE -->
+
+                                    <td>
+
+                                        {% if doc.doc_type == 'invoice' %}
+
+                                            <span class="kai-document-type invoice">
+                                                Invoice
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="kai-document-type quotation">
+                                                Quotation
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- NUMBER -->
+
+                                    <td>
+
+                                        <span class="kai-document-number">
+                                            #{{ doc.document_number }}
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- CLIENT -->
+
+                                    <td>
+
+                                        <span class="kai-client-name">
+                                            {{ doc.client_name }}
+                                        </span>
+
+                                        <span class="kai-client-email">
+                                            {{ doc.client_email }}
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- DUE DATE -->
+
+                                    <td>
+
+                                        <span class="kai-due-date">
+                                            {{ doc.due_date|date:"M d, Y" }}
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+                                        {% if doc.status == 'paid' %}
+
+                                            <span class="kai-status paid">
+                                                Paid / Accepted
+                                            </span>
+
+                                        {% elif doc.status == 'sent' %}
+
+                                            <span class="kai-status sent">
+                                                Sent
+                                            </span>
+
+                                        {% elif doc.status == 'cancelled' %}
+
+                                            <span class="kai-status cancelled">
+                                                Cancelled
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="kai-status draft">
+                                                Draft
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- ACTION -->
+
+                                    <td style="text-align:right;">
+
+                                        <a
+                                            href="{% url 'export_billing_pdf' doc.id %}"
+                                            class="kai-download-btn"
+                                        >
+
+                                            <img
+                                                src="{% static 'images/download.png' %}"
+                                                alt="Download"
+                                            >
+
+                                            Download
+
+                                        </a>
+
+                                    </td>
+
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+            {% else %}
+
+
+                <!-- =========================================
+                     EMPTY STATE
+                ========================================== -->
+
+                <div class="kai-empty-state">
+
+                    <div class="kai-empty-icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        No financial documents issued yet
+                    </h3>
+
+                    <p>
+                        Invoices and client quotations you create
+                        will appear here for easy monitoring,
+                        management, and PDF download.
+                    </p>
+
+                </div>
+
+
+            {% endif %}
+
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer class="kai-sales-footer">
+
+        <span class="kai-footer-company">
+            KAI-SEV LIMITED
+        </span>
+
+        <span class="kai-footer-location">
+            Nairobi, Kenya
+        </span>
+
+    </footer>
+
+
 </div>
 
-
-{% endblock %}
+{% endblock content %}

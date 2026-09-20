@@ -2,26 +2,922 @@
 {% load static %}
 
 {% block content %}
-<div class="login">
-    <div class="right">
-      <img class="right-img" src="{%static 'images/ships.jpg' %}" alt="Company Image"/>
-    </div>
-    <div class="login-form">
-        <span style="display:flex; width:100%; align-items:center;justify-content:center;scale:0.8">
-            <img class="logo" src="{%static 'images/Logo-KAI.png' %}" alt="Log"/>
-            <h1 style="display:flex;margin-left:20px; flex-direction:column;font-size:30px; font-weight:700; color:orange; ">KAI-SEV 
-                <span style="color:black; font-size:25px;">LIMITED</span>
-            </h1>
-        </span>
-        <h1 class='head'>Login</h1>
-        <form class= "form" method="POST">
-            {% csrf_token %}
-            {{ form.as_p}}
-             <button type="submit" value="Login" class="login-submit-button">Log In</button> 
 
-            <!--<input type="submit" value="Login"/>-->
-    </div>
-        
+<style>
+    :root {
+        --kai-blue: #00669b;
+        --kai-dark-blue: #003d61;
+        --kai-deep-blue: #002c48;
+        --kai-orange: #f58220;
+        --kai-light: #f5f7f8;
+        --kai-text: #59656d;
+        --kai-white: #ffffff;
+        --kai-border: #dce4e8;
+        --kai-error: #c0392b;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .kai-login-page {
+        width: 100%;
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        background: var(--kai-white);
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* =========================================
+       LEFT IMAGE SECTION
+    ========================================= */
+
+    .kai-login-visual {
+        position: relative;
+        min-height: 100vh;
+        overflow: hidden;
+        background: var(--kai-deep-blue);
+    }
+
+    .kai-login-background {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .kai-login-overlay {
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(
+                90deg,
+                rgba(0, 44, 72, 0.92) 0%,
+                rgba(0, 61, 97, 0.78) 48%,
+                rgba(0, 61, 97, 0.35) 100%
+            );
+    }
+
+    .kai-login-visual-content {
+        position: relative;
+        z-index: 2;
+        min-height: 100vh;
+        padding: 55px 65px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        color: var(--kai-white);
+    }
+
+    /* Brand */
+
+    .kai-login-brand {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .kai-login-brand-logo {
+        width: 72px;
+        height: 72px;
+        object-fit: contain;
+        background: white;
+        padding: 5px;
+        border-radius: 8px;
+    }
+
+    .kai-login-brand-name {
+        display: flex;
+        flex-direction: column;
+        line-height: 1;
+    }
+
+    .kai-login-brand-name span {
+        font-size: 31px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        color: var(--kai-white);
+    }
+
+    .kai-login-brand-name small {
+        margin-top: 7px;
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: 5px;
+        color: var(--kai-orange);
+    }
+
+    /* Main message */
+
+    .kai-login-message {
+        max-width: 650px;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    .kai-login-eyebrow {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding-left: 15px;
+        border-left: 4px solid var(--kai-orange);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #ffffff;
+    }
+
+    .kai-login-message h2 {
+        margin: 0;
+        font-size: clamp(42px, 5vw, 70px);
+        line-height: 1.05;
+        font-weight: 800;
+        letter-spacing: -2px;
+        color: var(--kai-white);
+    }
+
+    .kai-login-message h2 span {
+        display: block;
+        color: var(--kai-orange);
+    }
+
+    .kai-login-message p {
+        max-width: 560px;
+        margin: 25px 0 0;
+        font-size: 17px;
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.86);
+    }
+
+    /* Visual footer */
+
+    .kai-login-visual-footer {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+
+    .kai-login-footer-line {
+        width: 45px;
+        height: 2px;
+        background: var(--kai-orange);
+    }
+
+    .kai-login-visual-footer small {
+        font-size: 10px;
+        font-weight: 400;
+        letter-spacing: 1px;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* =========================================
+       RIGHT LOGIN SECTION
+    ========================================= */
+
+    .kai-login-section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--kai-white);
+        padding: 50px 55px;
+    }
+
+    .kai-login-container {
+        width: 100%;
+        max-width: 460px;
+    }
+
+    /* Header */
+
+    .kai-login-header {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        margin-bottom: 65px;
+    }
+
+    .kai-login-logo {
+        width: 58px;
+        height: 58px;
+        object-fit: contain;
+    }
+
+    .kai-login-header-name {
+        display: flex;
+        flex-direction: column;
+        line-height: 1;
+    }
+
+    .kai-login-header-name span {
+        font-size: 23px;
+        font-weight: 800;
+        color: var(--kai-dark-blue);
+        letter-spacing: 0.5px;
+    }
+
+    .kai-login-header-name small {
+        margin-top: 5px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        color: var(--kai-orange);
+    }
+
+    /* Login title */
+
+    .kai-login-title {
+        margin-bottom: 35px;
+    }
+
+    .kai-login-label {
+        display: block;
+        margin-bottom: 12px;
+        color: var(--kai-orange);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 2.5px;
+    }
+
+    .kai-login-title h1 {
+        margin: 0;
+        color: var(--kai-deep-blue);
+        font-size: 38px;
+        font-weight: 800;
+        line-height: 1.15;
+    }
+
+    .kai-login-title p {
+        margin: 12px 0 0;
+        color: var(--kai-text);
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    /* =========================================
+       FORM
+    ========================================= */
+
+    .kai-login-form {
+        width: 100%;
+    }
+
+    .kai-form-field {
+        margin-bottom: 23px;
+    }
+
+    .kai-form-field label {
+        display: block;
+        margin-bottom: 9px;
+        color: var(--kai-dark-blue);
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .kai-input-wrapper {
+        position: relative;
+        width: 100%;
+    }
+
+    .kai-input-icon {
+        position: absolute;
+        left: 17px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .kai-input-icon svg {
+        width: 19px;
+        height: 19px;
+        fill: none;
+        stroke: var(--kai-blue);
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .kai-input-wrapper input {
+        width: 100%;
+        height: 55px;
+        padding: 0 18px 0 50px;
+        border: 1px solid var(--kai-border);
+        border-radius: 5px;
+        outline: none;
+        background: #ffffff;
+        color: var(--kai-deep-blue);
+        font-size: 15px;
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+    }
+
+    .kai-input-wrapper input::placeholder {
+        color: #a6b0b5;
+    }
+
+    .kai-input-wrapper input:hover {
+        border-color: #b7c7cf;
+    }
+
+    .kai-input-wrapper input:focus {
+        border-color: var(--kai-blue);
+        background: #ffffff;
+        box-shadow: 0 0 0 3px rgba(0, 102, 155, 0.10);
+    }
+
+    /* Errors */
+
+    .kai-login-error {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        margin-bottom: 25px;
+        padding: 14px 16px;
+        border-left: 4px solid var(--kai-error);
+        border-radius: 4px;
+        background: #fff5f4;
+        color: var(--kai-error);
+        font-size: 13px;
+    }
+
+    .kai-login-error p {
+        margin: 0 0 4px;
+    }
+
+    .kai-login-error p:last-child {
+        margin-bottom: 0;
+    }
+
+    .kai-error-icon {
+        width: 20px;
+        height: 20px;
+        min-width: 20px;
+        border-radius: 50%;
+        background: var(--kai-error);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .kai-field-error {
+        margin-top: 7px;
+        color: var(--kai-error);
+        font-size: 12px;
+    }
+
+    .kai-field-error span {
+        display: block;
+        margin-top: 3px;
+    }
+
+    /* =========================================
+       LOGIN BUTTON
+    ========================================= */
+
+    .kai-login-button {
+        width: 100%;
+        height: 56px;
+        margin-top: 8px;
+        border: none;
+        border-radius: 5px;
+        background: var(--kai-orange);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 800;
+        letter-spacing: 0.7px;
+        transition:
+            background 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .kai-login-button:hover {
+        background: #df7017;
+        transform: translateY(-1px);
+        box-shadow: 0 8px 20px rgba(245, 130, 32, 0.22);
+    }
+
+    .kai-login-button:active {
+        transform: translateY(0);
+    }
+
+    .kai-login-button-arrow {
+        font-size: 21px;
+        line-height: 1;
+        transition: transform 0.2s ease;
+    }
+
+    .kai-login-button:hover .kai-login-button-arrow {
+        transform: translateX(5px);
+    }
+
+    /* =========================================
+       BOTTOM
+    ========================================= */
+
+    .kai-login-bottom {
+        margin-top: 55px;
+        padding-top: 20px;
+        border-top: 1px solid #edf1f3;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    .kai-login-security {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #89959b;
+        font-size: 11px;
+    }
+
+    .kai-security-icon {
+        display: flex;
+        width: 17px;
+        height: 17px;
+    }
+
+    .kai-security-icon svg {
+        width: 17px;
+        height: 17px;
+        fill: none;
+        stroke: var(--kai-blue);
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .kai-login-copyright {
+        color: #a1aaae;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+    }
+
+    /* =========================================
+       RESPONSIVE
+    ========================================= */
+
+    @media (max-width: 1100px) {
+
+        .kai-login-page {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .kai-login-visual-content {
+            padding: 45px;
+        }
+
+        .kai-login-section {
+            padding: 45px;
+        }
+
+        .kai-login-message h2 {
+            font-size: 52px;
+        }
+    }
+
+    @media (max-width: 850px) {
+
+        .kai-login-page {
+            display: block;
+        }
+
+        .kai-login-visual {
+            min-height: 360px;
+            height: 360px;
+        }
+
+        .kai-login-visual-content {
+            min-height: 360px;
+            padding: 35px;
+        }
+
+        .kai-login-message {
+            margin: auto 0;
+        }
+
+        .kai-login-message h2 {
+            font-size: 42px;
+        }
+
+        .kai-login-message p {
+            display: none;
+        }
+
+        .kai-login-visual-footer {
+            display: none;
+        }
+
+        .kai-login-section {
+            min-height: auto;
+            padding: 55px 35px 45px;
+        }
+
+        .kai-login-header {
+            margin-bottom: 45px;
+        }
+    }
+
+    @media (max-width: 600px) {
+
+        .kai-login-visual {
+            min-height: 300px;
+            height: 300px;
+        }
+
+        .kai-login-visual-content {
+            min-height: 300px;
+            padding: 28px 25px;
+        }
+
+        .kai-login-brand-logo {
+            width: 55px;
+            height: 55px;
+        }
+
+        .kai-login-brand-name span {
+            font-size: 24px;
+        }
+
+        .kai-login-brand-name small {
+            font-size: 11px;
+            letter-spacing: 3px;
+        }
+
+        .kai-login-eyebrow {
+            font-size: 9px;
+            letter-spacing: 1.5px;
+        }
+
+        .kai-login-message h2 {
+            font-size: 35px;
+            letter-spacing: -1px;
+        }
+
+        .kai-login-section {
+            padding: 40px 25px;
+        }
+
+        .kai-login-header {
+            margin-bottom: 40px;
+        }
+
+        .kai-login-title h1 {
+            font-size: 32px;
+        }
+
+        .kai-login-bottom {
+            margin-top: 40px;
+        }
+    }
+
+    @media (max-width: 380px) {
+
+        .kai-login-visual {
+            min-height: 270px;
+            height: 270px;
+        }
+
+        .kai-login-visual-content {
+            min-height: 270px;
+            padding: 22px 18px;
+        }
+
+        .kai-login-message h2 {
+            font-size: 30px;
+        }
+
+        .kai-login-section {
+            padding: 35px 18px;
+        }
+
+        .kai-login-bottom {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+
+<div class="kai-login-page">
+
+    <!-- LEFT SIDE -->
+    <section class="kai-login-visual">
+
+        <img
+            src="{% static 'images/ships.jpg' %}"
+            alt="Kai-Sev Limited Shipping"
+            class="kai-login-background"
+        >
+
+        <div class="kai-login-overlay"></div>
+
+        <div class="kai-login-visual-content">
+
+            <!-- BRAND -->
+            <div class="kai-login-brand">
+
+                <img
+                    src="{% static 'images/Logo-KAI.png' %}"
+                    alt="Kai-Sev Limited"
+                    class="kai-login-brand-logo"
+                >
+
+                <div class="kai-login-brand-name">
+                    <span>KAI-SEV</span>
+                    <small>LIMITED</small>
+                </div>
+
+            </div>
+
+
+            <!-- MAIN MESSAGE -->
+            <div class="kai-login-message">
+
+                <span class="kai-login-eyebrow">
+                    CUSTOMS CLEARING &amp; FREIGHT FORWARDING
+                </span>
+
+                <h2>
+                    Buy FOB.
+                    <span>Let Us Handle the Rest.</span>
+                </h2>
+
+                <p>
+                    End-to-end logistics solutions from origin
+                    to customs clearance and delivery in Kenya.
+                </p>
+
+            </div>
+
+
+            <!-- FOOTER -->
+            <div class="kai-login-visual-footer">
+
+                <div class="kai-login-footer-line"></div>
+
+                <span>KAI-SEV LIMITED</span>
+
+                <small>Nairobi, Kenya</small>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RIGHT SIDE -->
+    <section class="kai-login-section">
+
+        <div class="kai-login-container">
+
+            <!-- LOGO -->
+            <div class="kai-login-header">
+
+                <img
+                    src="{% static 'images/Logo-KAI.png' %}"
+                    alt="Kai-Sev Limited Logo"
+                    class="kai-login-logo"
+                >
+
+                <div class="kai-login-header-name">
+                    <span>KAI-SEV</span>
+                    <small>LIMITED</small>
+                </div>
+
+            </div>
+
+
+            <!-- TITLE -->
+            <div class="kai-login-title">
+
+                <span class="kai-login-label">
+                    CLIENT PORTAL
+                </span>
+
+                <h1>
+                    Welcome Back
+                </h1>
+
+                <p>
+                    Sign in to access your Kai-Sev account.
+                </p>
+
+            </div>
+
+
+            <!-- LOGIN FORM -->
+            <form
+                class="kai-login-form"
+                method="POST"
+            >
+
+                {% csrf_token %}
+
+
+                <!-- NON FIELD ERRORS -->
+                {% if form.non_field_errors %}
+
+                    <div class="kai-login-error">
+
+                        <div class="kai-error-icon">
+                            !
+                        </div>
+
+                        <div>
+
+                            {% for error in form.non_field_errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- USERNAME -->
+                <div class="kai-form-field">
+
+                    <label for="{{ form.username.id_for_label }}">
+                        Username
+                    </label>
+
+                    <div class="kai-input-wrapper">
+
+                        <span class="kai-input-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path d="M20 21a8 8 0 0 0-16 0"></path>
+                                <circle
+                                    cx="12"
+                                    cy="7"
+                                    r="4"
+                                ></circle>
+                            </svg>
+
+                        </span>
+
+                        {{ form.username }}
+
+                    </div>
+
+
+                    {% if form.username.errors %}
+
+                        <div class="kai-field-error">
+
+                            {% for error in form.username.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- PASSWORD -->
+                <div class="kai-form-field">
+
+                    <label for="{{ form.password.id_for_label }}">
+                        Password
+                    </label>
+
+                    <div class="kai-input-wrapper">
+
+                        <span class="kai-input-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <rect
+                                    x="4"
+                                    y="10"
+                                    width="16"
+                                    height="11"
+                                    rx="2"
+                                ></rect>
+
+                                <path
+                                    d="M8 10V7a4 4 0 0 1 8 0v3"
+                                ></path>
+                            </svg>
+
+                        </span>
+
+                        {{ form.password }}
+
+                    </div>
+
+
+                    {% if form.password.errors %}
+
+                        <div class="kai-field-error">
+
+                            {% for error in form.password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- BUTTON -->
+                <button
+                    type="submit"
+                    class="kai-login-button"
+                >
+
+                    <span>
+                        Log In
+                    </span>
+
+                    <span class="kai-login-button-arrow">
+                        →
+                    </span>
+
+                </button>
+
+            </form>
+
+
+            <!-- BOTTOM -->
+            <div class="kai-login-bottom">
+
+                <div class="kai-login-security">
+
+                    <span class="kai-security-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <rect
+                                x="5"
+                                y="10"
+                                width="14"
+                                height="10"
+                                rx="2"
+                            ></rect>
+
+                            <path
+                                d="M8 10V7a4 4 0 0 1 8 0v3"
+                            ></path>
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Secure client access
+                    </span>
+
+                </div>
+
+
+                <div class="kai-login-copyright">
+                    KAI-SEV LIMITED
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
 </div>
 
 {% endblock content %}

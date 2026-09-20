@@ -1,0 +1,1386 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="shortcut icon" href="{% static 'assets/Logo-KAI.png' %}" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,minimum-scale=1.0"
+    />
+    <title>KAI-SEV CRM</title>
+    <meta name="description" content="Streamline international logistics with KAI-SEV's digital freight forwarding solutions. Start optimizing your supply chain with our smart platform.">
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="KAI-SEV CRM">
+    <meta property="og:description" content="Streamline international logistics with KAI-SEV CRM’s digital freight forwarding solutions. Start optimizing your supply chain with our smart platform.">
+    <meta property="og:url" content="https://www.cello-square.com/en/index.do">
+    <meta property="og:image" content="static/assets/img_seo_cello.png">
+    <meta property="og:site_name" content="KAI-SEV CRM" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="KAI-SEV CRM">
+    <meta name="twitter:description" content="Streamline international logistics with KAI-SEV CRM’s digital freight forwarding solutions. Start optimizing your supply chain with our smart platform.">
+    <meta name="twitter:url" content="https://www.cello-square.com/en/index.do">
+    <meta name="twitter:image" content="static/assets/Logo-KAI.png">
+    <meta name="facebook-domain-verification" content="j7epxw0cvti12fbsszdkoaa06g9t5c"/>
+    <meta name="naver-site-verification" content="249a5bb39d61167d2d702f5e1f5b1af1672fac1c"/>
+    
+     <link rel="canonical" href="https://www.cello-square.com/en/index.do">
+	<link rel="alternate" hreflang="ko" href="https://www.cello-square.com/kr/index.do">
+	<link rel="alternate" hreflang="en" href="https://www.cello-square.com/en/index.do">
+	<link rel="alternate" hreflang="es" href="https://www.cello-square.com/es/index.do">
+	<link rel="alternate" hreflang="vi" href="https://www.cello-square.com/vn/index.do">
+    
+    <link rel="stylesheet" href="{% static 'css-new/common.css' %}" />
+    <link rel="stylesheet" href="{% static 'css-new/datepicker.css' %}" />
+    <script src="{% static 'js-new/libs/jquery-3.7.1.min.js' %}"></script>
+    <script src="{% static 'js-new/libs/jquery-ui.js' %}"></script>
+    <script src="{% static 'js-new/libs/jquery.cookie.js' %}"></script>
+    <script src="{% static 'js-new/dev-common.js' %}"></script>
+    <script src="{% static 'js-new/datadog.js' %}"></script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-57FP25S');</script>
+    
+  </head>
+
+  <body>
+  <!-- generate GL parameter -->
+  <script type="text/javascript">
+    function updateWithGlParam() {
+      var e = event || window.event;
+      var link = e.target;
+
+      if (link.tagName !== 'A') {
+        link = link.closest('a');
+      }
+
+      var originalHref = link.getAttribute("href");
+      if (!originalHref) return;
+      var evt = new MouseEvent("mousedown", {
+        bubbles: true,
+        cancelable: true,
+        view: window
+      });
+
+      var tempLink = document.createElement("a");
+      tempLink.href = originalHref;
+      tempLink.className = "test-class";
+      document.body.appendChild(tempLink);
+      tempLink.dispatchEvent(evt);
+
+      var fullUrlWithNewGl = tempLink.href;
+      var newGlParam = "";
+
+      if (/_gl=/.test(fullUrlWithNewGl)) {
+        var queryParts = fullUrlWithNewGl.split('?')[1];
+        if (queryParts) {
+          var params = queryParts.split('&');
+          for (var k = 0; k < params.length; k++) {
+            if (params[k].indexOf('_gl=') === 0) {
+              newGlParam = params[k];
+              break;
+            }
+          }
+        }
+      }
+
+      document.body.removeChild(tempLink);
+      // gl파라미터를 매번 리프레시 하여 중복 현상 방지 코드
+      if (newGlParam) {
+        var urlParts = originalHref.split('?');
+        var baseUrl = urlParts[0];
+        var queryString = urlParts[1];
+
+        var finalParams = [];
+
+        if (queryString) {
+          var oldParams = queryString.split('&');
+          for (var i = 0; i < oldParams.length; i++) {
+            if (oldParams[i].indexOf('_gl=') !== 0) {
+              finalParams.push(oldParams[i]);
+            }
+          }
+        }
+        finalParams.push(newGlParam);
+
+        var newQueryString = finalParams.join('&');
+        var finalUrl = baseUrl;
+
+        if (newQueryString.length > 0) {
+          finalUrl += '?' + newQueryString;
+        }
+
+        link.setAttribute("href", finalUrl);
+      }
+    }
+  </script>
+
+  <!-- End generate GL parameter -->
+
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src=https://www.googletagmanager.com/ns.html?id=GTM-57FP25S
+                    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+    <div class="skip-nav"><a href="#contents">본문으로 바로가기</a></div>
+    <div class="wrap" id="tmpWrapId">
+      <div class="loading-box">
+<div class="loading"></div>
+<script type="text/javascript">
+    function showLoading(fun) {
+        $('.loading-box').show();
+        fun&&fun();
+    }
+    function offLoading(){
+        $('.loading-box').hide();
+    }
+</script>
+
+</div>
+      <!-- Header -banner Include -->
+      <div class="header-banner" id="header-banner-a">
+        
+
+
+<script type="text/javascript">
+	// 20220617 update
+	function getBannerList() {
+    	$.ajax({
+    		url : "/en/banner-list-ajax.do"
+    		, type : "GET"
+    		, dataType : 'json'
+    		, async: false
+    		, contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+    		, success : function(json) {
+    			var resultText = "";
+    			if ((json.list == null || json.list.length===0) && mobileCheck){
+    				var elementsByClassName = document.getElementById('header-banner-a');
+    				elementsByClassName.style.display = "none"
+                } else {
+                     $.each(json.list, function (index, list) {
+                         resultText += ' <li class="swiper-slide">';
+
+                         // 判断 bannerUrl 是否不为空
+                         if (list.bannerUrl && $.trim(list.bannerUrl) !== "") {
+                             // 1. bannerUrl 不为空：生成带链接的 a 标签
+                             if(list.newWindowLinkYn == 'N'){
+                                 if(list.bannerUrl.startsWith("/")){
+                                     resultText += '  <a href="/en' + list.bannerUrl + '" target="' + list.newLinkTarget + '" role="button" onclick="updateSrchCnt(\'' + list.mvBannerSeqNo + '\', \'MKT_BANNER\')" > ';
+                                 } else {
+                                     resultText += '  <a href="' + list.bannerUrl + '" target="' + list.newLinkTarget + '" role="button" onclick="updateSrchCnt(\'' + list.mvBannerSeqNo + '\', \'MKT_BANNER\')" > ';
+                                 }
+                             } else {
+                                 resultText += '  <a href="' + list.bannerUrl + '" target="' + list.newLinkTarget + '" role="button" onclick="updateSrchCnt(\'' + list.mvBannerSeqNo + '\', \'MKT_BANNER\')" > ';
+                             }
+                             resultText += list.titleNm + '</a>';
+                         } else {
+                             // 2. bannerUrl 为空：依然生成 a 标签保持样式统一，但去除 href、target 和点击事件，并追加 cursor 样式去除鼠标手型
+                             resultText += '  <a role="button" style="cursor: default; text-decoration: none;">' + list.titleNm + '</a>';
+                         }
+
+                         resultText += '</li>';
+                     });
+                }
+    			$("#bannerSwiper").append(resultText);
+    		}
+    		, error : function() {
+    			console.log("Error")
+    		}
+    	});
+    }
+
+	getBannerList();
+</script>
+</html>
+
+
+      </div>
+      <!-- Header  Include -->
+      <header>
+<nav class="nav"><!-- script : 스크롤(.scroll) , 마우스 오버 모션 -->
+  <div class="inner" style="display:flex; justify-content: space-between; align-items: center;">
+    <strong><a href="/" role="button"><span></span><img src="{% static 'assets/Logo-KAI.png' %}" alt="logo" width="80px" height="60px"/></span></a></strong>
+    <div class="mo-show m-btn align-right">
+      <a type="button" class="icon-btn icon-menu"><span class="hidden">menu</span></a>
+    </div>
+    <div class="menu-area"><!-- script :모바일 메뉴 클릭시 보이는 영역 -->
+      <div class="layer-head mo-show">
+        <div class="inner">
+              <strong><a href="/" role="button"><span></span><img src="{% static 'assets/Logo-KAI.png' %}" alt="logo" width="80px" height="60px" style="scale:0.7"/></span></a></strong>
+          <div class="m-btn">
+            <a type="button" class="icon-btn icon-close"><span class="hidden">창닫기</span></a><!-- script : 클릭시 창 닫기 -->
+          </div>
+        </div>
+      </div>
+      <!--//layer-head-->
+      <ul class="nav-list d-flex items-start" style="margin-right:50px;">
+        <li><a href="#" title="Transportation">Transportation</a></li>
+        <li><a href="#" title="Warehousing & Distribution">Warehousing & Distribution</a></li>
+        <li><a href="#" title="Technology">Technology</a></li>
+      </ul>
+      <ul class="nav-sub-list d-flex items-start">
+        <li>
+          <a href="#" title="Resources">Resources</a>
+        </li>
+        <li>
+          <a href="#" title="Support">Support</a>
+          <ul class="sub-menu-list">
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Guide</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#" title="Company">About KAI-SEV</a>
+        </li>
+      </ul>
+
+      <!--//mo-lang-->
+
+      <div class="mo-sns mo-show">
+        <ul class="sns-list d-flex">
+          <li class="linked-in"><a href="#" role="button"><span class="hidden">LinkedIn</span></a></li>
+          <li class="facebook"><a href="#" role="button"><span class="hidden">Facebook</span></a></li>
+        </ul>
+        <!--//sns_list-->
+      </div>
+      <!-- //mo-sns-->
+    </div>
+    <!-- //menu-area-->
+  </div>
+  <!--//inner -->
+</nav>
+<!--//nav -->
+<div class="micro-menu">
+  
+</div>
+<div class="search-layer">
+  <div class="layer-head mo-show">
+    <div class="inner">
+      <strong class="logo"><a href="/en/index.do" role="button"><span class="hidden">KAI-SEV CRM</span></a></strong>
+      <div class="m-btn">
+        <a type="button" class="icon-btn icon-close"><span class="hidden">창닫기</span></a><!-- script : 클릭시 창 닫기 -->
+      </div>
+    </div>
+  </div>
+  <!--//layer-head-->
+
+  <div class="inner">
+    <div class="search-box">
+      <div class="search-area">
+        <form id="searchContentFrom" name="searchContentFrom" method="get" action="">
+          <fieldset>
+            <legend>검색 영역</legend>
+            <input type="text" placeholder="Enter your search keyword(s)." title="검색어 입력" name="searchValue" id="searchHeadValue" value="" onclick="javascript:fnCheckHeadContentSearchBar(event, 'contentsearch','en');" onkeyup="javascript:fnCheckHeadContentSearchBar(event, 'contentsearch','en');" autocomplete="off">
+            <button type="button" role="button" class="btn-delet"><span class="hidden">검색어 삭제</span></button>
+            <button type="button" role="button" class="btn-search" id="btnContentSearch"><span class="hidden">검색</span></button>
+            <div class="auto-complete-list" id="head-auto-complete-list">
+              <ul>
+              </ul>
+            </div>
+            <!-- //auto-complete-list-->
+          </fieldset>
+          <div class="form-con-info"  id="search-form-con-info" style="display: none">
+            <p class="error-text error" id="headerGlossarySearchError">Please keep your search term within 30 bytes.</p>
+            <!-- 에러 시 노출 -->
+          </div>
+        </form>
+      </div>
+      <!-- //search-area -->
+
+      <div class="word-area">
+        <div class="inner" id="contentSearchKeyword">
+
+        </div>
+      </div>
+      <!--//word-area-->
+    </div>
+    <!-- //search-box -->
+    <button type="button" class="btn-popup-close"><span class="hidden">레이어 팝업 닫기</span></button>
+  </div>
+</div>
+<script type="text/javascript">(function() {var walkme = document.createElement('script'); walkme.type = 'text/plain'; walkme.async = true; walkme.dataset.cmpSrc = 'https://cdn.walkme.com/users/03e8912a65b64aacbacf3da10c784847/test/walkme_03e8912a65b64aacbacf3da10c784847_https.js'; walkme.className='cmplazyload'; walkme.dataset.cmpVendor='c79868'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(walkme, s); window._walkmeConfig = {smartLoad:true}; })();</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+      getRecommendKeywordAjax('en');
+    });
+
+    $("#btnContentSearch").click(function() {
+      showLoading(function (){
+        $("#searchContentFrom").prop("action", "/en/search-result.do");
+        $("#searchContentFrom").submit();
+      });
+      //offLoading();
+    });
+
+    function  recommendKeywordSearch(keyWord){
+      showLoading(function (){
+        $('#searchHeadValue').val(keyWord);
+        $("#searchContentFrom").prop("action", "/en/search-result.do");
+        $("#searchContentFrom").submit();
+      });
+      //offLoading();
+    }
+</script>
+<!-- //search-layer--></header>
+      <!-- Floating menu Include -->
+      <div class="floating-menu">
+        
+
+
+
+
+
+
+
+<div class="menu-inner">
+  <!-- 240719 수정 -->
+  <div class="open-menu">
+    <a class="quote" style="background:orange;" href="#"><span></span><i>Quote</i></a>
+    <a class="chatbot" style="background:orange;"  href="#" role="button" id="chatbot-badge"><span></span><i>AI Chatbot</i></a>
+    <a class="email" style="background:orange;"  href="#"><span></span><i>Contact</i></a>
+    <a class="join" style="background:orange;" href="{% url 'login' %}"><span></span><i>Sign In</i></a>
+   
+  </div>
+</div>
+
+<!-- Start of z3nzenaisds Zendesk Widget script -->
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=6dabce51-1f49-4843-9973-3aa12cb3c117"> </script>
+<!-- End of z3nzenaisds Zendesk Widget script -->
+
+      </div>
+      <!-- //Floating menu Include -->
+      <!-- <tiles:insertAttribute name="body" /> -->
+<main id="contents" class="container">
+	
+		<div class="main-keyvisual" data-swiper-effect="fade" data-swiper-speed="1000">
+			<ul class="swiper-wrapper">	
+						<li class="swiper-slide" data-swiper-autoplay="8000"><!-- 스와이퍼 슬라이드에 data-delay 속성값을 입력하여 유지 시간 조절 -->
+							
+								<style lang="text/css">
+									/* 这里的样式有问题 如果要反映的话 保留.main-keyvisual即可, 但是会影响整个kevvisual区域，如果需要按照视频/图片区分 需要另行设计,  */
+									.main-keyvisual  {
+										background: #000000 !important
+									}
+								</style>
+							
+							<style lang="text/css">
+								.main-keyvisual .visual-img::after {
+									opacity: 0.0 !important;}
+							</style>
+							<div class="visual-img"><!-- 이미지 비주얼/배너의 경우 visual-img 클래스 사용하여 해당 클래스 아래의 이미지 및 콘텐츠에 애니메이션 작동 -->
+								<p class="pc-img" style="background-image: url('static/assets-new/main-visual-pc.jpg');"></p>
+								<p class="mo-img" style="background-image: url('static/assets-new/main-visual-mobile.jpg');"></p>
+							</div>
+
+							<div class="inner">
+								<div class="visual-cont">
+									<div class="visual-tit">
+										<p class="p-seo">Digital Logistics<br>Services<br>by KAI-SEV LIMITED</p>
+										<p class="sub-tit">Sign In now to enjoy<br>a variety of services</p>
+									</div>
+									<div class="btn-box">	
+											<a a href="{% url 'login' %}"class="btn btn-sm btn-white" style="color:orange">Sign in </a>
+                                            
+									</div>
+								</div>
+							</div>
+						</li>
+				<!-- //220613 추가 -->
+			</ul>
+			<div class="btn-control">
+				<div class="swiper-pagination inner">
+				</div>
+			</div>
+		</div>
+	
+	<!-- //main-keyvisual -->
+
+<script src="static/js-new/searchEstimate.js"></script>
+<div class="main-quote" id="main-quote" style="display: none">
+    <div class="inner">
+        
+<div class="estimate-module-wrap">
+    <div class="box">
+        <div class="country-select-head d-flex" style="background:orange;">
+            <div class="country d-flex items-center">
+                
+                <em class="mo-word">Please select the country of your business.</em>
+                <span class="tooltipItem">
+                    <button type="button" class="btnTooltip">안내</button>
+                    <div class="tooltipCont"><!-- script : active 클래스 추가 -->
+                        <p>This means the country where you or your business is located in or bills.</p>
+                        <p>Both the measurements and currency presented on Quote are consistent with the selected country.</p>
+                    </div>
+                </span>
+            </div>
+            <div class="country-select-btn">
+                <button type="button" style="color:#fff;" class="btn-text arr-down" ><span style="color:#fff;">Select</span></button>
+            </div>
+            <!-- script : active 클래스 추가 -->
+            <div class="head-country-select">
+                <div class="search-area search-s">
+                    <fieldset>
+                        <input type="text" placeholder="Select or search country" title="검색어 입력" value=""  onkeyup="javascript:getCountryTransModeAjax(event,this.value);" autocomplete="off">
+                        <button type="button" role="button" class="btn-delet" onclick="getCountryTransModeAjax()"><span class="hidden">검색어 삭제</span></button>
+                        <button type="button" role="button" class="btn-search" id="btnSearch" onclick="estimateBtnSearchClick()"><span class="hidden">검색</span></button>
+                        <input type="hidden" id="nationCd" title="검색어 입력" value="">
+                    </fieldset>
+                </div>
+                <!-- //search-area -->
+                <ul class="head-country-list">
+
+                </ul>
+                <!--//head-country-list-->
+                <ul class="head-no-list">
+                    <li>No results found.</li>
+                </ul>
+                <!-- //검색 결과 없음 -->
+                <button type="button" class="btn-popup-close" ><span class="hidden">레이어 팝업 닫기</span></button>
+            </div>
+            <!--//head-country-select-->
+        </div>
+        <!--//country-select-head-->
+        <div class="estimate-module">
+            <div class="transport-type">
+                <span>
+                    <input type="radio" name="transport" id="type-ocean1-1" class="oceanType" value="VS" checked="">
+                    <label for="type-ocean1-1">Ocean</label>
+                </span>
+                <span>
+                  <input type="radio" name="transport" id="type-flight1-1" class="flightType" value="AR">
+                  <label for="type-flight1-1">Air</label>
+                </span>
+                <span>
+                  <input type="radio" name="transport" id="type-express1-1" class="expressType" value="EXP">
+                  <label for="type-express1-1">Express</label>
+                </span>
+                <!-- 240109 트럭 추가 -->
+                <span style="display: none">
+                    <input type="radio" name="transport" id="type-truck1-1" class="truckType" value="RD">
+                    <label for="type-truck1-1">Road</label>
+                </span>
+                <span style="display: none">
+                    <input type="radio" name="transport" id="type-train1-1" class="trainType" value="RL">
+                    <label for="type-train1-1">Rail</label>
+                </span>
+            </div>
+            <div class="boxItem">
+                <div class="form-con">
+                    <span class="radio-box">
+                        <input type="radio" name="radio1" value="VS-FCL" id="type-fcl" checked="">
+                        <label for="type-fcl">FCL</label>
+                    </span>
+                    <span class="radio-box">
+                        <input type="radio" name="radio1" value="VS-LCL" id="type-lcl">
+                        <label for="type-lcl">LCL</label>
+                    </span>
+                </div>
+                <div class="frm-wrap">
+                    <div class="sort-search-cp">
+                        <label for="departure">Origin</label>
+                        <div class="search-area search-m">
+                            <form id="searchForm" name="searchForm" onsubmit="return false;">
+                                <fieldset>
+                                    <legend>검색 영역</legend>
+                                    <input type="text" placeholder="Select or search a port" title="출발지 입력" name="searchValue" id="departure" value="" onclick="javascript:autoPortFirst(event);" onkeyup="javascript:autoPortFirst(event);" autocomplete="off" class=""><!-- 에러시 error 추가 -->
+                                    <button type="button" role="button" class="btn-delet" id="departure-delet" onclick="clearInputVal('departure')"><span class="hidden">검색어 삭제</span></button>
+
+                                    <div class="auto-search" id='departure-auto-search' style="display:none;">
+                                        <div class="auto-head">
+                                            <button type="button" class="btn-pre" onclick="btnPreClick()"><span class="hidden">이전</span></button>
+                                            <button type="button" class="btn-popup-close" onclick="closeAutoSearch()"><span class="hidden">레이어 팝업 닫기</span></button>
+                                        </div>
+                                        <!-- //auto-head -->
+                                        <div class="auto-list" >
+                                            <ul class="country-list" >
+
+                                            </ul>
+                                            <!-- //country-list-->
+                                            <div class="border-line"></div>
+                                            <!-- port 불러오기전 안내 글자 -->
+                                            <ul class="port-list tip" style="display: none;">
+                                                <li>원하는 출발지 키워드를 넣어보세요. <br>또는 국가를 선택하면 출발지를 불러옵니다.</li>
+                                            </ul>
+                                            <!-- //port 불러오기전 안내 글자 -->
+                                            <ul class="port-list auto-port-list" id="departure-port-list">
+
+                                            </ul>
+                                            <!-- //port-list-->
+                                        </div>
+                                        <!-- //auto-list -->
+                                        <!-- //국가/포트 리스트 -->
+                                    </div>
+                                    <!-- //auto-search-->
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                    <!--//sort-search-cp-->
+                    <div class="form-con-info" style="display:none;" id="departure-error-text"><!-- 에러시 나타남 -->
+                        <p class="error-text error">Please select the country of your business first.</p>
+                    </div>
+                </div>
+                <!--//frm-wrap-->
+                <div class="frm-wrap">
+                    <div class="sort-search-cp">
+                        <label for="arrival">Destination</label>
+                        <div class="search-area search-m">
+                            <form id="searchForm2" name="searchForm" onsubmit="return false;">
+                                <fieldset>
+                                    <legend>검색 영역</legend>
+                                    <input type="text" placeholder="Select or search a port" title="도착지 입력" name="searchValue" id="arrival" value="" class="" onclick="javascript:autoPortFirst(event);" onkeyup="javascript:autoPortFirst(event);" autocomplete="off"><!-- 에러시 error 추가 -->
+                                    <button type="button" role="button" class="btn-delet" id="arrival-delet" onclick="clearInputVal('arrival')"><span class="hidden">검색어 삭제</span></button>
+
+                                    <div class="auto-search" id="arrival-auto-search" style="display:none;">
+                                        <div class="auto-head">
+                                            <button type="button" class="btn-pre"><span class="hidden">이전</span></button>
+                                            <button type="button" class="btn-popup-close"  onclick="closeAutoSearch()"><span class="hidden">레이어 팝업 닫기</span></button>
+                                        </div>
+                                        <!-- //auto-head -->
+                                        <div class="auto-list">
+                                            <ul class="country-list right-country-list">
+
+                                            </ul>
+                                            <!-- //country-list-->
+                                            <div class="border-line"></div>
+                                            <!-- port 불러오기전 안내 글자 -->
+                                            <ul class="port-list tip" style="display: none;">
+                                                <li>원하는 출발지 키워드를 넣어보세요. <br>또는 국가를 선택하면 출발지를 불러옵니다.</li>
+                                            </ul>
+                                            <!-- //port 불러오기전 안내 글자 -->
+                                            <ul class="port-list auto-port-list" >
+
+                                            </ul>
+                                            <!-- //port-list-->
+                                        </div>
+                                        <!-- //auto-list -->
+                                    </div>
+                                    <!-- //auto-search-->
+                                    <!--// 대륙/나라 리스트 -->
+                                </fieldset>
+                            </form>
+                        </div>
+                        <!--//search-area-->
+                    </div>
+                    <!--//sort-search-cp-->
+                    <div class="form-con-info" style="display:none;" id="arrival-error-text"><!-- 에러시 나타남 -->
+                        <p class="error-text error">Please select the country of your business first.</p>
+                    </div>
+                </div>
+                <!--//frm-wrap-->
+
+                <div class="frm-wrap frm-freight">
+                    <div class="sort-search-cp">
+                        <label for="freightInfo">Cargo information</label>
+                        <div class="item"><input type="number" class="" id="freightInfo" placeholder="1" title="화물정보 입력"  oninput="if(value.length>3)value=value.slice(0,3)" onkeyup="freightInfoCheck(this.value)"></div>
+                        <!-- 해상 : FCL 선택시 나오는 항목 -->
+                        <div class="item disabled"><!-- 화물정보 input에 값이 입력되면 disabled 클래스 삭제 -->
+                            <div class="selectWrap">
+                                <select id="FCL-select">
+                                    
+                                        <option value="20ND" >20&#039; Dry</option>
+                                    
+                                        <option value="40ND" >40&#039; Dry</option>
+                                    
+                                        <option value="40HQ" >40&#039; HC</option>
+                                    
+                                </select>
+                            </div>
+                            <!--//selectWrap-->
+                        </div>
+                        <!--//item-->
+                        <!--// 해상 : FCL 선택시 나오는 항목 -->
+
+                        <!-- 해상 : LCL 선택시 나오는 항목 -->
+                        <div name="freightUnit" class="item disabled" style="display:none;"><!-- 화물정보 input에 값이 입력되면 disabled 클래스 삭제 -->
+                            <span class="txt">CBM
+                                                <span class="tooltipItem">
+                                                    <button type="button" class="btnTooltip">안내</button>
+                                                    <div class="tooltipCont">
+                                                        <p><strong>CBM(Cubic Meter)</strong>refers to the volume of the cargo, measured by multiplying the length, width, and height of the shipment in meters.</p>
+                                                    </div>
+                                                </span>
+                                <!--//tooltipItem-->
+                                            </span>
+                        </div>
+                        <!-- 해상 : LCL 선택시 나오는 항목 -->
+
+                        <!-- 항공/특송 선택시 나오는 항목 -->
+                        <div name="freightUnit" class="item disabled" style="display:none;">
+                                            <span class="txt">KG
+                                                <span class="tooltipItem">
+                                                    <button type="button" class="btnTooltip">안내</button>
+                                                    <div class="tooltipCont">
+                                                        <p>KG needs to be in a chargeable weight to view the exact cost. Enter either the volumetric weight (CBM x 167) or the actual weight, whichever is larger.</p>
+                                                    </div>
+                                                </span>
+                                            </span>
+                        </div>
+                        <!-- //항공/특송 선택시 나오는 항목 -->
+
+                        <!-- 항공/특송 선택시 나오는 항목 -->
+                        <div name="freightUnit" class="item disabled" style="display:none;" id="ftl_unit">
+
+                        </div>
+                        <!-- //항공/특송 선택시 나오는 항목 -->
+
+                    </div>
+                    <!--//sort-search-cp-->
+                    <div class="form-con-info" style="display:none;" id="cbm-error-text"><!-- CBM 에러시 나타남 -->
+                        <p class="error-text error">Max 43CBM</p>
+                    </div>
+                    <div class="form-con-info" style="display:none;" id="kg-error-text"><!-- KG 에러시 나타남 -->
+                        <p class="error-text error">Max 500KG</p>
+                    </div>
+                </div>
+                <!--//frm-wrap-->
+                
+                    <button type="button" class="btn btn-sm btn-blue" onclick="btnQuotePersonTerms('main', 'en')" id="btn-get-quote" disabled>Real-Time Quote</button><!-- input에 값이 입력되면 버튼 활성화(disabled 없어짐)  -->
+                
+            </div>
+            <!--//boxItem-->
+        </div>
+        <!--//estimate-module-->
+        
+    </div>
+    <!--//box-->
+</div>
+<script type="text/javascript">
+    $(document).ready(function (){
+        getCountryTransModeAjax();
+        $.cookie('defaultExpVal', '');
+        defaultSelCountry('KE');
+        $('.transport-type input[type="radio"]').change(function (e){
+            setDeepArrpPlaceholder('en');
+        });
+        $('.country-select-btn').click(function (){
+            closeAutoSearch();
+        });
+    })
+</script>
+        <!-- //estimate-module-wrap -->
+
+        <div class="personal-info-wrap" style="display:none;">
+            <div class="box">
+                <div class="info-box-head">
+                    <strong>After entering simple personal information,<br class="pc-br">You can check the quote immediately.</strong>
+                    <button type="button" class="btn-popup-close" id="btn-person-info-close" onclick="personInfoClose('main')"><span class="hidden">레이어 팝업 닫기</span></button>
+                </div>
+                <!--//info-box-head-->
+                <div class="inner">
+                    <div class="form-box">
+                        <p class="form-text align-right">* Denotes required fields.</p>
+                        <div class="form-row">
+                           
+
+                            <div class="form-con">
+                                <label for="e-mail" class="hidden">E-mail<span class="essential"><span class="hidden">essential</span></span></label>
+                                <input type="text" id="e-mail" name="emailAddress" placeholder="Work E-mail*"  maxlength="200" data-byte="200" data-vmsg="e-mail address">
+                            </div>
+                        </div>
+                        <!-- //form-row-->
+
+                        <div class="form-row">
+                            <div class="form-con">
+                                <label for="last-name" class="hidden">Last name<span class="essential"><span class="hidden">essential</span></span></label>
+                                <input type="text" id="last-name" placeholder="Last name*" name="lastName" maxlength="120" data-byte="120" data-vmsg="last name">
+                            </div>
+
+                            <div class="form-con">
+                                <label for="first-name" class="hidden">First name<span class="essential"><span class="hidden">Required</span></span></label>
+                                <input type="text" id="first-name" placeholder="First name*" name="firstName" maxlength="120" data-byte="120" data-vmsg="first name">
+                            </div>
+                        </div>
+                        <!-- //form-row-->
+
+                        <div class="form-row">
+                            <div class="form-con">
+                                <label for="call-number" class="hidden">Phone number<span class="essential"><span class="hidden">essential</span></span></label>
+                                <input type="number" id="call-number" name="mobilePhone" placeholder="Phone number*" maxlength="120" data-byte="120" data-vmsg="phone number" onkeypress="return inNumber();">
+                            </div>
+
+                            <div class="form-con">
+                                <label for="company-name" class="hidden">Company name<span class="essential"><span class="hidden">essential</span></span></label>
+                                <input type="text" id="company-name" placeholder="Company name*" maxlength="120" data-byte="120" data-vmsg="company name">
+                            </div>
+                        </div>
+                        <!-- //form-row-->
+
+                        <strong class="form-title">Tap the links below and read them carefully. By checking the boxes, you acknowledge that you have read and agree to the following terms.</strong>
+                        <div class="terms-con">
+                    <span class="check-box">
+                        <input type="checkbox" name="checkbox1" id="all-agree">
+                        <label for="all-agree">Agree to all</label>
+                    </span>
+                            <div class="form-con-info" id="terms-warning-text">
+                                <p class="warning-text">If you do not agree to the required items, you cannot use this service.</p><!-- 에러 시 노출 -->
+                            </div>
+                            <div class="terms-list">
+                                <ul>
+                                    <li>
+                                    <span class="check-box">
+                                      <input type="checkbox" name="agree5" id="agree5">
+                                      <label for="agree5">I agree to the conditions outlined in the <a href="javascript:goTermsOpen('5', 'Main-Quote');" class="btn-terms" role="button">Terms of use.</a></label>
+                                    </span>
+                                    </li>
+                                    <li>
+                                    <span class="check-box">
+                                      <input type="checkbox" name="agree1" id="agree1">
+                                      <label for="agree1">I agree to the collection and use of my <a href="javascript:goTermsOpen('1', 'Main-Quote');" class="btn-terms" role="button">personal information.</a></label>
+                                    </span>
+                                    </li>
+                                    <li>
+                                    <span class="check-box">
+                                      <input type="checkbox" name="agree2" id="agree2">
+                                      <label for="agree2">I agree to the storage of my <a href="javascript:goTermsOpen('2', 'Main-Quote');" class="btn-terms" role="button">contact details in a data center in Australia.</a></label>
+                                    </span>
+                                    </li>
+                                    <li>
+                                    <span class="check-box">
+                                      <input type="checkbox" name="agree6" id="agree6">
+                                      <label for="agree6" class="agree-tit2">I confirm and agree my age is 16 years or above.</label>
+                                    </span>
+                                    </li>
+                                    <li>
+                                    <span class="check-box">
+                                      <input type="checkbox" name="agree3" id="agree3">
+                                      <label for="agree3">I agree to the transfer of personal information to <a href="javascript:goTermsOpen('3', 'Main-Quote');" class="btn-terms" role="button">third parties.</a></label>
+                                    </span>
+                                    </li>
+                                    <li>
+                                    <span class="check-box">
+                                      <input type="checkbox" name="agree4" id="agree4">
+                                      <label for="agree4">I would like to receive <a href="javascript:goTermsOpen('4', 'Main-Quote');" class="btn-terms" role="button">further communication from Samsung SDS.</a>(Optional)</label>
+                                    </span>
+                                    </li>
+                                    <li>
+                                        <div class="maketing-btn-wrap">
+                                      <span class="check-box">
+                                        <input type="checkbox" name="agree7" id="agree7">
+                                        <label for="agree7" class="agree-tit2">I agree to receive marketing information. (Optional)</label>
+                                      </span>
+                                            <div class="terms-list agree-form-box">
+                                                <p class="info-text">※ Consent for (optional) items is required to receive newsletters and event prizes, etc.</p>
+                                            </div>
+                                        </div>
+                                        <!-- //maketing-btn-wrap -->
+                                    </li>
+                                </ul>
+                            </div>
+                            <p class="info-text">※ Our website uses cookies to offer better user experience.</p>
+                        </div>
+                        <!-- //terms-con-->
+                    </div>
+                </div>
+                <!--//inner-->
+                <div class="btn-box"><a type="button" class="btn btn-sm btn-blue" onclick="btnSendQuoteClick('main', 'en')">Get a quote right away</a></div>
+            </div>
+            <!--//box-->
+        </div>
+        <!--//personal-info-wrap-->
+    </div>
+</div>
+
+<div id="terms-info-container"></div>
+<script type="text/javascript">
+
+    $(document).ready(function (){
+
+        $("#last-name").keyup(function (e) {
+            if(!fnName("last-name", 'en')){
+                $('#last-name').next().show();
+            }
+        });
+        $("#first-name").keyup(function (e) {
+            if(!fnName("first-name", 'en')){
+                $('#first-name').next().show();
+            }
+        });
+        $("#e-mail").keyup(function (e) {
+            if(!fnEmail("e-mail", 'en')){
+                $('#e-mail').next().show();
+            }
+
+        });
+        $("#call-number").keyup(function (e) {
+            if(!fnNumber("call-number", 'en')){
+                $('#call-number').next().show();
+            }
+
+        });
+        $("#company-name").keyup(function (e) {
+            if(!fnText("company-name", 'en')){
+                $('#company-name').next().show();
+            }
+        });
+
+        $("#all-agree").click(function () {
+
+            if ($(this).is(":checked")) {
+                $("input[type='checkbox']").each(function () {
+                    var chkId = $(this).attr("id");
+                    if (chkId != "sea" && chkId != "airline" && chkId != "special") {
+                        $(this).prop("checked", true);
+                    }
+                });
+            } else {
+                $("input[type='checkbox']").each(function () {
+                    var chkId = $(this).attr("id");
+                    if (chkId != "sea" && chkId != "airline" && chkId != "special") {
+                        $(this).prop("checked", false);
+                    }
+                });
+            }
+        });
+
+        //하나라도 동의 안되어있으면 모두 동의 체크 해제
+        $("input[type='checkbox']").click(function () {
+            fnAgreeChk();
+        });
+    });
+
+</script>
+    <!-- // 231220 견적조회 수정 -->
+	<!-- //estimate-module-wrap -->
+
+	<div class="main-company-info bg-light-grey pt-100 pb-100">
+		<div class="inner">
+			<h1 class="h1-seo">Digital Logistics Platform for Global Freight Forwarding</h1>
+			<h2>
+				KAI-SEV provides efficient logistic services<br class="pc-show" />
+				through its global network.
+			</h2>
+			<div class="com-info">
+				<div class="info-no"><strong>USD 3.4</strong><i>billion</i></div>
+				<p>
+					Revenue USD 3.4 billion<br />
+					Among the top in Kenya and Globally
+				</p>
+			</div>
+			<div class="com-info">
+				<div class="info-no"><strong>40</strong><i>Countries</i></div>
+				<p>
+					40 countries, 52 logistics branches<br />
+					Direct operation of 300+ sites
+				</p>
+			</div>
+			<div class="com-info">
+				<div class="info-no"><strong>4000</strong></div>
+				<p>
+					Composed of experts<br />
+					from around the world
+				</p>
+			</div>
+        </div>
+	</div>
+	<!-- //main-company-info -->
+
+	<div class="main-company-special pt-100 pb-100">
+		<div class="inner">
+			<div class="ani-box pb-100 d-flex items-center">
+				<div class="text-box order-2">
+					<h2>All services are available in one platform ranging from instant quotes <br>to booking and
+						settlement.</h2>
+					<p>Check out the custom dashboard with essential features, abnormality notifications, and real-time
+						communication with operators.<br>
+						Make your complex logistics easier and more convenient just on KAI-SEV </p>
+
+				</div>
+				<!-- //text-box -->
+				<!-- 240205 모션 추가 -->
+				<div class="img-box img-size3">
+					<div class="main-special-01">
+						<p class="img1"><!-- 스크립트 : view1-1 view1-2 순차 추가 -->
+							<img src="static/assets-new/company/main-special-01-1-en.png" alt="">
+						</p>
+						<div class="img2"><!-- 스크립트 : view2-1 추가 -->
+							<div class="bar"><span></span></div>
+							<div class="icon"><img src="static/assets-new/company/main-special-01-4.png" alt=""></div>
+							<div class="end">
+								<div class="circle"> <!-- 스크립트 : active 커지면서 사라지는 효과 -->
+									<div class="poly s1" style="color:orange;"><span><svg width="5" height="10"><polygon points="0,0 5,0 4,10 1,10" /></svg></span></div>
+									<div class="poly s2" style="color:orange;"><span><svg width="5" height="10"><polygon points="0,0 5,0 4,10 1,10" /></svg></span></div>
+									<div class="poly s3" style="color:orange;"><span><svg width="5" height="10"><polygon points="0,0 5,0 4,10 1,10" /></svg></span></div>
+								</div>
+							</div>
+							<ul>
+								<li class="active">Quote</li>
+								<li>Booking</li><!-- 240311 문구 수정-->
+								<li>Customs<br>clearance</li><!-- 240311 문구 수정-->
+								<li>Tracking</li>
+								<li>Communi<br>cation</li>
+								<li>Settlement</li>
+							</ul>
+						</div>
+						<div class="img3">
+							<div class="emitter"></div>
+						</div><!-- 스크립트 : view3 폭죽이 터지는듯한 효과 -->
+					</div>
+					<!-- 스크립트 : 순차적으로 나온 후 정지 -->
+				</div>
+			</div>
+			<div class="ani-box pb-100 d-flex items-center">
+				<div class="text-box">
+					<h2>Real-time checking of <br>visibility is available for <br>all areas in logistics.</h2>
+					<p>We offer a map-based visibility screen where you can share the information with just a click of a
+						button.</p>
+				</div>
+				<!-- //text-box -->
+				<!-- 240205 모션 추가 -->
+				<div class="img-box img-size1">
+					<div class="main-special-02">
+						<div class="img1"><!-- 스크립트 : view1-3 추가 -->
+							<b class="tit" style="background:orange;">Identification of shipment details and irrgularities</b>
+							<ul>
+								<li><img src="static/assets-new/company/main-special-02-1-en.png" alt=""></li><!-- 240311 이미지 수정-->
+								<li class=""><img src="static/assets-new/company/main-special-02-2.png" alt=""></li><!-- 스크립트 : view1-1 추가 -->
+								<li class=""><img src="static/assets-new/company/main-special-02-3-en.png" alt=""></li><!-- 스크립트 : view1-2 추가 --><!-- 240311 이미지 수정-->
+							</ul>
+							<div class="end">
+								<div class="circle"> <!-- 스크립트 : active 커지면서 사라지는 효과 -->
+									<div class="poly s1" style="color:orange;"><span><svg width="5" height="10"><polygon points="0,0 5,0 4,10 1,10" /></svg></span></div>
+									<div class="poly s2" style="color:orange;"><span><svg width="5" height="10"><polygon points="0,0 5,0 4,10 1,10" /></svg></span></div>
+									<div class="poly s3" style="color:orange;"><span><svg width="5" height="10"><polygon points="0,0 5,0 4,10 1,10" /></svg></span></div>
+								</div>
+							</div>
+						</div>
+
+						<div class="img2"><!-- 스크립트 : view2 추가 -->
+							<b class="tit" style="background:orange;">Real-time shipment  tracking</b>
+							<b class="tit2" style="background:orange;">Real-time shipment  tracking</b>
+							<div class="map">
+								<p><img src="static/assets-new/company/main-special-02-4.png" alt=""></p>
+								<p class="line"></p>
+								<p class="port"><img src="static/assets-new/company/main-special-02-5.png" alt=""></p>
+							</div>
+						</div>
+
+						<div class="img3"><!-- 스크립트 : view3 추가 -->
+							<div class="map-zoom">
+								<p class="show"><img src="static/assets-new/company/main-special-02-6.png" alt=""></p>
+								<p class="card">
+									<b class="tit" style="background:orange;">Provision of major departure/arrival time (incl. predictions)</b>
+									<img src="static/assets-new/company/main-special-02-7.png" alt="">
+								</p>
+							</div>
+						</div>
+					</div>
+					<!-- 스크립트 : 순차적으로 나온 후 정지 -->
+				</div>
+				<!--//img-box-->
+				<!-- //240205 모션 추가 -->
+			</div>
+		</div>
+	</div>
+	<!-- //main-company-special -->
+
+	<div class="main-service-list bg-light-grey pt-100 pb-100">
+		<div class="inner">
+			<h2 class="align-center">Freight forwarding services provided by KAI-SEV</h2>
+			<div class="service-list">
+				<div class="list-inner d-flex">
+					<div class="swiper">
+						<div class="swiper-wrapper">
+
+							<div class="swiper-slide">
+								<div class="service-box">
+									<a href="#" title="Air Freight">
+										<div class="img"><img src="static/assets-new/service-list-01.png" alt="Air Freight"></div>
+										<div class="title">Air Freight</div>
+									</a>
+								</div>
+								<!--//service-box 항공 포워딩-->
+							</div>
+
+							<div class="swiper-slide">
+								<div class="service-box">
+									<a href="#" title="Ocean Freight">
+										<div class="img"><img src="static/assets-new/service-list-02.png" alt="Ocean Freight"></div>
+										<div class="title">Ocean Freight</div>
+									</a>
+								</div>
+								<!--//service-box 항공 포워딩-->
+							</div>
+
+							<div class="swiper-slide">
+								<div class="service-box">
+									<a href="#" title="Ground Freight">
+										<div class="img"><img src="static/assets-new/service-list-03.png" alt="Ground Freight"></div>
+										<div class="title">Ground Freight</div>
+									</a>
+								</div>
+								<!--//service-box 특송-->
+							</div>
+
+						</div>
+						<!--//swiper-wrapper-->
+					</div>
+				</div>
+				<!-- //list-inner-->
+				<div class="btn-slide-bar mo-show">
+					<div class="grey-bar"><span></span></div>
+				</div>
+				<!--//btn-slide-bar-->
+			</div>
+			<!--//service-list-->
+		</div>
+	</div>
+	<!-- banner-join  Include -->
+<div class="banner-join">
+    <div class="inner">
+        <strong>Start digital logistics <br class="mo-show">with KAI-SEV LIMITED</strong>
+        <p>Use a variety of services by signing up once.</p>
+    </div>
+</div>
+
+	<!-- //banner-join  Include -->
+</main>
+
+
+<script type="text/javascript">
+	const ctxs = "";
+	let keyFlag = "true";
+
+	if(JSON.parse(keyFlag)){
+		$('#tmpWrapId').addClass('visual-nav');
+		$('#main-quote').show();
+	}
+
+	$(document).ready(function() {
+		/* 20230724 chatbot upd */
+		$('.chatbot a').addClass('chatbot-animation');
+		/*220503 수정*/
+		$("#closedOneDay").mouseenter(function (e) {
+			$("#oneDayClosed").prop("checked",true);
+		});
+
+		$("#closedOneDay").mouseleave(function (e) {
+			$("#oneDayClosed").prop("checked",false);
+		});
+
+		$("#closedOneDay").click(function (e) {
+			addIdentityByKey('identity');
+			popHide();
+		});
+
+		let popHide = function (){
+			$('#popup_sample').hide();
+		}
+		let popShow = function (){
+			$('#popup_sample').show();
+		}
+		let popIsShow = function (){
+			let isDisplay = isDisplayIdentityByKey('identity')
+			if(!isDisplay){
+				popHide();
+			}else{
+				removeIdentityByKey('identity');
+				popShow();
+			}
+		}
+		//popIsShow();
+		/*//220503 수정*/
+
+		$(".btn-managepop-close").click(function() {
+			var this_ = $(this);
+			if(deviceCheck() == "P") {
+				if($("#no-watch").is(":checked") == true) {
+					$.cookie(this_.attr("id"),"Y", {expires:1});
+				}
+				$('#pc_pop_layer').hide();
+			} else {
+				if($("#no-watch-main").is(":checked") == true) {
+					$.cookie(this_.attr("id"),"Y", {expires:1});
+				}
+				$('#mobile_pop_layer').hide();
+			}
+		});
+		/*220503 수정*/
+		$("#type-ocean").click();
+		$("#type-fcl").click();
+		$("#btn-departure-delet").show();
+	});
+	/*
+    fn_goSort = function(ccd) {
+        $("#searchType").val(ccd);
+        $("#btnSearch").click();
+    }; */
+
+	$("#freightInfoExpress").keyup(function checkFloat(){
+		if(this.value > 500){
+			$(this).addClass("error");
+			fnSingleDisplayByName("freightInfo-error",1);
+			fnBtnInquiryDisabledCheck();
+			return;
+		}
+		$(this).removeClass('error');
+		fnSingleDisplayByName("freightInfo-error",-1);
+		this.value = this.value.replace(/[^\d.]/g,"");
+		// 验证第一个字符是数字
+		this.value = this.value.replace(/^\./g,"");
+		// 只保留第一个, 清除多余的
+		this.value = this.value.replace(/\.{2,}/g,".");
+		this.value = this.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+		// 只能输入两个小数
+		this.value = this.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+		$("#freightInfo").val(this.value);
+		fnBtnInquiryDisabledCheck();
+
+	});
+
+
+	$("#btn-departure-delet,#btn-arrival-delet,#btn-express-delet").click( function () {
+		$(this).prev().val("");
+		$(this).prev().removeClass("error");
+		$(this).hide();
+		$("#btnInquiry").attr("disabled",true);
+		$("."+$(this).prev().attr("id")+"-error").hide();
+	});
+
+
+	/* 20220503  estimate  end*/
+</script>
+
+
+      <!-- Footer  Include -->
+      <footer>
+        <footer>
+
+<div class="inner">
+  <div class="footer-menu pc-show">
+    <div class="footer-memu-list">
+      <a href="#">Transportation</a>
+      <a href="#">Warehousing & Distribution</a>
+      <a href="#">Technology</a>
+    </div>
+    <div class="footer-memu-list">
+      <a href="#">Support</a>
+      <ul class="sub-menu-list">
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Guide</a></li>
+      </ul>
+    </div>
+    <div class="footer-memu-list">
+      <a href="#">Company</a>
+      <ul class="sub-menu-list">
+        <li><a href="#">KAI-SEV</a></li>
+        <li><a href="#">About KAI-SEV</a></li>
+        <li><a href="#">Global Network</a></li>
+        <li><a href="#">Brand Story</a></li>
+        <li><a href="#">Partnership</a></li>
+        <li><a href="#">Newsroom</a></li>
+      </ul>
+    </div>
+  </div>
+  <!--//footer_menu -->
+  <!--//footer_newletter -->
+  <ul class="sns-list d-flex">
+    <li class="linked-in"><a href="#" title="New tab" role="button"><span class="hidden">LinkedIn</span></a></li>
+    <li class="youtube"><a href="#" role="button"><span class="hidden">Youtube</span></a></li>
+    <li class="facebook"><a href="#" role="button"><span class="hidden">Facebook</span></a></li>
+  </ul>
+  <!--//sns_list-->
+</div>
+<!--//inner-->
+<div class="footer-add">
+  <div class="inner d-flex items-start">
+    <div class="add-info">
+      <p>
+        Copyright 2026 KAI-SEV LIMITED. All rights reserved.
+      </p>
+    </div>
+    <!--//add_info-->
+    <div class="policy-list">
+      <a href="#" title="Terms of Use">Terms of Use</a>
+      <a href="#" title="Privacy Policy">Privacy Policy</a>
+    </div>
+
+  </div>
+  <!--//inner-->
+</div>
+<!--//footer_add-->
+<div class="footer-js">
+
+</footer>
+      </footer>
+      <!-- //Footer  Include -->
+    </div>
+
+        <div class="footer-js">
+<script>
+    $('.selectWrap').click(function(e) {
+        // e.preventDefault();
+        let windowWidth = $(window).width();
+        let selectedElement = $(this).find('select');
+        let buttonElement = $(this).find('button');
+        let selectedOption = $(this).find('select option');
+        let selectedOption2 = $(this).find('select option:selected');
+        let selectedVal = selectedElement.val();
+        let selectedIndex = selectedOption.index(selectedOption2);
+
+        // alert(selectedVal, selectedIndex);
+
+        buttonElement.removeClass('selectedClass');
+        selectedElement.removeClass('selectedClass');
+
+        // select box 첫번째 옵션 선택만 아닐 경우
+        if (selectedIndex > 0) {
+            // PC, 모바일에 따라 select박스가 다르게 적용됨
+            if (windowWidth > 767) {
+                buttonElement.addClass('selectedClass');
+            } else {
+                selectedElement.addClass('selectedClass');
+            }
+        }
+    });
+
+    // 실제 모바일 Device에서는 select 클릭으로 작동함
+    if (/Android|iPhone/i.test(navigator.userAgent)) {
+
+        $('.selectWrap select').change(function(e) {
+            let selectedElement = $(this);
+            let selectedOption = $(this).find('option');
+            let selectedOption2 = $(this).find('option:selected');
+            let selectedVal = selectedElement.val();
+            let selectedIndex = selectedOption.index(selectedOption2);
+
+            selectedElement.removeClass('selectedClass');
+
+            // select box 첫번째 옵션 선택만 아닐 경우
+            if (selectedIndex > 0) {
+                selectedElement.addClass('selectedClass');
+            }
+        });
+    };
+</script>
+<!-- //퍼블 : 팝업창 확인하기 위해 기존 script 가져옴 -->
+
+<link rel="stylesheet" href="static/css-new/swiper-bundle.min.css" />
+<script src="static/js-new/libs/swiper-bundle.min.js"></script>
+<script src="static/js-new/libs/jquery-ui.min.js"></script>
+<script src="static/js-new/libs/selectbox.js"></script>
+<!-- 240205 수정-->
+<script src="static/js-new/libs/gsap.min.js"></script>
+<script src="static/js-new/libs/ScrollTrigger.min.js"></script>
+<!-- 240205 수정-->
+<script src="static/js-new/search.js"></script>
+<script src="static/js-new/searchEstimate.js"></script>
+<script src="static/js-new/tracking.js"></script>
+<script src="static/js-new/ui.js"></script>
+
+<script>
+    if (window.cqui && typeof cqui.init === 'function'){
+        cqui.init();
+    }
+</script>
+<script type="text/javascript">
+    var type;
+    var isTermsLoading = false;
+    function goTerms(v,tf) {
+        $("#agree"+v).prop("checked", tf);
+        fnAgreeChk();
+        $('#popup_term0'+v).getInstance().close();
+        if(v=='4' && type == 'kr-ko') agree4Click() // Korean environment special treatment
+    }
+
+    function goTermsOpen(v,t) {
+        if(t === "Main-Quote") {
+            if (isTermsLoading) {
+                return;
+            }
+            //防止多次重复点击
+            isTermsLoading = true;
+            getTermsInfo("en", v);
+        } else {
+            $('#popup_term0'+v).getInstance().open();
+            type = t
+            $(".term-box").scrollTop(0)
+        }
+    }
+
+</script>
+<script type="text/javascript">
+    if (!wcs_add) var wcs_add={};
+    wcs_add["wa"] = "s_2ae56cd20ba8";
+    if (!_nasa) var _nasa={};
+    if(window.wcs){
+        wcs.inflow();
+        wcs_do(_nasa);
+    }
+
+    var _elqQ = _elqQ || [];
+    let elqCustomerGUID;
+    _elqQ.push(['elqSetSiteId', '73756918']);
+    _elqQ.push(['elqUseFirstPartyCookie', 'tracking.cello-square.com']);
+    _elqQ.push(['elqTrackPageView', window.location.href]);
+    (function() {
+        function async_load() {
+            var s = document.createElement('script'); s.type = 'text/javascript';
+            s.async = true;
+            s.src = '//img.en25.com/i/elqCfg.min.js';
+            var x = document.getElementsByTagName('script')[0];
+            x.parentNode.insertBefore(s, x);
+        }
+        if(window.addEventListener) window.addEventListener('DOMContentLoaded', async_load, false);
+        else if (window.attachEvent) window.attachEvent('onload', async_load);
+    })();
+    function getGuid() {
+        var cookiedt = new Date();
+        var cookiems = cookiedt.getMilliseconds();
+        var cookieSiteID = '73756918';
+        var cookiePPS = '70';
+        var lookupScriptGuid = "https://tracking.cello-square.com/visitor/v200/svrGP?pps=" + cookiePPS + "&siteid=" + cookieSiteID + "&ms=" + cookiems;
+        console.log(lookupScriptGuid);
+        $.getScript(lookupScriptGuid, function() {
+            if (typeof GetElqCustomerGUID == 'function') {
+                elqCustomerGUID = GetElqCustomerGUID();
+                //console.log(GUID);
+                return false;
+            }
+        });
+    }
+
+
+    getGuid();
+
+
+    function elqGetCookie(name) {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var position = cookies[i].indexOf('=');
+            if (position > 0 && position < cookies[i].length - 1) {
+                var cookieName = cookies[i].substr(0, position).trim();
+                var cookieValue = cookies[i].substr(position + 1);
+                if (cookieName === name) {
+                    return decodeURIComponent(cookieValue);
+                }
+            }
+        }
+        return '';
+    }
+
+    function elqGetCookieSubValue(name, subKey) {
+        var cookieValue = elqGetCookie(name);
+        if (!cookieValue) return '';
+        var cookieSubValue = cookieValue.split('&');
+        for (var i = 0; i < cookieSubValue.length; i++) {
+            var pair = cookieSubValue[i].split('=');
+            if (pair.length > 1 && pair[0] === subKey) {
+                return pair[1];
+            }
+        }
+        return '';
+    }
+</script>
+</div>
+
+  </body>
+</html>
+

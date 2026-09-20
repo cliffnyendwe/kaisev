@@ -1,21 +1,751 @@
 {% extends 'base/main.html' %}
 {% load static %}
+
 {% block content %}
-<div style="position:relative;">
-     <span style="position:absolute;top:10px;left:10px;margin-top:40px;width:fit-content;">
-          <a class="back" style="background:black;" href={% url 'customers' %}>Go Back</a>
-     </span>
-     <div style="width:100%; display:flex; flex-direction:column; align-items:center;">
-          <h1>Create Customer</h1>
-          <div class="customer_form">
-               <form class="cus_form" method="POST" action="">
-                    {% csrf_token %}
-                    {{ form.as_p}}
-                    <!--<input type='submit' value="Submit">-->
-                    <button type="submit" value="Submit" class="login-submit-button">Submit</button> 
-               </form>
-          </div>
-     </div>
+
+<style>
+
+    :root {
+        --kai-blue: #00669b;
+        --kai-dark-blue: #003d61;
+        --kai-deep-blue: #002c48;
+        --kai-orange: #f58220;
+        --kai-light: #f5f7f8;
+        --kai-text: #59656d;
+        --kai-white: #ffffff;
+        --kai-border: #dce4e8;
+        --kai-error: #c0392b;
+    }
+
+
+    * {
+        box-sizing: border-box;
+    }
+
+
+    /* =========================================
+       PAGE
+    ========================================== */
+
+    .kai-customer-page {
+        min-height: 100vh;
+        width: 100%;
+
+        background: var(--kai-light);
+
+        font-family: Arial, Helvetica, sans-serif;
+        color: var(--kai-text);
+
+        padding-bottom: 70px;
+    }
+
+
+    /* =========================================
+       HEADER
+    ========================================== */
+
+    .kai-customer-header {
+        width: 100%;
+        min-height: 82px;
+
+        padding: 0 45px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        background: var(--kai-white);
+
+        border-bottom: 1px solid var(--kai-border);
+
+        box-shadow:
+            0 2px 10px rgba(0, 44, 72, 0.05);
+    }
+
+
+    /* =========================================
+       BRAND
+    ========================================== */
+
+    .kai-customer-brand {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+
+    .kai-customer-logo {
+        width: 52px;
+        height: 52px;
+
+        object-fit: contain;
+    }
+
+
+    .kai-customer-brand-name {
+        display: flex;
+        flex-direction: column;
+
+        line-height: 1;
+    }
+
+
+    .kai-customer-brand-name span {
+        color: var(--kai-dark-blue);
+
+        font-size: 24px;
+        font-weight: 800;
+
+        letter-spacing: 0.5px;
+    }
+
+
+    .kai-customer-brand-name small {
+        margin-top: 5px;
+
+        color: var(--kai-orange);
+
+        font-size: 10px;
+        font-weight: 700;
+
+        letter-spacing: 3px;
+    }
+
+
+    /* =========================================
+       BACK BUTTON
+    ========================================== */
+
+    .kai-back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+
+        padding: 11px 18px;
+
+        border-radius: 6px;
+
+        background: var(--kai-dark-blue);
+        color: var(--kai-white);
+
+        text-decoration: none;
+
+        font-size: 13px;
+        font-weight: 700;
+
+        transition:
+            background 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .kai-back-button:hover {
+        background: var(--kai-orange);
+        color: var(--kai-white);
+
+        transform: translateY(-1px);
+
+        box-shadow:
+            0 5px 15px rgba(0, 61, 97, 0.18);
+    }
+
+
+    /* =========================================
+       MAIN CONTENT
+    ========================================== */
+
+    .kai-customer-content {
+        width: 100%;
+        max-width: 900px;
+
+        margin: 0 auto;
+
+        padding: 55px 30px 80px;
+    }
+
+
+    /* =========================================
+       PAGE TITLE
+    ========================================== */
+
+    .kai-customer-title {
+        margin-bottom: 32px;
+    }
+
+
+    .kai-customer-eyebrow {
+        display: inline-block;
+
+        margin-bottom: 12px;
+        padding-left: 12px;
+
+        border-left: 4px solid var(--kai-orange);
+
+        color: var(--kai-orange);
+
+        font-size: 11px;
+        font-weight: 800;
+
+        letter-spacing: 2.5px;
+    }
+
+
+    .kai-customer-title h1 {
+        margin: 0;
+
+        color: var(--kai-deep-blue);
+
+        font-size: 38px;
+        font-weight: 800;
+
+        letter-spacing: -0.7px;
+    }
+
+
+    .kai-customer-title p {
+        margin: 10px 0 0;
+
+        color: var(--kai-text);
+
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+
+    /* =========================================
+       FORM CARD
+    ========================================== */
+
+    .kai-customer-form-card {
+        position: relative;
+
+        padding: 35px;
+
+        background: var(--kai-white);
+
+        border: 1px solid var(--kai-border);
+        border-radius: 8px;
+
+        box-shadow:
+            0 8px 28px rgba(0, 44, 72, 0.07);
+
+        overflow: hidden;
+    }
+
+
+    .kai-customer-form-card::before {
+        content: "";
+
+        position: absolute;
+
+        left: 0;
+        top: 0;
+
+        width: 100%;
+        height: 4px;
+
+        background: var(--kai-orange);
+    }
+
+
+    /* =========================================
+       FORM
+    ========================================== */
+
+    .kai-customer-form {
+        width: 100%;
+    }
+
+
+    /* Django form paragraphs */
+
+    .kai-customer-form p {
+        margin: 0 0 21px;
+    }
+
+
+    /* =========================================
+       LABELS
+    ========================================== */
+
+    .kai-customer-form label {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: var(--kai-deep-blue);
+
+        font-size: 12px;
+        font-weight: 800;
+
+        letter-spacing: 0.2px;
+    }
+
+
+    /* Required marker */
+
+    .kai-customer-form label .required {
+        color: var(--kai-orange);
+    }
+
+
+    /* =========================================
+       INPUTS
+    ========================================== */
+
+    .kai-customer-form input[type="text"],
+    .kai-customer-form input[type="email"],
+    .kai-customer-form input[type="number"],
+    .kai-customer-form input[type="tel"],
+    .kai-customer-form input[type="date"],
+    .kai-customer-form input[type="datetime-local"],
+    .kai-customer-form input[type="url"],
+    .kai-customer-form input[type="password"],
+    .kai-customer-form select,
+    .kai-customer-form textarea {
+
+        width: 100%;
+
+        min-height: 44px;
+
+        padding: 10px 13px;
+
+        border: 1px solid var(--kai-border);
+        border-radius: 5px;
+
+        outline: none;
+
+        background: #fbfcfd;
+
+        color: var(--kai-deep-blue);
+
+        font-family: Arial, Helvetica, sans-serif;
+
+        font-size: 13px;
+        font-weight: 500;
+
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+    }
+
+
+    /* Textarea */
+
+    .kai-customer-form textarea {
+        min-height: 110px;
+
+        resize: vertical;
+
+        line-height: 1.5;
+    }
+
+
+    /* Select */
+
+    .kai-customer-form select {
+        cursor: pointer;
+    }
+
+
+    /* Focus */
+
+    .kai-customer-form input:focus,
+    .kai-customer-form select:focus,
+    .kai-customer-form textarea:focus {
+
+        background: var(--kai-white);
+
+        border-color: var(--kai-blue);
+
+        box-shadow:
+            0 0 0 3px rgba(0, 102, 155, 0.09);
+    }
+
+
+    /* Placeholder */
+
+    .kai-customer-form input::placeholder,
+    .kai-customer-form textarea::placeholder {
+        color: #a2adb2;
+    }
+
+
+    /* =========================================
+       CHECKBOX
+    ========================================== */
+
+    .kai-customer-form input[type="checkbox"] {
+
+        width: 17px;
+        height: 17px;
+
+        margin-right: 7px;
+
+        accent-color: var(--kai-blue);
+
+        vertical-align: middle;
+    }
+
+
+    /* =========================================
+       HELP TEXT
+    ========================================== */
+
+    .kai-customer-form .helptext,
+    .kai-customer-form .help-text {
+
+        display: block;
+
+        margin-top: 6px;
+
+        color: #8b979c;
+
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+
+    /* =========================================
+       ERROR MESSAGES
+    ========================================== */
+
+    .kai-customer-form .errorlist {
+
+        margin: 6px 0 8px;
+        padding: 0;
+
+        list-style: none;
+
+        color: var(--kai-error);
+
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+
+    .kai-customer-form input.is-invalid,
+    .kai-customer-form select.is-invalid,
+    .kai-customer-form textarea.is-invalid {
+
+        border-color: var(--kai-error);
+
+        box-shadow:
+            0 0 0 3px rgba(192, 57, 43, 0.07);
+    }
+
+
+    /* =========================================
+       FORM FOOTER
+    ========================================== */
+
+    .kai-form-footer {
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        gap: 12px;
+
+        margin-top: 30px;
+        padding-top: 25px;
+
+        border-top: 1px solid var(--kai-border);
+    }
+
+
+    /* =========================================
+       CANCEL
+    ========================================== */
+
+    .kai-cancel-button {
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        min-width: 105px;
+        height: 42px;
+
+        padding: 0 17px;
+
+        border: 1px solid var(--kai-border);
+        border-radius: 5px;
+
+        background: var(--kai-white);
+        color: var(--kai-text);
+
+        text-decoration: none;
+
+        font-size: 12px;
+        font-weight: 700;
+
+        transition:
+            background 0.2s ease,
+            border-color 0.2s ease,
+            color 0.2s ease;
+    }
+
+
+    .kai-cancel-button:hover {
+        background: var(--kai-light);
+
+        border-color: #c4d0d6;
+
+        color: var(--kai-deep-blue);
+    }
+
+
+    /* =========================================
+       SUBMIT
+    ========================================== */
+
+    .kai-submit-button {
+
+        min-width: 125px;
+        height: 42px;
+
+        padding: 0 20px;
+
+        border: none;
+        border-radius: 5px;
+
+        background: var(--kai-orange);
+        color: var(--kai-white);
+
+        font-family: Arial, Helvetica, sans-serif;
+
+        font-size: 12px;
+        font-weight: 800;
+
+        cursor: pointer;
+
+        box-shadow:
+            0 4px 12px rgba(245, 130, 32, 0.18);
+
+        transition:
+            background 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .kai-submit-button:hover {
+
+        background: #df7017;
+
+        transform: translateY(-1px);
+
+        box-shadow:
+            0 7px 18px rgba(245, 130, 32, 0.25);
+    }
+
+
+    .kai-submit-button:active {
+        transform: translateY(0);
+    }
+
+
+    /* =========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media (max-width: 700px) {
+
+        .kai-customer-header {
+            min-height: 72px;
+
+            padding: 0 22px;
+        }
+
+
+        .kai-customer-logo {
+            width: 45px;
+            height: 45px;
+        }
+
+
+        .kai-customer-brand-name span {
+            font-size: 20px;
+        }
+
+
+        .kai-customer-brand-name small {
+            font-size: 8px;
+        }
+
+
+        .kai-customer-content {
+            padding: 40px 20px 60px;
+        }
+
+
+        .kai-customer-title h1 {
+            font-size: 32px;
+        }
+
+
+        .kai-customer-form-card {
+            padding: 25px 20px;
+        }
+
+    }
+
+
+    @media (max-width: 450px) {
+
+        .kai-customer-brand-name {
+            display: none;
+        }
+
+
+        .kai-customer-header {
+            padding: 0 16px;
+        }
+
+
+        .kai-customer-content {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+
+        .kai-customer-title h1 {
+            font-size: 28px;
+        }
+
+
+        .kai-form-footer {
+            flex-direction: column-reverse;
+
+            align-items: stretch;
+        }
+
+
+        .kai-cancel-button,
+        .kai-submit-button {
+            width: 100%;
+        }
+
+    }
+
+</style>
+
+
+<div class="kai-customer-page">
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header class="kai-customer-header">
+
+        <div class="kai-customer-brand">
+
+            <img
+                src="{% static 'images/Logo-KAI.png' %}"
+                alt="Kai-Sev Limited"
+                class="kai-customer-logo"
+            >
+
+            <div class="kai-customer-brand-name">
+
+                <span>KAI-SEV</span>
+
+                <small>LIMITED</small>
+
+            </div>
+
+        </div>
+
+
+        <a
+            href="{% url 'customers' %}"
+            class="kai-back-button"
+        >
+            ← Go Back
+        </a>
+
+    </header>
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main class="kai-customer-content">
+
+
+        <!-- PAGE TITLE -->
+
+        <section class="kai-customer-title">
+
+            <span class="kai-customer-eyebrow">
+                CRM / CUSTOMER PIPELINE
+            </span>
+
+            <h1>
+                Create Customer
+            </h1>
+
+            <p>
+                Add a new customer or sales opportunity to your pipeline.
+            </p>
+
+        </section>
+
+
+        <!-- =========================================
+             FORM CARD
+        ========================================== -->
+
+        <div class="kai-customer-form-card">
+
+            <form
+                class="kai-customer-form"
+                method="POST"
+                action=""
+            >
+
+                {% csrf_token %}
+
+
+                <!-- DJANGO FORM -->
+
+                {{ form.as_p }}
+
+
+                <!-- FORM FOOTER -->
+
+                <div class="kai-form-footer">
+
+                    <a
+                        href="{% url 'customers' %}"
+                        class="kai-cancel-button"
+                    >
+                        Cancel
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        value="Submit"
+                        class="kai-submit-button"
+                    >
+                        Create Customer
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
 </div>
 
-{% endblock content%}
+{% endblock content %}

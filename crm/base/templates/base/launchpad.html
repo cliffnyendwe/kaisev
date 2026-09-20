@@ -1,67 +1,946 @@
 {% extends 'base/main.html' %}
-{% load  static %}
+{% load static %}
 
 {% block content %}
-<div sytle="position:relative;">
-    {% if user.is_authenticated %}
-       <span class="user-avatar"style="position:absolute; right:10px; top:10px;" onClick="toggleUserDropdown(event)">
-           {{user.username.0 | upper}}
-       </span>
-       {% endif %}
-       <div id="userDropdown" class="user-dropdown-card">
-           {% if request.user.is_authenticated %}
-           <div class="dropdown-user-info">
-               <p class="user-label">Logged in as: </p>
-               <p class="user-name"><strong>{{request.user}}</strong></p>
-           </div>
-           <div  class="dropdown-divider"></div>
-           <form action="{% url 'logout' %}" method="POST">
-               {% csrf_token %}
-               <button type="submit" class="logout-action-btn" value="Submit">Log Out</button>
-           </form>
-           {% else %}
-           <a href="{% url 'login' %}">Login</a>
-           {% endif %}
+
+<style>
+
+    :root {
+        --kai-blue: #00669b;
+        --kai-dark-blue: #003d61;
+        --kai-deep-blue: #002c48;
+        --kai-orange: #f58220;
+        --kai-light: #f5f7f8;
+        --kai-text: #59656d;
+        --kai-white: #ffffff;
+        --kai-border: #dce4e8;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    /* =========================================
+       PAGE
+    ========================================= */
+
+    .kai-launch-page {
+        min-height: 100vh;
+        width: 100%;
+        background: var(--kai-light);
+        font-family: Arial, Helvetica, sans-serif;
+        color: var(--kai-text);
+    }
+
+
+    /* =========================================
+       TOP HEADER
+    ========================================= */
+
+    .kai-launch-header {
+        position: relative;
+        width: 100%;
+        min-height: 82px;
+        padding: 0 45px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        background: var(--kai-white);
+        border-bottom: 1px solid var(--kai-border);
+
+        box-shadow: 0 2px 10px rgba(0, 44, 72, 0.05);
+        z-index: 20;
+    }
+
+
+    /* =========================================
+       BRAND
+    ========================================= */
+
+    .kai-launch-brand {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+    .kai-launch-logo {
+        width: 52px;
+        height: 52px;
+        object-fit: contain;
+    }
+
+    .kai-launch-brand-name {
+        display: flex;
+        flex-direction: column;
+        line-height: 1;
+    }
+
+    .kai-launch-brand-name span {
+        color: var(--kai-dark-blue);
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+    }
+
+    .kai-launch-brand-name small {
+        margin-top: 5px;
+        color: var(--kai-orange);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 3px;
+    }
+
+
+    /* =========================================
+       USER AREA
+    ========================================= */
+
+    .kai-user-area {
+        position: relative;
+    }
+
+    .kai-user-avatar {
+        width: 44px;
+        height: 44px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 50%;
+
+        background: var(--kai-dark-blue);
+        color: var(--kai-white);
+
+        font-size: 16px;
+        font-weight: 800;
+
+        cursor: pointer;
+
+        border: 3px solid #e9f0f3;
+
+        transition:
+            background 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .kai-user-avatar:hover {
+        background: var(--kai-orange);
+        transform: translateY(-1px);
+        box-shadow: 0 5px 15px rgba(0, 61, 97, 0.18);
+    }
+
+
+    /* =========================================
+       USER DROPDOWN
+    ========================================= */
+
+    .kai-user-dropdown {
+        position: absolute;
+        right: 0;
+        top: 57px;
+
+        width: 260px;
+
+        padding: 20px;
+
+        background: var(--kai-white);
+        border: 1px solid var(--kai-border);
+        border-radius: 8px;
+
+        box-shadow: 0 15px 35px rgba(0, 44, 72, 0.15);
+
+        z-index: 100;
+
+        display: none;
+    }
+
+    .kai-user-dropdown.show {
+        display: block;
+        animation: kaiDropdown 0.18s ease-out;
+    }
+
+    @keyframes kaiDropdown {
+        from {
+            opacity: 0;
+            transform: translateY(-7px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .kai-dropdown-label {
+        margin: 0 0 5px;
+
+        color: #8a969c;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .kai-dropdown-username {
+        margin: 0;
+
+        color: var(--kai-deep-blue);
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .kai-dropdown-divider {
+        height: 1px;
+        margin: 17px 0;
+
+        background: var(--kai-border);
+    }
+
+    .kai-logout-button {
+        width: 100%;
+        height: 42px;
+
+        border: 1px solid #f0d0c7;
+        border-radius: 5px;
+
+        background: #fff7f5;
+        color: #c0392b;
+
+        font-size: 13px;
+        font-weight: 700;
+
+        cursor: pointer;
+
+        transition:
+            background 0.2s ease,
+            color 0.2s ease,
+            border-color 0.2s ease;
+    }
+
+    .kai-logout-button:hover {
+        background: #c0392b;
+        color: #ffffff;
+        border-color: #c0392b;
+    }
+
+    .kai-login-link {
+        display: block;
+
+        padding: 11px 14px;
+
+        border-radius: 5px;
+
+        background: var(--kai-orange);
+        color: #ffffff;
+
+        text-align: center;
+        text-decoration: none;
+
+        font-size: 13px;
+        font-weight: 700;
+
+        transition: background 0.2s ease;
+    }
+
+    .kai-login-link:hover {
+        background: #df7017;
+        color: #ffffff;
+    }
+
+
+    /* =========================================
+       MAIN CONTENT
+    ========================================= */
+
+    .kai-launch-content {
+        width: 100%;
+        max-width: 1250px;
+
+        margin: 0 auto;
+
+        padding: 65px 45px 80px;
+    }
+
+
+    /* =========================================
+       WELCOME SECTION
+    ========================================= */
+
+    .kai-launch-welcome {
+        margin-bottom: 45px;
+    }
+
+    .kai-launch-eyebrow {
+        display: inline-block;
+
+        margin-bottom: 13px;
+        padding-left: 13px;
+
+        border-left: 4px solid var(--kai-orange);
+
+        color: var(--kai-orange);
+
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 2.5px;
+    }
+
+    .kai-launch-welcome h1 {
+        margin: 0;
+
+        color: var(--kai-deep-blue);
+
+        font-size: clamp(32px, 4vw, 48px);
+        font-weight: 800;
+
+        line-height: 1.15;
+        letter-spacing: -1px;
+    }
+
+    .kai-launch-welcome h1 span {
+        color: var(--kai-orange);
+    }
+
+    .kai-launch-welcome p {
+        margin: 14px 0 0;
+
+        color: var(--kai-text);
+
+        font-size: 17px;
+        font-weight: 500;
+
+        line-height: 1.6;
+    }
+
+
+    /* =========================================
+       SERVICE GRID
+    ========================================= */
+
+    .kai-service-grid {
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 24px;
+    }
+
+
+    /* =========================================
+       SERVICE CARD
+    ========================================= */
+
+    .kai-service-card {
+        position: relative;
+
+        min-height: 285px;
+
+        padding: 30px;
+
+        display: flex;
+        flex-direction: column;
+
+        background: var(--kai-white);
+
+        border: 1px solid var(--kai-border);
+        border-radius: 8px;
+
+        text-decoration: none;
+
+        overflow: hidden;
+
+        box-shadow: 0 5px 20px rgba(0, 44, 72, 0.045);
+
+        transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease,
+            border-color 0.25s ease;
+    }
+
+    .kai-service-card::before {
+        content: "";
+
+        position: absolute;
+        left: 0;
+        top: 0;
+
+        width: 100%;
+        height: 4px;
+
+        background: var(--kai-blue);
+
+        transition: background 0.25s ease;
+    }
+
+    .kai-service-card:hover {
+        transform: translateY(-6px);
+
+        border-color: rgba(0, 102, 155, 0.25);
+
+        box-shadow: 0 15px 35px rgba(0, 44, 72, 0.12);
+    }
+
+
+    /* =========================================
+       CARD ICON
+    ========================================= */
+
+    .kai-service-icon {
+        width: 64px;
+        height: 64px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin-bottom: 28px;
+
+        border-radius: 8px;
+
+        background: #eef6fa;
+
+        transition:
+            background 0.25s ease,
+            transform 0.25s ease;
+    }
+
+    .kai-service-icon img {
+        width: 40px;
+        height: 40px;
+
+        object-fit: contain;
+    }
+
+    .kai-service-card:hover .kai-service-icon {
+        background: #e3f0f6;
+        transform: scale(1.04);
+    }
+
+
+    /* =========================================
+       CARD DETAILS
+    ========================================= */
+
+    .kai-service-details {
+        flex: 1;
+    }
+
+    .kai-service-details h2 {
+        margin: 0 0 10px;
+
+        color: var(--kai-deep-blue);
+
+        font-size: 24px;
+        font-weight: 800;
+    }
+
+    .kai-service-details p {
+        margin: 0;
+
+        color: var(--kai-text);
+
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+
+    /* =========================================
+       CARD ARROW
+    ========================================= */
+
+    .kai-action-arrow {
+        align-self: flex-end;
+
+        width: 42px;
+        height: 42px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin-top: 20px;
+
+        border-radius: 50%;
+
+        background: var(--kai-light);
+        color: var(--kai-blue);
+
+        font-size: 19px;
+        font-weight: 700;
+
+        transition:
+            background 0.25s ease,
+            color 0.25s ease,
+            transform 0.25s ease;
+    }
+
+    .kai-service-card:hover .kai-action-arrow {
+        background: var(--kai-orange);
+        color: #ffffff;
+        transform: translateX(4px);
+    }
+
+
+    /* =========================================
+       INDIVIDUAL CARD COLOURS
+    ========================================= */
+
+    .kai-crm-card::before {
+        background: var(--kai-blue);
+    }
+
+    .kai-documents-card::before {
+        background: var(--kai-orange);
+    }
+
+    .kai-sales-card::before {
+        background: var(--kai-dark-blue);
+    }
+
+    .kai-crm-card .kai-service-icon {
+        background: #eaf5fa;
+    }
+
+    .kai-documents-card .kai-service-icon {
+        background: #fff4e9;
+    }
+
+    .kai-sales-card .kai-service-icon {
+        background: #edf1f5;
+    }
+
+
+    /* =========================================
+       FOOTER
+    ========================================= */
+
+    .kai-launch-footer {
+        width: 100%;
+
+        padding: 22px 45px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        border-top: 1px solid var(--kai-border);
+
+        background: var(--kai-white);
+
+        color: #89959b;
+
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+    }
+
+    .kai-footer-company {
+        color: var(--kai-dark-blue);
+    }
+
+    .kai-footer-location {
+        color: #9aa5aa;
+    }
+
+
+    /* =========================================
+       RESPONSIVE
+    ========================================= */
+
+    @media (max-width: 1000px) {
+
+        .kai-service-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+    }
+
+
+    @media (max-width: 700px) {
+
+        .kai-launch-header {
+            min-height: 72px;
+            padding: 0 22px;
+        }
+
+        .kai-launch-logo {
+            width: 45px;
+            height: 45px;
+        }
+
+        .kai-launch-brand-name span {
+            font-size: 20px;
+        }
+
+        .kai-launch-brand-name small {
+            font-size: 8px;
+        }
+
+        .kai-launch-content {
+            padding: 45px 22px 60px;
+        }
+
+        .kai-launch-welcome {
+            margin-bottom: 35px;
+        }
+
+        .kai-launch-welcome h1 {
+            font-size: 34px;
+        }
+
+        .kai-launch-welcome p {
+            font-size: 15px;
+        }
+
+        .kai-service-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .kai-service-card {
+            min-height: 240px;
+        }
+
+        .kai-launch-footer {
+            padding: 20px 22px;
+
+            flex-direction: column;
+            align-items: flex-start;
+
+            gap: 8px;
+        }
+
+    }
+
+
+    @media (max-width: 420px) {
+
+        .kai-launch-brand-name {
+            display: none;
+        }
+
+        .kai-launch-content {
+            padding-left: 18px;
+            padding-right: 18px;
+        }
+
+        .kai-launch-welcome h1 {
+            font-size: 30px;
+        }
+
+        .kai-service-card {
+            padding: 25px;
+        }
+
+    }
+
+</style>
+
+
+<div class="kai-launch-page">
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header class="kai-launch-header">
+
+        <!-- BRAND -->
+
+        <div class="kai-launch-brand">
+
+            <img
+                src="{% static 'images/Logo-KAI.png' %}"
+                alt="Kai-Sev Limited"
+                class="kai-launch-logo"
+            >
+
+            <div class="kai-launch-brand-name">
+
+                <span>KAI-SEV</span>
+
+                <small>LIMITED</small>
+
+            </div>
+
         </div>
-       </div>
+
+
+        <!-- USER -->
+
+        <div class="kai-user-area">
+
+            {% if user.is_authenticated %}
+
+                <div
+                    class="kai-user-avatar"
+                    onclick="toggleUserDropdown(event)"
+                    title="Account"
+                >
+                    {{ user.username.0|upper }}
+                </div>
+
+            {% endif %}
+
+
+            <div
+                id="userDropdown"
+                class="kai-user-dropdown"
+            >
+
+                {% if request.user.is_authenticated %}
+
+                    <p class="kai-dropdown-label">
+                        Logged in as
+                    </p>
+
+                    <p class="kai-dropdown-username">
+                        {{ request.user }}
+                    </p>
+
+                    <div class="kai-dropdown-divider"></div>
+
+                    <form
+                        action="{% url 'logout' %}"
+                        method="POST"
+                    >
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="kai-logout-button"
+                        >
+                            Log Out
+                        </button>
+
+                    </form>
+
+                {% else %}
+
+                    <a
+                        href="{% url 'login' %}"
+                        class="kai-login-link"
+                    >
+                        Login
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main class="kai-launch-content">
+
+
+        <!-- WELCOME -->
+
+        <section class="kai-launch-welcome">
+
+            <span class="kai-launch-eyebrow">
+                KAI-SEV CLIENT PORTAL
+            </span>
+
+            <h1>
+                Welcome back,
+                <span>{{ user.username }}</span>
+            </h1>
+
+            <p>
+                Select a service to manage your workspace.
+            </p>
+
+        </section>
+
+
+        <!-- =========================================
+             SERVICES
+        ========================================== -->
+
+        <section class="kai-service-grid">
+
+
+            <!-- CRM -->
+
+            <a
+                href="{% url 'customers' %}"
+                class="kai-service-card kai-crm-card"
+            >
+
+                <div class="kai-service-icon">
+
+                    <img
+                        src="{% static 'images/crm.png' %}"
+                        alt="CRM"
+                    >
+
+                </div>
+
+                <div class="kai-service-details">
+
+                    <h2>
+                        CRM
+                    </h2>
+
+                    <p>
+                        Manage your sales pipeline, move contact
+                        and deal records, and track your active
+                        Kanban boards.
+                    </p>
+
+                </div>
+
+                <span class="kai-action-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- DOCUMENTS -->
+
+            <a
+                href="{% url 'document_list' %}"
+                class="kai-service-card kai-documents-card"
+            >
+
+                <div class="kai-service-icon">
+
+                    <img
+                        src="{% static 'images/folder.png' %}"
+                        alt="Documents"
+                    >
+
+                </div>
+
+                <div class="kai-service-details">
+
+                    <h2>
+                        Documents
+                    </h2>
+
+                    <p>
+                        Access user templates, upload file
+                        attachments, and organize system
+                        contracts safely.
+                    </p>
+
+                </div>
+
+                <span class="kai-action-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- SALES -->
+
+            <a
+                href="{% url 'dashboard' %}"
+                class="kai-service-card kai-sales-card"
+            >
+
+                <div class="kai-service-icon">
+
+                    <img
+                        src="{% static 'images/sales.png' %}"
+                        alt="Sales"
+                    >
+
+                </div>
+
+                <div class="kai-service-details">
+
+                    <h2>
+                        Sales
+                    </h2>
+
+                    <p>
+                        Generate and manage quotations and
+                        invoices.
+                    </p>
+
+                </div>
+
+                <span class="kai-action-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer class="kai-launch-footer">
+
+        <span class="kai-footer-company">
+            KAI-SEV LIMITED
+        </span>
+
+        <span class="kai-footer-location">
+            Nairobi, Kenya
+        </span>
+
+    </footer>
+
 
 </div>
-<div class="hub-wrapper">
-    <div class="hub-header">
-        <h1>Welcome back, {{user.username}} 🤝</h1>
-        <p style="font-size:25px; color:black; font-weight:600;">Select a service to manage your workspace</p>
-    </div>
 
-    <div class="hub-grid">
-        <a href="{% url 'customers' %}" class="service-card opportunity-theme">
-            <div class="service-icon"><img src="{%static "images/crm.png"%}"alt="icons" style="width:40px; height:40px;"/></div>
-            <div class="service-details">
-                <h2>CRM</h2>
-                <p>Manage your sales pipeline.move contact deal records,and track your active Kanban boards.</p>
-            </div>
-            <span class="action-arrow">➡</span>
-        </a>
 
-        <!-- DOCUMENTS CARD -->
-         <a href="{% url 'document_list' %}" class="service-card docs-theme">
-            <div class="service-icon"><img src="{%static "images/folder.png"%}"alt="icons" style="width:40px; height:40px;"/></div>
-            <div class="service-details">
-                <h2>Documents</h2>
-                <p>Access user templates, upload file attachments, and organize system contracts safely.</p>
-            </div>
-            <span class="action-arrow">➡</span>
-        </a>
+<!-- =========================================
+     JAVASCRIPT
+========================================== -->
 
-         <!--SALES-->
-         <a href="{% url 'dashboard' %}" class="service-card sale-theme">
-            <div class="service-icon"><img src="{%static "images/sales.png"%}"alt="icons" style="width:40px; height:40px;"/></div>
-            <div class="service-details">
-                <h2>Sales</h2>
-                <p>Generate and manage Quotations and Invoices</p>
-            </div>
-            <span class="action-arrow">➡</span>
-        </a>
-    </div>
-</div>
+<script>
 
-{% endblock %}
+    function toggleUserDropdown(event) {
+
+        event.stopPropagation();
+
+        const dropdown =
+            document.getElementById("userDropdown");
+
+        dropdown.classList.toggle("show");
+    }
+
+
+    document.addEventListener("click", function(event) {
+
+        const dropdown =
+            document.getElementById("userDropdown");
+
+        const userArea =
+            document.querySelector(".kai-user-area");
+
+        if (
+            dropdown &&
+            !userArea.contains(event.target)
+        ) {
+            dropdown.classList.remove("show");
+        }
+
+    });
+
+</script>
+
+{% endblock content %}

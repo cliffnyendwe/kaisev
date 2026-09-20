@@ -2,134 +2,1565 @@
 {% load static %}
 
 {% block content %}
-<!-- Hidden CSRF token carrier for background upload requests -->
-<div id="csrf-token-carrier" style="display: none;">{% csrf_token %}</div>
-<div style="position:relative;border-bottom:1px solid rgba(0, 0, 0, 0.15);padding-left:20px;" >
-    <a class="back_btn" style="position:absolute; top:10px;right:10px;font-weight:700; cursor:pointer;margin-top:20px; text-decoration:none;padding:10px 15px; background:black; color:#ffff; border-radius:14px;"href={% url 'launchpad' %}>
-        Go Back
-    </a>
-    <div style="height:100px;">
-        <div style="align-items:center;display:flex;gap:20px;font-size:30px;font-weight:700;padding-top:20px;"> <img src="{%static 'images/folder.png'%}" alt="icon"  style="width:30px; height:30px;"/> Documents</div>
-        <span style="font-size:24px;">Upload and Share documents with colleagues.</span>
-    </div>
-    <!-- 🌟 THE SHARING MODAL CONTROLLER -->
-    <div id="shareModal" class="sharing-modal-overlay">
-        <div class="sharing-modal-card">
-            <div class="modal-header">
-                <h3>🔗 Share Document</h3>
-                <span class="close-modal-btn" onclick="closeShareModal()">&times;</span>
-            </div>
-            
-            <div class="modal-body">
-                <p id="modalDocTitle" style="font-weight: 600; color: #2C3E50; margin-bottom: 15px; font-size: 14px;"></p>
-                
-                <!-- Hidden tracker to hold the document ID being shared -->
-                     <input type="hidden" id="modalDocId" value="">
 
-                <div class="search-dropdown-wrapper">
-                    <!-- Search Input Field -->
-                    <input 
-                        type="text" 
-                        id="userSearchInput" 
-                        placeholder="Type name or username..." 
+<style>
+
+    /* =========================================================
+       KAI-SEV DOCUMENTS THEME
+    ========================================================= */
+
+    :root {
+        --kai-blue: #00669b;
+        --kai-dark-blue: #003d61;
+        --kai-deep-blue: #002c48;
+        --kai-orange: #f58220;
+
+        --kai-light: #f5f7f8;
+        --kai-white: #ffffff;
+
+        --kai-text: #59656d;
+        --kai-muted: #89959b;
+
+        --kai-border: #dce4e8;
+
+        --kai-blue-light: #eef6fa;
+        --kai-orange-light: #fff4e9;
+
+        --kai-shadow:
+            0 5px 20px rgba(0, 44, 72, 0.06);
+
+        --kai-shadow-heavy:
+            0 15px 35px rgba(0, 44, 72, 0.12);
+    }
+
+
+    * {
+        box-sizing: border-box;
+    }
+
+
+    /* =========================================================
+       PAGE
+    ========================================================= */
+
+    .kai-documents-page {
+        min-height: 100vh;
+        width: 100%;
+
+        background: var(--kai-light);
+
+        color: var(--kai-text);
+
+        font-family:
+            Arial,
+            Helvetica,
+            sans-serif;
+    }
+
+
+    /* =========================================================
+       HEADER
+    ========================================================= */
+
+    .kai-documents-header {
+        position: relative;
+
+        width: 100%;
+
+        min-height: 105px;
+
+        padding: 20px 45px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        background: var(--kai-white);
+
+        border-bottom: 1px solid var(--kai-border);
+
+        box-shadow:
+            0 2px 10px rgba(0, 44, 72, 0.05);
+
+        z-index: 20;
+    }
+
+
+    .kai-documents-heading {
+        display: flex;
+        align-items: center;
+
+        gap: 15px;
+    }
+
+
+    .kai-documents-heading-icon {
+        width: 48px;
+        height: 48px;
+
+        padding: 9px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: var(--kai-blue-light);
+
+        border-radius: 8px;
+    }
+
+
+    .kai-documents-heading-icon img {
+        width: 30px;
+        height: 30px;
+
+        object-fit: contain;
+    }
+
+
+    .kai-documents-title {
+        margin: 0;
+
+        color: var(--kai-deep-blue);
+
+        font-size: 28px;
+        font-weight: 800;
+
+        line-height: 1.1;
+    }
+
+
+    .kai-documents-subtitle {
+        margin: 6px 0 0;
+
+        color: var(--kai-text);
+
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+
+    /* =========================================================
+       BACK BUTTON
+    ========================================================= */
+
+    .kai-back-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 11px 18px;
+
+        background: var(--kai-dark-blue);
+        color: var(--kai-white);
+
+        border-radius: 6px;
+
+        text-decoration: none;
+
+        font-size: 13px;
+        font-weight: 700;
+
+        transition:
+            background 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .kai-back-button:hover {
+        background: var(--kai-orange);
+
+        color: var(--kai-white);
+
+        transform: translateY(-1px);
+
+        box-shadow:
+            0 6px 15px rgba(0, 61, 97, 0.18);
+    }
+
+
+    /* =========================================================
+       MAIN DOCUMENT LAYOUT
+    ========================================================= */
+
+    .kai-document-layout {
+        width: 100%;
+
+        max-width: 1450px;
+
+        margin: 0 auto;
+
+        padding: 28px 45px 50px;
+
+        display: grid;
+
+        grid-template-columns:
+            390px
+            minmax(0, 1fr);
+
+        gap: 24px;
+    }
+
+
+    /* =========================================================
+       SIDEBAR
+    ========================================================= */
+
+    .kai-document-sidebar {
+        min-width: 0;
+
+        height: calc(100vh - 165px);
+
+        min-height: 550px;
+
+        display: flex;
+        flex-direction: column;
+
+        background: var(--kai-white);
+
+        border: 1px solid var(--kai-border);
+
+        border-radius: 8px;
+
+        box-shadow: var(--kai-shadow);
+
+        overflow: hidden;
+    }
+
+
+    /* =========================================================
+       SIDEBAR TABS
+    ========================================================= */
+
+    .kai-sidebar-tabs {
+        padding: 12px;
+
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 8px;
+
+        background: #f9fbfc;
+
+        border-bottom: 1px solid var(--kai-border);
+    }
+
+
+    .kai-sidebar-tab {
+        min-height: 46px;
+
+        padding: 8px 10px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        border: 1px solid transparent;
+
+        border-radius: 6px;
+
+        background: transparent;
+
+        color: var(--kai-text);
+
+        font-size: 12px;
+        font-weight: 700;
+
+        cursor: pointer;
+
+        transition:
+            background 0.2s ease,
+            color 0.2s ease,
+            border-color 0.2s ease;
+    }
+
+
+    .kai-sidebar-tab img {
+        width: 21px;
+        height: 21px;
+
+        object-fit: contain;
+    }
+
+
+    .kai-sidebar-tab:hover {
+        background: var(--kai-blue-light);
+
+        color: var(--kai-dark-blue);
+    }
+
+
+    .kai-sidebar-tab.active {
+        background: var(--kai-dark-blue);
+
+        color: var(--kai-white);
+
+        border-color: var(--kai-dark-blue);
+    }
+
+
+    .kai-sidebar-tab.active:hover {
+        background: var(--kai-blue);
+
+        color: var(--kai-white);
+    }
+
+
+    /* =========================================================
+       SIDEBAR HEADER
+    ========================================================= */
+
+    .kai-sidebar-header {
+        padding: 18px 20px 14px;
+
+        display: flex;
+        align-items: center;
+
+        border-bottom: 1px solid var(--kai-border);
+    }
+
+
+    .kai-sidebar-header h3 {
+        margin: 0;
+
+        display: flex;
+        align-items: center;
+
+        gap: 10px;
+
+        color: var(--kai-deep-blue);
+
+        font-size: 15px;
+        font-weight: 800;
+    }
+
+
+    .kai-sidebar-header h3 img {
+        width: 23px;
+        height: 23px;
+
+        object-fit: contain;
+    }
+
+
+    /* =========================================================
+       SIDEBAR SCROLL AREA
+    ========================================================= */
+
+    .kai-sidebar-scroll {
+        flex: 1;
+
+        overflow-y: auto;
+
+        padding: 12px;
+    }
+
+
+    .kai-sidebar-scroll::-webkit-scrollbar {
+        width: 6px;
+    }
+
+
+    .kai-sidebar-scroll::-webkit-scrollbar-track {
+        background: #f3f6f7;
+    }
+
+
+    .kai-sidebar-scroll::-webkit-scrollbar-thumb {
+        background: #c7d5dc;
+
+        border-radius: 10px;
+    }
+
+
+    .kai-sidebar-scroll::-webkit-scrollbar-thumb:hover {
+        background: var(--kai-blue);
+    }
+
+
+    /* =========================================================
+       DOCUMENT ITEM
+    ========================================================= */
+
+    .kai-document-item {
+        position: relative;
+
+        min-height: 70px;
+
+        margin-bottom: 10px;
+
+        padding: 12px;
+
+        display: flex;
+        align-items: center;
+
+        gap: 11px;
+
+        background: var(--kai-white);
+
+        border: 1px solid var(--kai-border);
+
+        border-left: 3px solid var(--kai-blue);
+
+        border-radius: 6px;
+
+        box-shadow:
+            0 2px 8px rgba(0, 44, 72, 0.035);
+
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            transform 0.2s ease;
+    }
+
+
+    .kai-document-item:hover {
+        border-color: rgba(0, 102, 155, 0.3);
+
+        box-shadow:
+            0 7px 18px rgba(0, 44, 72, 0.09);
+
+        transform: translateY(-1px);
+    }
+
+
+    .kai-document-link {
+        min-width: 0;
+
+        flex: 1;
+
+        display: flex;
+        align-items: center;
+
+        gap: 11px;
+
+        text-decoration: none;
+
+        color: inherit;
+    }
+
+
+    .kai-file-icon {
+        flex: 0 0 auto;
+
+        width: 40px;
+        height: 40px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 6px;
+
+        background: var(--kai-blue-light);
+
+        font-size: 20px;
+    }
+
+
+    .kai-file-meta {
+        min-width: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        gap: 4px;
+    }
+
+
+    .kai-file-title {
+        display: block;
+
+        overflow: hidden;
+
+        color: var(--kai-deep-blue);
+
+        font-size: 13px;
+
+        white-space: nowrap;
+
+        text-overflow: ellipsis;
+    }
+
+
+    .kai-file-date {
+        color: var(--kai-muted);
+
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+
+    .kai-file-date.shared {
+        color: var(--kai-blue);
+    }
+
+
+    /* =========================================================
+       SHARE BUTTON
+    ========================================================= */
+
+    .kai-share-button {
+        flex: 0 0 auto;
+
+        min-width: 55px;
+
+        padding: 6px 7px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        gap: 3px;
+
+        border: 1px solid var(--kai-border);
+
+        border-radius: 5px;
+
+        background: #f9fbfc;
+
+        color: var(--kai-blue);
+
+        cursor: pointer;
+
+        font-size: 9px;
+        font-weight: 800;
+
+        transition:
+            background 0.2s ease,
+            color 0.2s ease,
+            border-color 0.2s ease;
+    }
+
+
+    .kai-share-button img {
+        width: 17px;
+        height: 17px;
+
+        object-fit: contain;
+    }
+
+
+    .kai-share-button:hover {
+        background: var(--kai-blue);
+
+        color: var(--kai-white);
+
+        border-color: var(--kai-blue);
+    }
+
+
+    /* =========================================================
+       BILLING ITEM
+    ========================================================= */
+
+    .kai-billing-item {
+        border-left-color: var(--kai-orange);
+    }
+
+
+    .kai-billing-icon {
+        background: var(--kai-orange-light);
+    }
+
+
+    .kai-download-button {
+        min-width: 55px;
+
+        padding: 6px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        gap: 3px;
+
+        border: 1px solid var(--kai-border);
+
+        border-radius: 5px;
+
+        background: #fffaf6;
+
+        color: var(--kai-orange);
+
+        text-decoration: none;
+
+        font-size: 9px;
+        font-weight: 800;
+
+        transition:
+            background 0.2s ease,
+            color 0.2s ease,
+            border-color 0.2s ease;
+    }
+
+
+    .kai-download-button img {
+        width: 17px;
+        height: 17px;
+    }
+
+
+    .kai-download-button:hover {
+        background: var(--kai-orange);
+
+        color: var(--kai-white);
+
+        border-color: var(--kai-orange);
+    }
+
+
+    /* =========================================================
+       EMPTY STATE
+    ========================================================= */
+
+    .kai-empty-state {
+        margin: 30px 10px;
+
+        padding: 25px 15px;
+
+        text-align: center;
+
+        color: var(--kai-muted);
+
+        font-size: 13px;
+    }
+
+
+    /* =========================================================
+       UPLOAD AREA
+    ========================================================= */
+
+    .kai-upload-area {
+        position: relative;
+
+        min-height: calc(100vh - 165px);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 35px;
+
+        background: var(--kai-white);
+
+        border: 2px dashed #c9d8df;
+
+        border-radius: 10px;
+
+        box-shadow: var(--kai-shadow);
+
+        cursor: pointer;
+
+        transition:
+            border-color 0.25s ease,
+            background 0.25s ease,
+            box-shadow 0.25s ease;
+    }
+
+
+    .kai-upload-area:hover {
+        border-color: var(--kai-blue);
+
+        background: #fbfdfe;
+
+        box-shadow: var(--kai-shadow-heavy);
+    }
+
+
+    .kai-upload-area.drag-over {
+        border-color: var(--kai-orange);
+
+        background: var(--kai-orange-light);
+
+        box-shadow:
+            0 12px 30px rgba(245, 130, 32, 0.12);
+    }
+
+
+    .kai-upload-content {
+        width: 100%;
+
+        max-width: 600px;
+
+        text-align: center;
+    }
+
+
+    .kai-cloud-icon {
+        width: 85px;
+        height: 85px;
+
+        margin: 0 auto 25px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 50%;
+
+        background: var(--kai-blue-light);
+
+        font-size: 42px;
+
+        transition:
+            transform 0.25s ease,
+            background 0.25s ease;
+    }
+
+
+    .kai-upload-area:hover .kai-cloud-icon {
+        transform: translateY(-4px);
+
+        background: #e3f0f6;
+    }
+
+
+    .kai-upload-content h2 {
+        margin: 0 0 10px;
+
+        color: var(--kai-deep-blue);
+
+        font-size: 25px;
+        font-weight: 800;
+    }
+
+
+    .kai-upload-content p {
+        margin: 0;
+
+        color: var(--kai-text);
+
+        font-size: 14px;
+
+        line-height: 1.6;
+    }
+
+
+    .kai-upload-hint {
+        display: inline-block;
+
+        margin-top: 20px;
+
+        padding: 8px 14px;
+
+        border-radius: 5px;
+
+        background: var(--kai-blue-light);
+
+        color: var(--kai-blue);
+
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+
+    /* =========================================================
+       UPLOAD STATUS
+    ========================================================= */
+
+    .kai-upload-status {
+        width: 100%;
+
+        margin-top: 25px;
+    }
+
+
+    /* =========================================================
+       SHARE MODAL
+    ========================================================= */
+
+    .kai-sharing-modal-overlay {
+        position: fixed;
+
+        inset: 0;
+
+        display: none;
+        align-items: center;
+        justify-content: center;
+
+        padding: 20px;
+
+        background:
+            rgba(0, 44, 72, 0.48);
+
+        backdrop-filter: blur(3px);
+
+        z-index: 9999;
+    }
+
+
+    .kai-sharing-modal-overlay.show {
+        display: flex;
+    }
+
+
+    .kai-sharing-modal-card {
+        width: 100%;
+
+        max-width: 460px;
+
+        background: var(--kai-white);
+
+        border: 1px solid var(--kai-border);
+
+        border-radius: 9px;
+
+        box-shadow:
+            0 25px 60px rgba(0, 44, 72, 0.22);
+
+        overflow: hidden;
+
+        animation: kaiModalIn 0.2s ease-out;
+    }
+
+
+    @keyframes kaiModalIn {
+
+        from {
+            opacity: 0;
+
+            transform:
+                translateY(-12px)
+                scale(0.98);
+        }
+
+        to {
+            opacity: 1;
+
+            transform:
+                translateY(0)
+                scale(1);
+        }
+
+    }
+
+
+    .kai-modal-header {
+        padding: 18px 20px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        background: var(--kai-dark-blue);
+
+        color: var(--kai-white);
+    }
+
+
+    .kai-modal-header h3 {
+        margin: 0;
+
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+
+    .kai-close-modal {
+        width: 30px;
+        height: 30px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 50%;
+
+        color: var(--kai-white);
+
+        font-size: 25px;
+
+        cursor: pointer;
+
+        transition:
+            background 0.2s ease;
+    }
+
+
+    .kai-close-modal:hover {
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+
+    .kai-modal-body {
+        padding: 24px;
+    }
+
+
+    .kai-modal-document-title {
+        margin: 0 0 16px;
+
+        color: var(--kai-deep-blue);
+
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+
+    .kai-search-wrapper {
+        position: relative;
+    }
+
+
+    .kai-user-search {
+        width: 100%;
+
+        height: 44px;
+
+        padding: 0 13px;
+
+        border: 1px solid var(--kai-border);
+
+        border-radius: 6px;
+
+        outline: none;
+
+        background: var(--kai-white);
+
+        color: var(--kai-deep-blue);
+
+        font-size: 13px;
+
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .kai-user-search:focus {
+        border-color: var(--kai-blue);
+
+        box-shadow:
+            0 0 0 3px rgba(0, 102, 155, 0.09);
+    }
+
+
+    .kai-results-dropdown {
+        position: absolute;
+
+        left: 0;
+        right: 0;
+
+        top: calc(100% + 5px);
+
+        max-height: 220px;
+
+        overflow-y: auto;
+
+        background: var(--kai-white);
+
+        border: 1px solid var(--kai-border);
+
+        border-radius: 6px;
+
+        box-shadow:
+            0 12px 30px rgba(0, 44, 72, 0.14);
+
+        z-index: 100;
+    }
+
+
+    .kai-modal-status {
+        margin-top: 14px;
+
+        color: var(--kai-text);
+
+        font-size: 12px;
+    }
+
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @media (max-width: 1100px) {
+
+        .kai-document-layout {
+            grid-template-columns: 330px minmax(0, 1fr);
+
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+
+        .kai-documents-header {
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+
+    }
+
+
+    @media (max-width: 800px) {
+
+        .kai-documents-header {
+            min-height: 95px;
+
+            padding: 18px 20px;
+        }
+
+
+        .kai-documents-title {
+            font-size: 23px;
+        }
+
+
+        .kai-documents-subtitle {
+            font-size: 12px;
+        }
+
+
+        .kai-document-layout {
+            grid-template-columns: 1fr;
+
+            padding:
+                20px;
+        }
+
+
+        .kai-document-sidebar {
+            height: auto;
+
+            min-height: 400px;
+        }
+
+
+        .kai-upload-area {
+            min-height: 450px;
+        }
+
+    }
+
+
+    @media (max-width: 520px) {
+
+        .kai-documents-header {
+            align-items: flex-start;
+
+            gap: 15px;
+        }
+
+
+        .kai-documents-heading-icon {
+            width: 42px;
+            height: 42px;
+        }
+
+
+        .kai-documents-title {
+            font-size: 20px;
+        }
+
+
+        .kai-documents-subtitle {
+            display: none;
+        }
+
+
+        .kai-back-button {
+            padding: 9px 12px;
+
+            font-size: 11px;
+        }
+
+
+        .kai-document-layout {
+            padding:
+                15px;
+        }
+
+
+        .kai-sidebar-tabs {
+            grid-template-columns: 1fr;
+        }
+
+
+        .kai-upload-area {
+            min-height: 380px;
+
+            padding: 20px;
+        }
+
+
+        .kai-cloud-icon {
+            width: 70px;
+            height: 70px;
+
+            font-size: 34px;
+        }
+
+
+        .kai-upload-content h2 {
+            font-size: 21px;
+        }
+
+    }
+
+</style>
+
+
+<div class="kai-documents-page">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="kai-documents-header">
+
+        <div class="kai-documents-heading">
+
+            <div class="kai-documents-heading-icon">
+
+                <img
+                    src="{% static 'images/folder.png' %}"
+                    alt="Documents"
+                >
+
+            </div>
+
+            <div>
+
+                <h1 class="kai-documents-title">
+                    Documents
+                </h1>
+
+                <p class="kai-documents-subtitle">
+                    Upload and share documents with colleagues.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <a
+            class="kai-back-button"
+            href="{% url 'launchpad' %}"
+        >
+            ← Go Back
+        </a>
+
+    </header>
+
+
+    <!-- =====================================================
+         HIDDEN CSRF TOKEN
+    ====================================================== -->
+
+    <div id="csrf-token-carrier" style="display:none;">
+        {% csrf_token %}
+    </div>
+
+
+    <!-- =====================================================
+         SHARING MODAL
+    ====================================================== -->
+
+    <div
+        id="shareModal"
+        class="kai-sharing-modal-overlay"
+    >
+
+        <div class="kai-sharing-modal-card">
+
+            <div class="kai-modal-header">
+
+                <h3>
+                    🔗 Share Document
+                </h3>
+
+                <span
+                    class="kai-close-modal"
+                    onclick="closeShareModal()"
+                >
+                    &times;
+                </span>
+
+            </div>
+
+
+            <div class="kai-modal-body">
+
+                <p
+                    id="modalDocTitle"
+                    class="kai-modal-document-title"
+                ></p>
+
+
+                <input
+                    type="hidden"
+                    id="modalDocId"
+                    value=""
+                >
+
+
+                <div class="kai-search-wrapper">
+
+                    <input
+                        type="text"
+                        id="userSearchInput"
+                        class="kai-user-search"
+                        placeholder="Type name or username..."
                         oninput="searchUsersLive()"
                         autocomplete="off"
                     >
-                    <!-- Live Results Dropdown Container -->
-                    <div id="searchResultsDropdown" class="results-dropdown-box"></div>
-                </div>
-                
-                <div id="shareStatusMessage" class="modal-status-text"></div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="doc-layout-grid">
-    
-    <!-- LEFT SIDEBAR: Live Document Directory Feed -->
-    <div class="document-sidebar" style="border-right:1px solid rgba(0, 0, 0, 0.15);">
-        
 
-        <div class="sidebar-folder-navigation">
-            <button class="sidebar-folder-tab active" style="display:flex; align-items:center;" id="tabMyDrive" onClick="switchFolder('mydrive')">
-                 <img class="logo" style="margin-right:10px;"src="{%static 'images/folder.png' %}" alt="Log"/> Documents(<span id="myDriveCount">{{ documents| length}}</span>)
-            </button>
-            <button class="sidebar-folder-tab" style="display:flex; align-items:center;" id="tabCompany" onClick="switchFolder('company')">
-                <img class="logo" style="margin-right:10px;" src="{%static 'images/warehouse.png' %}" alt="Log"/> Company (<span id="companyCount">{{ billing_documents | length}}</span>)
-            </button>
+
+                    <div
+                        id="searchResultsDropdown"
+                        class="kai-results-dropdown"
+                    ></div>
+
+                </div>
+
+
+                <div
+                    id="shareStatusMessage"
+                    class="kai-modal-status"
+                ></div>
+
+            </div>
+
         </div>
-            
-        <div class="sidebar-header" style="align-items:center; gap:15px;">
-            <h3 id="sidebarDirectoryTitle" style="display:flex; algin-items:center;gap:15px;"><img class="icon" src="{%static 'images/folder.png'%}" /> My Documents</h3>          
-        </div>
-        
-        <div class="sidebar-scroll-list" id="documentFeed">
-            <div id="myDriveFileSegment">
-                {% if documents %}
-                    {% for doc in documents %}
-                        <div class="sidebar-file-item" id="doc-card-{{ doc.id }}" style="box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;">
-                            <a href="{{ doc.uploaded_file.url }}" target="_blank" style="text-decoration:none">
-                                <div class="file-icon-thumb">📄</div>
-                                <div class="file-meta">
-                                    <span class="file-title"><strong>{{ doc.title }}</strong></span>
-                                   {% if doc.uploaded_by != user %}
-                                      <span class="file-date" style="color: #2980B9;">📥 From: {{ doc.uploaded_by.username }}</span>
-                                   {% else %}
-                                    <span class="file-date">{{ doc.uploaded_at|date:"M d, Y • H:i" }}</span>
-                                   {% endif %}
-                                </div>
-                            </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN DOCUMENT AREA
+    ====================================================== -->
+
+    <main class="kai-document-layout">
+
+
+        <!-- =================================================
+             LEFT SIDEBAR
+        ================================================== -->
+
+        <aside class="kai-document-sidebar">
+
+
+            <!-- TABS -->
+
+            <div class="kai-sidebar-tabs">
+
+                <button
+                    class="kai-sidebar-tab active"
+                    id="tabMyDrive"
+                    onclick="switchFolder('mydrive')"
+                >
+
+                    <img
+                        src="{% static 'images/folder.png' %}"
+                        alt="Documents"
+                    >
+
+                    <span>
+                        Documents
+                        (<span id="myDriveCount">
+                            {{ documents|length }}
+                        </span>)
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="kai-sidebar-tab"
+                    id="tabCompany"
+                    onclick="switchFolder('company')"
+                >
+
+                    <img
+                        src="{% static 'images/warehouse.png' %}"
+                        alt="Company"
+                    >
+
+                    <span>
+                        Company
+                        (<span id="companyCount">
+                            {{ billing_documents|length }}
+                        </span>)
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <!-- SIDEBAR TITLE -->
+
+            <div class="kai-sidebar-header">
+
+                <h3 id="sidebarDirectoryTitle">
+
+                    <img
+                        src="{% static 'images/folder.png' %}"
+                        alt=""
+                    >
+
+                    My Documents
+
+                </h3>
+
+            </div>
+
+
+            <!-- FILE LIST -->
+
+            <div
+                class="kai-sidebar-scroll"
+                id="documentFeed"
+            >
+
+
+                <!-- =========================================
+                     USER DOCUMENTS
+                ========================================== -->
+
+                <div id="myDriveFileSegment">
+
+                    {% if documents %}
+
+                        {% for doc in documents %}
+
+                            <div
+                                class="kai-document-item"
+                                id="doc-card-{{ doc.id }}"
+                            >
+
+                                <a
+                                    href="{{ doc.uploaded_file.url }}"
+                                    target="_blank"
+                                    class="kai-document-link"
+                                >
+
+                                    <div class="kai-file-icon">
+                                        📄
+                                    </div>
+
+
+                                    <div class="kai-file-meta">
+
+                                        <span class="kai-file-title">
+
+                                            <strong>
+                                                {{ doc.title }}
+                                            </strong>
+
+                                        </span>
+
+
+                                        {% if doc.uploaded_by != user %}
+
+                                            <span class="kai-file-date shared">
+
+                                                📥 From:
+                                                {{ doc.uploaded_by.username }}
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="kai-file-date">
+
+                                                {{ doc.uploaded_at|date:"M d, Y • H:i" }}
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </a>
+
+
                                 {% if doc.uploaded_by == user %}
-                                  <button class="file-share-btn" onclick="promptShare('{{ doc.id }}')">
-                                    <img src={% static 'images/send.png'%}/>
-                                    <span class="label">Share</span>
-                                  </button>
-                                {% endif%}
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <p class="empty-state-text" id="emptyState">No documents uploaded yet.</p>
-                {% endif %}
-            </div>
-            
-            <div id="companyFileSegment" style="display:none;">
-                {% if billing_documents %}
-                {% for bill in billing_documents %}
-                <div class="sidebar-file-item bill-item" id="bill-card-{{ bill.id}}" data-filename=".pdf">
-                    <div class="file-icon-thumb font-invoice">📃</div>
-                    <div class="file-meta">
-                        <span class="file-title"><strong>{{ bill.get_doc_type_display}} #{{ bill.document_number }}</strong></span>
-                        <span class="file-date">Client: {{ bill.client_name }} • {{ bill.created_at|date:"M d, Y" }}</span>
-                    </div>
-                    <div>
-                        <div class="file-share-btn">
-                            <a href="{% url 'export_billing_pdf' bill.id %}"><img src="{%static "images/download.png"%}"alt="icons"/></a>
-                            <span class="label">Download</span>
-                        </div>
-                    </div>
+
+                                    <button
+                                        class="kai-share-button"
+                                        onclick="promptShare('{{ doc.id }}')"
+                                        type="button"
+                                    >
+
+                                        <img
+                                            src="{% static 'images/send.png' %}"
+                                            alt="Share"
+                                        >
+
+                                        <span>
+                                            Share
+                                        </span>
+
+                                    </button>
+
+                                {% endif %}
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <p
+                            class="kai-empty-state"
+                            id="emptyState"
+                        >
+                            No documents uploaded yet.
+                        </p>
+
+                    {% endif %}
+
                 </div>
-                {% endfor %}
-                {% else %}
-                <p class="empty-state-text">No generate invoices or estimates found. </p>
-                {% endif %}
+
+
+                <!-- =========================================
+                     COMPANY / BILLING DOCUMENTS
+                ========================================== -->
+
+                <div
+                    id="companyFileSegment"
+                    style="display:none;"
+                >
+
+                    {% if billing_documents %}
+
+                        {% for bill in billing_documents %}
+
+                            <div
+                                class="kai-document-item kai-billing-item"
+                                id="bill-card-{{ bill.id }}"
+                            >
+
+                                <div class="kai-document-link">
+
+                                    <div class="kai-file-icon kai-billing-icon">
+                                        📃
+                                    </div>
+
+
+                                    <div class="kai-file-meta">
+
+                                        <span class="kai-file-title">
+
+                                            <strong>
+                                                {{ bill.get_doc_type_display }}
+                                                #{{ bill.document_number }}
+                                            </strong>
+
+                                        </span>
+
+
+                                        <span class="kai-file-date">
+
+                                            Client:
+                                            {{ bill.client_name }}
+
+                                            •
+                                            {{ bill.created_at|date:"M d, Y" }}
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <a
+                                    href="{% url 'export_billing_pdf' bill.id %}"
+                                    class="kai-download-button"
+                                >
+
+                                    <img
+                                        src="{% static 'images/download.png' %}"
+                                        alt="Download"
+                                    >
+
+                                    <span>
+                                        Download
+                                    </span>
+
+                                </a>
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <p class="kai-empty-state">
+
+                            No generated invoices or estimates found.
+
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+
             </div>
-        </div>
 
-    </div>
+        </aside>
 
-    <!-- RIGHT PANEL: Massive Interactive Drag-and-Drop Area -->
-    <div class="upload-canvas-area" id="dropZone">
-        <div class="drop-zone-content">
-            <span class="cloud-icon">☁️</span>
-            <h2>Drag & Drop Files Here</h2>
-            <p>or click anywhere inside this box to choose files to upload</p>
-            <input type="file" id="fileInput" multiple style="display: none;">
-            
-            <!-- Dynamic Uploading Progress Visual Indicator -->
-            <div id="uploadStatus" class="upload-status-indicator"></div>
-        </div>
-    </div>
+
+        <!-- =================================================
+             RIGHT UPLOAD AREA
+        ================================================== -->
+
+        <section
+            class="kai-upload-area"
+            id="dropZone"
+        >
+
+            <div class="kai-upload-content">
+
+                <div class="kai-cloud-icon">
+                    ☁️
+                </div>
+
+
+                <h2>
+                    Drag & Drop Files Here
+                </h2>
+
+
+                <p>
+                    or click anywhere inside this box
+                    to choose files to upload
+                </p>
+
+
+                <span class="kai-upload-hint">
+                    Supported documents can be uploaded here
+                </span>
+
+
+                <input
+                    type="file"
+                    id="fileInput"
+                    multiple
+                    style="display:none;"
+                >
+
+
+                <div
+                    id="uploadStatus"
+                    class="kai-upload-status"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+    </main>
 
 </div>
 
-{%  endblock %}
+
+{% endblock %}
