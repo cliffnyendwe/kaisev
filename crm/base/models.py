@@ -1,5 +1,8 @@
+from decimal import Decimal
+
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 
 # ============================================================
@@ -8,7 +11,6 @@ from django.contrib.auth.models import User
 
 class customers(models.Model):
 
-    # Kanban board stages
     STAGE_CHOICES = [
         ('new', 'New'),
         ('qualification', 'Qualification'),
@@ -18,21 +20,14 @@ class customers(models.Model):
         ('lost', 'Closed Lost'),
     ]
 
-    # Customer priority
     PRIORITY = [
         ('medium', 'Medium'),
         ('high', 'High'),
         ('very high', 'Very High'),
     ]
 
-    contact_name = models.CharField(
-        max_length=255
-    )
-
-    opportunity_name = models.CharField(
-        max_length=255
-    )
-
+    contact_name = models.CharField(max_length=255)
+    opportunity_name = models.CharField(max_length=255)
     contact_email = models.EmailField()
 
     contact_phone = models.CharField(
@@ -41,21 +36,18 @@ class customers(models.Model):
         null=True
     )
 
-    # Money / opportunity value
     money = models.DecimalField(
         max_digits=12,
         decimal_places=2,
-        default=0.00
+        default=Decimal('0.00')
     )
 
-    # Kanban stage
     stage = models.CharField(
         max_length=50,
         choices=STAGE_CHOICES,
         default='new'
     )
 
-    # Priority
     priority = models.CharField(
         max_length=50,
         choices=PRIORITY,
@@ -63,7 +55,6 @@ class customers(models.Model):
         null=True
     )
 
-    # User responsible for the customer
     assigned_to = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -72,9 +63,7 @@ class customers(models.Model):
         null=True
     )
 
-    created_at = models.DateTimeField(
-        auto_now_add=True
-    )
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.opportunity_name} - {self.contact_name}"
@@ -89,27 +78,13 @@ class customers(models.Model):
 
 class CustomerFolder(models.Model):
 
-    """
-    A folder belonging to a specific customer.
-
-    Example:
-
-        Customer: ABC Ltd
-            ├── Contracts
-            ├── Quotations
-            ├── Invoices
-            └── General
-    """
-
     customer = models.ForeignKey(
         customers,
         on_delete=models.CASCADE,
         related_name='document_folders'
     )
 
-    name = models.CharField(
-        max_length=255
-    )
+    name = models.CharField(max_length=255)
 
     created_by = models.ForeignKey(
         User,
@@ -119,17 +94,11 @@ class CustomerFolder(models.Model):
         related_name='created_customer_folders'
     )
 
-    created_at = models.DateTimeField(
-        auto_now_add=True
-    )
-
-    updated_at = models.DateTimeField(
-        auto_now=True
-    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['name']
-
         constraints = [
             models.UniqueConstraint(
                 fields=['customer', 'name'],
@@ -151,19 +120,12 @@ class CustomerFolder(models.Model):
 
 class Document(models.Model):
 
-    title = models.CharField(
-        max_length=255
-    )
+    title = models.CharField(max_length=255)
 
-    # Physical uploaded file
     uploaded_file = models.FileField(
         upload_to='user_documents/'
     )
 
-    # Customer folder
-    #
-    # SET_NULL means deleting a folder will NOT delete
-    # the documents inside it.
     folder = models.ForeignKey(
         CustomerFolder,
         on_delete=models.SET_NULL,
@@ -172,44 +134,28 @@ class Document(models.Model):
         null=True
     )
 
-    # User who uploaded the document
     uploaded_by = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='documents'
     )
 
-    # Users who have access to the document
     shared_with = models.ManyToManyField(
         User,
         related_name='shared_documents',
         blank=True
     )
 
-    uploaded_at = models.DateTimeField(
-        auto_now_add=True
-    )
-
-    updated_at = models.DateTimeField(
-        auto_now=True
-    )
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
 
     @property
     def customer(self):
-        """
-        Allows:
-
-            document.customer
-
-        to return the customer associated with
-        the document's folder.
-        """
         if self.folder:
             return self.folder.customer
-
         return None
 
     class Meta:
@@ -222,10 +168,71 @@ class Document(models.Model):
 
 class BillingDocument(models.Model):
 
+    # --------------------------------------------------------
+    # DOCUMENT TYPES
+    # --------------------------------------------------------
+
     DOCUMENT_TYPES = [
         ('quotation', 'Quotation/Estimate'),
         ('invoice', 'Invoice'),
     ]
+
+    # --------------------------------------------------------
+    # BANK ACCOUNT OPTIONS
+    # --------------------------------------------------------
+
+    BANK_ACCOUNT_CHOICES = [
+        ('equity_kes', 'Equity Bank - KES'),
+        ('equity_usd', 'Equity Bank - USD'),
+        ('ncba', 'NCBA Bank'),
+        ('ncba', 'NCBA Bank - USD'),
+    ]
+    
+
+    # --------------------------------------------------------
+    # KAI-SEV LTD BANK DETAILS
+    # --------------------------------------------------------
+
+    BANK_DETAILS = {
+        'equity_kes': {
+            'bank_name': 'Equity Bank',
+            'account_name': 'KAI-SEV LTD',
+            'account_number': '121111313',
+            'branch': 'Kimathi Branch',
+            'branch_code': '026',
+            'currency': 'KES',
+        },
+
+        'equity_usd': {
+            'bank_name': 'Equity Bank',
+            'account_name': 'KAI-SEV LTD',
+            'account_number': '333344444',
+            'branch': 'Kimathi Branch',
+            'branch_code': '026',
+            'currency': 'USD',
+        },
+
+        'ncba': {
+            'bank_name': 'NCBA Bank',
+            'account_name': 'KAI-SEV LTD',
+            'account_number': '14141414',
+            'branch': 'Harambee Branch',
+            'branch_code': None,
+            'currency': None,
+        },
+        'ncba_usd': {
+            'bank_name': 'NCBA Bank',
+            'account_name': 'KAI-SEV LTD',
+            'account_number': '14141414',
+            'branch': 'Harambee Branch',
+            'branch_code': None,
+            'currency': None,
+        },
+    }
+
+    # --------------------------------------------------------
+    # DOCUMENT STATUS
+    # --------------------------------------------------------
 
     STATUS_CHOICES = [
         ('draft', 'Draft'),
@@ -233,6 +240,10 @@ class BillingDocument(models.Model):
         ('paid', 'Paid/Accepted'),
         ('cancelled', 'Cancelled'),
     ]
+
+    # --------------------------------------------------------
+    # DOCUMENT INFORMATION
+    # --------------------------------------------------------
 
     doc_type = models.CharField(
         max_length=20,
@@ -251,7 +262,22 @@ class BillingDocument(models.Model):
         unique=True
     )
 
-    # Customer associated with the quotation/invoice
+    # --------------------------------------------------------
+    # SELECTED BANK ACCOUNT
+    # --------------------------------------------------------
+
+    bank_account = models.CharField(
+        max_length=20,
+        choices=BANK_ACCOUNT_CHOICES,
+        blank=True,
+        null=True,
+        help_text='Select a bank account for invoices.'
+    )
+
+    # --------------------------------------------------------
+    # CUSTOMER
+    # --------------------------------------------------------
+
     customer = models.ForeignKey(
         customers,
         on_delete=models.SET_NULL,
@@ -260,36 +286,43 @@ class BillingDocument(models.Model):
         related_name='billing_documents'
     )
 
-    # User who created the quotation/invoice
+    # --------------------------------------------------------
+    # CREATED BY
+    # --------------------------------------------------------
+
     created_by = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='billing_documents'
     )
 
-    # Client snapshot
-    #
-    # These values are deliberately stored separately from
-    # the customer record so that historical invoices remain
-    # accurate if customer information changes later.
-    client_name = models.CharField(
-        max_length=255
-    )
+    # --------------------------------------------------------
+    # CLIENT SNAPSHOT
+    # --------------------------------------------------------
 
+    client_name = models.CharField(max_length=255)
     client_email = models.EmailField()
 
-    # Financial information
+    # --------------------------------------------------------
+    # FINANCIAL INFORMATION
+    # --------------------------------------------------------
+
     tax_rate = models.DecimalField(
         max_digits=5,
         decimal_places=2,
-        default=16.00
+        default=Decimal('16.00')
     )
 
-    created_at = models.DateTimeField(
-        auto_now_add=True
-    )
+    # --------------------------------------------------------
+    # DATES
+    # --------------------------------------------------------
 
+    created_at = models.DateTimeField(auto_now_add=True)
     due_date = models.DateField()
+
+    # --------------------------------------------------------
+    # QUOTATION INFORMATION
+    # --------------------------------------------------------
 
     payment_terms = models.CharField(
         max_length=255,
@@ -302,8 +335,43 @@ class BillingDocument(models.Model):
         null=True
     )
 
+    # --------------------------------------------------------
+    # MODEL OPTIONS
+    # --------------------------------------------------------
+
     class Meta:
         ordering = ['-created_at']
+
+    # --------------------------------------------------------
+    # VALIDATION
+    # --------------------------------------------------------
+
+    def clean(self):
+        super().clean()
+
+        valid_bank_accounts = {
+            choice[0]
+            for choice in self.BANK_ACCOUNT_CHOICES
+        }
+
+        if self.bank_account and self.bank_account not in valid_bank_accounts:
+            raise ValidationError({
+                'bank_account': 'Please select a valid bank account.'
+            })
+
+        if self.doc_type == 'quotation' and self.bank_account:
+            raise ValidationError({
+                'bank_account': 'Quotations should not have a bank account.'
+            })
+
+        if self.doc_type == 'invoice' and not self.bank_account:
+            raise ValidationError({
+                'bank_account': 'Please select a bank account for this invoice.'
+            })
+
+    # --------------------------------------------------------
+    # STRING REPRESENTATION
+    # --------------------------------------------------------
 
     def __str__(self):
         return (
@@ -318,20 +386,41 @@ class BillingDocument(models.Model):
 
     def get_subtotal(self):
         return sum(
-            item.get_total()
-            for item in self.items.all()
+            (item.get_total() for item in self.items.all()),
+            start=Decimal('0.00')
         )
 
     def get_tax_amount(self):
         return (
             self.get_subtotal() * self.tax_rate
-        ) / 100
+        ) / Decimal('100')
 
     def get_grand_total(self):
-        return (
-            self.get_subtotal()
-            + self.get_tax_amount()
-        )
+        return self.get_subtotal() + self.get_tax_amount()
+
+    # --------------------------------------------------------
+    # BANK ACCOUNT HELPERS
+    # --------------------------------------------------------
+
+    def get_selected_bank_details(self):
+        """
+        Return bank details for the selected invoice account.
+
+        Returns None for quotations or when no account is selected.
+        """
+        if self.doc_type != 'invoice' or not self.bank_account:
+            return None
+
+        return self.BANK_DETAILS.get(self.bank_account)
+
+    def get_bank_account_display_name(self):
+        """
+        Return the display label of the selected account.
+        """
+        if not self.bank_account:
+            return None
+
+        return self.get_bank_account_display()
 
 
 # ============================================================
@@ -340,20 +429,15 @@ class BillingDocument(models.Model):
 
 class BillingItem(models.Model):
 
-    # Parent quotation/invoice
     billing_document = models.ForeignKey(
         BillingDocument,
         on_delete=models.CASCADE,
         related_name='items'
     )
 
-    description = models.CharField(
-        max_length=255
-    )
+    description = models.CharField(max_length=255)
 
-    quantity = models.IntegerField(
-        default=1
-    )
+    quantity = models.IntegerField(default=1)
 
     unit_price = models.DecimalField(
         max_digits=12,

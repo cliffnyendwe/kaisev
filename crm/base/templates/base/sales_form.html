@@ -4,749 +4,539 @@
 {% block content %}
 
 <style>
+:root {
+    --kai-blue: #00669b;
+    --kai-dark-blue: #003d61;
+    --kai-deep-blue: #002c48;
+    --kai-orange: #f58220;
+    --kai-light: #f5f7f8;
+    --kai-text: #59656d;
+    --kai-white: #ffffff;
+    --kai-border: #dce4e8;
+    --kai-soft-blue: #eef6fa;
+    --kai-danger: #c0392b;
+}
 
-    :root {
-        --kai-blue: #00669b;
-        --kai-dark-blue: #003d61;
-        --kai-deep-blue: #002c48;
-        --kai-orange: #f58220;
-        --kai-light: #f5f7f8;
-        --kai-text: #59656d;
-        --kai-white: #ffffff;
-        --kai-border: #dce4e8;
-        --kai-soft-blue: #eef6fa;
-        --kai-soft-orange: #fff4e9;
-        --kai-danger: #c0392b;
-    }
+.kai-sales-page,
+.kai-sales-page * {
+    box-sizing: border-box;
+}
 
-    * {
-        box-sizing: border-box;
-    }
+.kai-sales-page {
+    min-height: 100vh;
+    background: var(--kai-light);
+    color: var(--kai-text);
+    font-family: Arial, Helvetica, sans-serif;
+    padding-bottom: 60px;
+}
 
-    .kai-sales-page {
-        min-height: 100vh;
-        width: 100%;
-        background: var(--kai-light);
-        font-family: Arial, Helvetica, sans-serif;
-        color: var(--kai-text);
-        padding-bottom: 60px;
-    }
+.kai-sales-header {
+    min-height: 82px;
+    padding: 14px 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background: white;
+    border-bottom: 1px solid var(--kai-border);
+    box-shadow: 0 2px 10px rgba(0,44,72,.05);
+}
 
-    /* =========================================
-       HEADER
-    ========================================= */
+.kai-sales-brand {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
 
+.kai-sales-logo {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+}
+
+.kai-brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+}
+
+.kai-brand-text strong {
+    color: var(--kai-dark-blue);
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: .5px;
+}
+
+.kai-brand-text small {
+    margin-top: 6px;
+    color: var(--kai-orange);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 3px;
+}
+
+.kai-back-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 17px;
+    background: var(--kai-dark-blue);
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.kai-back-button:hover {
+    background: var(--kai-orange);
+    color: white;
+}
+
+.kai-sales-content {
+    max-width: 1100px;
+    margin: auto;
+    padding: 42px 24px 65px;
+}
+
+.kai-sales-intro {
+    margin-bottom: 28px;
+}
+
+.kai-eyebrow {
+    display: inline-block;
+    padding-left: 12px;
+    border-left: 4px solid var(--kai-orange);
+    color: var(--kai-orange);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.kai-sales-title {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin: 13px 0 0;
+    color: var(--kai-deep-blue);
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.kai-title-icon {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    padding: 5px;
+    border-radius: 7px;
+    background: var(--kai-soft-blue);
+}
+
+.kai-sales-description {
+    margin: 12px 0 0 55px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.kai-billing-card {
+    position: relative;
+    padding: 32px;
+    background: white;
+    border: 1px solid var(--kai-border);
+    border-radius: 9px;
+    box-shadow: 0 8px 25px rgba(0,44,72,.06);
+    overflow: hidden;
+}
+
+.kai-billing-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 4px;
+    background: var(--kai-blue);
+}
+
+.kai-form-section {
+    margin-bottom: 30px;
+}
+
+.kai-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 18px;
+    color: var(--kai-deep-blue);
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.kai-section-heading::before {
+    content: "";
+    width: 4px;
+    height: 20px;
+    background: var(--kai-orange);
+    border-radius: 2px;
+}
+
+.kai-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.kai-form-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.kai-form-group label {
+    margin-bottom: 7px;
+    color: var(--kai-deep-blue);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.kai-form-group input,
+.kai-form-group select,
+.kai-form-group textarea {
+    width: 100%;
+    min-height: 43px;
+    padding: 10px 12px;
+    background: white;
+    color: var(--kai-deep-blue);
+    border: 1px solid var(--kai-border);
+    border-radius: 5px;
+    outline: none;
+    font: inherit;
+    font-size: 14px;
+}
+
+.kai-form-group input:focus,
+.kai-form-group select:focus,
+.kai-form-group textarea:focus {
+    border-color: var(--kai-blue);
+    box-shadow: 0 0 0 3px rgba(0,102,155,.08);
+}
+
+.kai-form-group input[readonly] {
+    background: #f2f6f8;
+    font-weight: 700;
+}
+
+.kai-help-text {
+    margin-top: 6px;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #77838a;
+}
+
+.kai-error-box {
+    padding: 15px 18px;
+    margin-bottom: 25px;
+    background: #fff4f2;
+    border: 1px solid #f0c7bf;
+    border-radius: 6px;
+    color: var(--kai-danger);
+    font-size: 13px;
+}
+
+.kai-error-box ul {
+    margin: 8px 0 0;
+    padding-left: 20px;
+}
+
+.kai-line-items {
+    padding-top: 27px;
+    border-top: 1px solid var(--kai-border);
+}
+
+.kai-items-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 16px;
+}
+
+.kai-items-title {
+    margin: 0;
+    color: var(--kai-deep-blue);
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.kai-items-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--kai-border);
+    border-radius: 7px;
+}
+
+.kai-items-table {
+    width: 100%;
+    min-width: 650px;
+    border-collapse: collapse;
+    background: white;
+}
+
+.kai-items-table th {
+    padding: 13px 12px;
+    background: var(--kai-light);
+    color: var(--kai-deep-blue);
+    font-size: 11px;
+    font-weight: 800;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    border-bottom: 1px solid var(--kai-border);
+}
+
+.kai-items-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #edf1f3;
+}
+
+.kai-items-table tr:last-child td {
+    border-bottom: none;
+}
+
+.kai-item-input {
+    width: 100%;
+    min-height: 38px;
+    padding: 8px 10px;
+    border: 1px solid var(--kai-border);
+    border-radius: 5px;
+    color: var(--kai-deep-blue);
+    background: white;
+    font-size: 13px;
+}
+
+.kai-delete-item {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #f0d0c7;
+    border-radius: 5px;
+    background: #fff7f5;
+    color: var(--kai-danger);
+    cursor: pointer;
+    font-size: 19px;
+}
+
+.kai-delete-item:hover {
+    background: var(--kai-danger);
+    color: white;
+}
+
+.kai-add-item {
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: var(--kai-soft-blue);
+    color: var(--kai-blue);
+    border: 1px solid #cfe3ed;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.kai-add-item:hover {
+    background: var(--kai-blue);
+    color: white;
+}
+
+.kai-summary {
+    max-width: 390px;
+    margin: 22px 0 0 auto;
+    padding: 18px;
+    background: #f8fafb;
+    border: 1px solid var(--kai-border);
+    border-radius: 7px;
+}
+
+.kai-summary-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 8px 0;
+    font-size: 13px;
+}
+
+.kai-summary-row strong {
+    color: var(--kai-deep-blue);
+}
+
+.kai-summary-total {
+    margin-top: 8px;
+    padding-top: 14px;
+    border-top: 1px solid var(--kai-border);
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.kai-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 25px;
+    border-top: 1px solid var(--kai-border);
+}
+
+.kai-cancel-button,
+.kai-submit-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 43px;
+    padding: 11px 19px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.kai-cancel-button {
+    background: white;
+    border: 1px solid var(--kai-border);
+    color: var(--kai-text);
+}
+
+.kai-submit-button {
+    background: var(--kai-orange);
+    border: 1px solid var(--kai-orange);
+    color: white;
+}
+
+.kai-submit-button:hover {
+    background: #df7017;
+    color: white;
+}
+
+@media (max-width: 760px) {
     .kai-sales-header {
-        width: 100%;
-        min-height: 82px;
-        padding: 0 45px;
-
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        background: var(--kai-white);
-        border-bottom: 1px solid var(--kai-border);
-
-        box-shadow: 0 2px 10px rgba(0, 44, 72, 0.05);
+        padding: 14px 18px;
     }
-
-    .kai-sales-brand {
-        display: flex;
-        align-items: center;
-        gap: 13px;
-    }
-
-    .kai-sales-logo {
-        width: 50px;
-        height: 50px;
-        object-fit: contain;
-    }
-
-    .kai-sales-brand-text {
-        display: flex;
-        flex-direction: column;
-        line-height: 1;
-    }
-
-    .kai-sales-brand-text strong {
-        color: var(--kai-dark-blue);
-        font-size: 23px;
-        font-weight: 800;
-        letter-spacing: 0.5px;
-    }
-
-    .kai-sales-brand-text small {
-        margin-top: 5px;
-        color: var(--kai-orange);
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 3px;
-    }
-
-    .kai-back-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-
-        padding: 10px 18px;
-
-        background: var(--kai-dark-blue);
-        color: var(--kai-white);
-
-        border-radius: 6px;
-        border: 1px solid var(--kai-dark-blue);
-
-        text-decoration: none;
-        font-size: 13px;
-        font-weight: 700;
-
-        transition:
-            background 0.2s ease,
-            transform 0.2s ease,
-            box-shadow 0.2s ease;
-    }
-
-    .kai-back-button:hover {
-        background: var(--kai-orange);
-        border-color: var(--kai-orange);
-        color: var(--kai-white);
-        transform: translateY(-1px);
-        box-shadow: 0 5px 15px rgba(0, 61, 97, 0.15);
-    }
-
-
-    /* =========================================
-       MAIN CONTENT
-    ========================================= */
 
     .kai-sales-content {
-        width: 100%;
-        max-width: 1050px;
-        margin: 0 auto;
-        padding: 50px 30px 70px;
+        padding: 30px 15px 50px;
     }
-
-
-    /* =========================================
-       PAGE INTRO
-    ========================================= */
-
-    .kai-sales-intro {
-        margin-bottom: 28px;
-    }
-
-    .kai-sales-eyebrow {
-        display: inline-block;
-
-        margin-bottom: 10px;
-        padding-left: 12px;
-
-        border-left: 4px solid var(--kai-orange);
-
-        color: var(--kai-orange);
-
-        font-size: 11px;
-        font-weight: 800;
-        letter-spacing: 2.3px;
-    }
-
-    .kai-sales-title {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-
-        margin: 0;
-
-        color: var(--kai-deep-blue);
-        font-size: 34px;
-        font-weight: 800;
-        line-height: 1.2;
-    }
-
-    .kai-sales-title img {
-        width: 42px;
-        height: 42px;
-        object-fit: contain;
-        padding: 7px;
-
-        background: var(--kai-soft-blue);
-        border-radius: 8px;
-    }
-
-    .kai-sales-description {
-        margin: 12px 0 0 57px;
-
-        color: var(--kai-text);
-        font-size: 15px;
-        line-height: 1.6;
-    }
-
-
-    /* =========================================
-       FORM CARD
-    ========================================= */
 
     .kai-billing-card {
-        position: relative;
-
-        background: var(--kai-white);
-
-        border: 1px solid var(--kai-border);
-        border-radius: 8px;
-
-        padding: 35px;
-
-        box-shadow: 0 8px 25px rgba(0, 44, 72, 0.06);
-
-        overflow: hidden;
-    }
-
-    .kai-billing-card::before {
-        content: "";
-
-        position: absolute;
-        left: 0;
-        top: 0;
-
-        width: 100%;
-        height: 4px;
-
-        background: var(--kai-blue);
-    }
-
-
-    /* =========================================
-       FORM SECTIONS
-    ========================================= */
-
-    .kai-form-section {
-        margin-bottom: 30px;
-    }
-
-    .kai-section-heading {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-
-        margin: 0 0 18px;
-
-        color: var(--kai-deep-blue);
-        font-size: 17px;
-        font-weight: 800;
-    }
-
-    .kai-section-heading::before {
-        content: "";
-
-        width: 4px;
-        height: 20px;
-
-        background: var(--kai-orange);
-        border-radius: 2px;
+        padding: 24px 18px;
     }
 
     .kai-form-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
+        grid-template-columns: 1fr;
     }
 
-    .kai-form-group {
-        display: flex;
-        flex-direction: column;
+    .kai-sales-title {
+        font-size: 25px;
     }
 
-    .kai-form-group label {
-        margin-bottom: 7px;
+    .kai-sales-description {
+        margin-left: 0;
+    }
+}
 
-        color: var(--kai-deep-blue);
-
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.2px;
+@media (max-width: 480px) {
+    .kai-brand-text {
+        display: none;
     }
 
-    .kai-form-group input,
-    .kai-form-group select {
-        width: 100%;
-        min-height: 43px;
-
-        padding: 10px 12px;
-
-        background: #ffffff;
-
-        color: var(--kai-deep-blue);
-
-        border: 1px solid var(--kai-border);
-        border-radius: 5px;
-
-        outline: none;
-
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 14px;
-
-        transition:
-            border-color 0.2s ease,
-            box-shadow 0.2s ease;
+    .kai-sales-logo {
+        width: 45px;
+        height: 45px;
     }
 
-    .kai-form-group input:focus,
-    .kai-form-group select:focus {
-        border-color: var(--kai-blue);
-
-        box-shadow:
-            0 0 0 3px rgba(0, 102, 155, 0.08);
-    }
-
-    .kai-form-group input::placeholder {
-        color: #9aa5aa;
-    }
-
-
-    /* =========================================
-       LINE ITEMS
-    ========================================= */
-
-    .kai-line-items {
-        margin-top: 10px;
-
-        padding-top: 28px;
-
-        border-top: 1px solid var(--kai-border);
-    }
-
-    .kai-items-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        margin-bottom: 16px;
-    }
-
-    .kai-items-title {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-
-        margin: 0;
-
-        color: var(--kai-deep-blue);
-
-        font-size: 17px;
-        font-weight: 800;
-    }
-
-    .kai-items-title-icon {
-        width: 34px;
-        height: 34px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        background: var(--kai-soft-blue);
-        color: var(--kai-blue);
-
-        border-radius: 6px;
-
-        font-size: 16px;
-    }
-
-
-    /* =========================================
-       ITEMS TABLE
-    ========================================= */
-
-    .kai-items-table-wrapper {
-        width: 100%;
-
-        overflow-x: auto;
-
-        border: 1px solid var(--kai-border);
-        border-radius: 7px;
-    }
-
-    .kai-items-table {
-        width: 100%;
-
-        border-collapse: collapse;
-
-        background: var(--kai-white);
-    }
-
-    .kai-items-table thead {
-        background: var(--kai-light);
-    }
-
-    .kai-items-table th {
-        padding: 13px 12px;
-
-        color: var(--kai-deep-blue);
-
+    .kai-back-button {
+        padding: 10px;
         font-size: 11px;
-        font-weight: 800;
-        text-align: left;
-
-        text-transform: uppercase;
-        letter-spacing: 0.6px;
-
-        border-bottom: 1px solid var(--kai-border);
     }
 
-    .kai-items-table td {
-        padding: 10px 12px;
-
-        border-bottom: 1px solid #edf1f3;
+    .kai-sales-title {
+        font-size: 22px;
     }
 
-    .kai-items-table tbody tr:last-child td {
-        border-bottom: none;
+    .kai-billing-card {
+        padding: 21px 13px;
     }
-
-    .kai-items-table tbody tr:hover {
-        background: #fbfcfd;
-    }
-
-    .kai-item-input {
-        width: 100%;
-
-        min-height: 38px;
-
-        padding: 8px 10px;
-
-        border: 1px solid var(--kai-border);
-        border-radius: 5px;
-
-        outline: none;
-
-        color: var(--kai-deep-blue);
-
-        font-size: 13px;
-
-        background: #ffffff;
-    }
-
-    .kai-item-input:focus {
-        border-color: var(--kai-blue);
-
-        box-shadow:
-            0 0 0 3px rgba(0, 102, 155, 0.07);
-    }
-
-    .kai-delete-item {
-        width: 32px;
-        height: 32px;
-
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-
-        border: 1px solid #f0d0c7;
-        border-radius: 5px;
-
-        background: #fff7f5;
-        color: var(--kai-danger);
-
-        cursor: pointer;
-
-        font-size: 18px;
-        font-weight: 700;
-
-        transition:
-            background 0.2s ease,
-            color 0.2s ease;
-    }
-
-    .kai-delete-item:hover {
-        background: var(--kai-danger);
-        color: var(--kai-white);
-    }
-
-
-    /* =========================================
-       ADD ITEM BUTTON
-    ========================================= */
-
-    .kai-add-item {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-
-        margin-top: 15px;
-
-        padding: 9px 14px;
-
-        background: var(--kai-soft-blue);
-        color: var(--kai-blue);
-
-        border: 1px solid #cfe3ed;
-        border-radius: 5px;
-
-        cursor: pointer;
-
-        font-size: 12px;
-        font-weight: 800;
-
-        transition:
-            background 0.2s ease,
-            color 0.2s ease,
-            border-color 0.2s ease;
-    }
-
-    .kai-add-item:hover {
-        background: var(--kai-blue);
-        color: var(--kai-white);
-        border-color: var(--kai-blue);
-    }
-
-
-    /* =========================================
-       FORM ACTIONS
-    ========================================= */
 
     .kai-form-actions {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 12px;
-
-        margin-top: 32px;
-        padding-top: 25px;
-
-        border-top: 1px solid var(--kai-border);
+        flex-direction: column-reverse;
+        align-items: stretch;
     }
 
-    .kai-cancel-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-
-        min-height: 43px;
-
-        padding: 10px 18px;
-
-        border: 1px solid var(--kai-border);
-        border-radius: 5px;
-
-        background: var(--kai-white);
-        color: var(--kai-text);
-
-        text-decoration: none;
-
-        font-size: 13px;
-        font-weight: 700;
-
-        transition:
-            border-color 0.2s ease,
-            background 0.2s ease;
-    }
-
-    .kai-cancel-button:hover {
-        background: var(--kai-light);
-        border-color: #b9c7ce;
-        color: var(--kai-deep-blue);
-    }
-
+    .kai-cancel-button,
     .kai-submit-button {
-        min-height: 43px;
-
-        padding: 10px 20px;
-
-        border: 1px solid var(--kai-orange);
-        border-radius: 5px;
-
-        background: var(--kai-orange);
-        color: var(--kai-white);
-
-        cursor: pointer;
-
-        font-size: 13px;
-        font-weight: 800;
-
-        transition:
-            background 0.2s ease,
-            border-color 0.2s ease,
-            transform 0.2s ease,
-            box-shadow 0.2s ease;
+        width: 100%;
     }
-
-    .kai-submit-button:hover {
-        background: #df7017;
-        border-color: #df7017;
-
-        transform: translateY(-1px);
-
-        box-shadow:
-            0 5px 15px rgba(245, 130, 32, 0.2);
-    }
-
-
-    /* =========================================
-       RESPONSIVE
-    ========================================= */
-
-    @media (max-width: 800px) {
-
-        .kai-sales-header {
-            padding: 0 22px;
-        }
-
-        .kai-sales-content {
-            padding: 35px 18px 60px;
-        }
-
-        .kai-billing-card {
-            padding: 25px 20px;
-        }
-
-        .kai-form-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .kai-sales-title {
-            font-size: 28px;
-        }
-
-        .kai-sales-description {
-            margin-left: 0;
-        }
-
-        .kai-items-header {
-            align-items: flex-start;
-        }
-
-    }
-
-
-    @media (max-width: 520px) {
-
-        .kai-sales-brand-text {
-            display: none;
-        }
-
-        .kai-sales-header {
-            min-height: 70px;
-        }
-
-        .kai-sales-logo {
-            width: 44px;
-            height: 44px;
-        }
-
-        .kai-sales-title {
-            font-size: 25px;
-            gap: 10px;
-        }
-
-        .kai-sales-title img {
-            width: 36px;
-            height: 36px;
-        }
-
-        .kai-billing-card {
-            padding: 22px 15px;
-        }
-
-        .kai-form-actions {
-            flex-direction: column-reverse;
-            align-items: stretch;
-        }
-
-        .kai-cancel-button,
-        .kai-submit-button {
-            width: 100%;
-        }
-
-    }
-
+}
 </style>
-
 
 <div class="kai-sales-page">
 
-    <!-- =========================================
-         HEADER
-    ========================================== -->
-
     <header class="kai-sales-header">
-
         <div class="kai-sales-brand">
-
             <img
                 src="{% static 'images/Logo-KAI.png' %}"
-                alt="Kai-Sev Limited"
+                alt="KAI-SEV LTD logo"
                 class="kai-sales-logo"
             >
 
-            <div class="kai-sales-brand-text">
+            <div class="kai-brand-text">
                 <strong>KAI-SEV</strong>
                 <small>LIMITED</small>
             </div>
-
         </div>
 
-        <a
-            href="{% url 'dashboard' %}"
-            class="kai-back-button"
-        >
-            ← Back to Sales
+        <a href="{% url 'dashboard' %}" class="kai-back-button">
+            &#8592; Back to Sales
         </a>
-
     </header>
-
-
-    <!-- =========================================
-         MAIN CONTENT
-    ========================================== -->
 
     <main class="kai-sales-content">
 
         <section class="kai-sales-intro">
-
-            <span class="kai-sales-eyebrow">
-                SALES & BILLING
-            </span>
+            <span class="kai-eyebrow">SALES &amp; BILLING</span>
 
             <h1 class="kai-sales-title">
-
                 <img
                     src="{% static 'images/sales.png' %}"
-                    alt="Sales"
+                    alt=""
+                    class="kai-title-icon"
                 >
-
                 Generate Invoice / Quotation
-
             </h1>
 
             <p class="kai-sales-description">
-                Fill out the client details and add the financial line items
-                required to generate your quotation or invoice.
+                Enter the client information, document details, payment
+                account and line items below.
             </p>
-
         </section>
-
-
-        <!-- =========================================
-             BILLING FORM CARD
-        ========================================== -->
 
         <div class="kai-billing-card">
 
-            <form
-                method="post"
-                id="billingForm"
-            >
+            {% if errors %}
+                <div class="kai-error-box" role="alert">
+                    <strong>Please correct the following errors:</strong>
+                    <ul>
+                        {% for error in errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
 
+            <form method="post" id="billingForm">
                 {% csrf_token %}
 
+                <!-- DOCUMENT INFORMATION -->
 
-                <!-- =========================================
-                     DOCUMENT INFORMATION
-                ========================================== -->
-
-                <div class="kai-form-section">
-
+                <section class="kai-form-section">
                     <h2 class="kai-section-heading">
                         Document Information
                     </h2>
@@ -754,16 +544,9 @@
                     <div class="kai-form-grid">
 
                         <div class="kai-form-group">
+                            <label for="doc_type">Document Type</label>
 
-                            <label for="doc_type">
-                                Document Type
-                            </label>
-
-                            <select
-                                name="doc_type"
-                                id="doc_type"
-                            >
-
+                            <select name="doc_type" id="doc_type" required>
                                 <option
                                     value="quotation"
                                     {% if type_param == 'quotation' %}selected{% endif %}
@@ -777,412 +560,568 @@
                                 >
                                     Invoice
                                 </option>
-
                             </select>
-
                         </div>
 
-
                         <div class="kai-form-group">
-
-                            <label for="due_date">
-                                Due Date
-                            </label>
+                            <label for="due_date">Due Date</label>
 
                             <input
                                 type="date"
                                 name="due_date"
                                 id="due_date"
+                                value="{{ form_data.due_date|default:'' }}"
+                                required
+                            >
+                        </div>
+
+                        <div class="kai-form-group">
+                            <label for="tax_rate">Tax Rate (%)</label>
+
+                            <input
+                                type="number"
+                                name="tax_rate"
+                                id="tax_rate"
+                                min="0"
+                                max="100"
+                                step="0.01"
+                                value="{{ form_data.tax_rate|default:'16.00' }}"
                                 required
                             >
 
+                            <small class="kai-help-text">
+                                Defaults to 16%. Change this if another rate applies.
+                            </small>
+                        </div>
+
+                        <!-- BANK ACCOUNT SELECTOR -->
+
+                        <div class="kai-form-group" id="bankAccountGroup">
+                            <label for="bank_account">Payment Bank Account</label>
+
+                            <select
+                                name="bank_account"
+                                id="bank_account"
+                            >
+                                <option value="">Select bank account</option>
+
+                                <option
+                                    value="equity_kes"
+                                    {% if form_data.bank_account == 'equity_kes' %}selected{% endif %}
+                                >
+                                    Equity Bank — KES
+                                </option>
+
+                                <option
+                                    value="equity_usd"
+                                    {% if form_data.bank_account == 'equity_usd' %}selected{% endif %}
+                                >
+                                    Equity Bank — USD
+                                </option>
+
+                                <option
+                                    value="ncba"
+                                    {% if form_data.bank_account == 'ncba_usd' %}selected{% endif %}
+                                >
+                                    NCBA Bank - USD
+                                </option>
+                                <option
+                                    value="ncba"
+                                    {% if form_data.bank_account == 'ncba' %}selected{% endif %}
+                                >
+                                    NCBA Bank
+                                </option>
+                            </select>
+
+                            <small class="kai-help-text">
+                                Select the bank account to display on the invoice.
+                            </small>
+                        </div>
+
+                        <!-- ACCOUNT NUMBER: SHOWN FOR INVOICES -->
+
+                        <div class="kai-form-group" id="accountNumberGroup">
+                            <label for="account_number">Account Number</label>
+
+                            <input
+                                type="text"
+                                name="account_number"
+                                id="account_number"
+                                value="{{ form_data.account_number|default:'' }}"
+                                placeholder="Account number appears here"
+                                readonly
+                            >
+
+                            <small class="kai-help-text" id="accountNumberHelp">
+                                Select a bank account to display its account number.
+                            </small>
                         </div>
 
                     </div>
+                </section>
 
-                </div>
+                <!-- CLIENT INFORMATION -->
 
-
-                <!-- =========================================
-                     CLIENT INFORMATION
-                ========================================== -->
-
-                <div class="kai-form-section">
-
-                    <h2 class="kai-section-heading">
-                        Client Information
-                    </h2>
+                <section class="kai-form-section">
+                    <h2 class="kai-section-heading">Client Information</h2>
 
                     <div class="kai-form-grid">
 
                         <div class="kai-form-group">
-
-                            <label for="client_name">
-                                Client Name
-                            </label>
+                            <label for="client_name">Client Name</label>
 
                             <input
                                 type="text"
                                 name="client_name"
                                 id="client_name"
-                                value="{{ opp_param.contact_name|default:'' }}"
+                                maxlength="255"
+                                value="{{ form_data.client_name|default:'' }}"
                                 placeholder="Enter client name"
                                 required
                             >
-
                         </div>
 
-
                         <div class="kai-form-group">
-
-                            <label for="client_email">
-                                Client Email
-                            </label>
+                            <label for="client_email">Client Email</label>
 
                             <input
                                 type="email"
                                 name="client_email"
                                 id="client_email"
-                                value="{{ opp_param.contact_email|default:'' }}"
+                                value="{{ form_data.client_email|default:'' }}"
                                 placeholder="client@example.com"
                                 required
                             >
-
                         </div>
 
                     </div>
+                </section>
 
-                </div>
+                <!-- QUOTATION INFORMATION -->
 
-
-                <!-- =========================================
-                     ADDITIONAL INFORMATION
-                ========================================== -->
-
-                <div class="kai-form-section">
-
-                    <h2 class="kai-section-heading">
-                        Additional Information
-                    </h2>
+                <section class="kai-form-section" id="quotationExtras">
+                    <h2 class="kai-section-heading">Quotation Information</h2>
 
                     <div class="kai-form-grid">
 
                         <div class="kai-form-group">
-
-                            <label for="payment_terms">
-                                Payment Terms
-                            </label>
+                            <label for="payment_terms">Payment Terms</label>
 
                             <input
                                 type="text"
                                 name="payment_terms"
                                 id="payment_terms"
+                                maxlength="255"
+                                value="{{ form_data.payment_terms|default:'' }}"
                                 placeholder="e.g. Net 30, 50% upfront"
                             >
-
                         </div>
 
-
                         <div class="kai-form-group">
-
-                            <label for="delivery_date">
-                                Estimated Delivery Date
-                            </label>
+                            <label for="delivery_date">Estimated Delivery Date</label>
 
                             <input
                                 type="date"
                                 name="delivery_date"
                                 id="delivery_date"
+                                value="{{ form_data.delivery_date|default:'' }}"
                             >
-
                         </div>
 
                     </div>
+                </section>
 
-                </div>
-
-
-                <!-- =========================================
-                     CRM CONNECTION
-                ========================================== -->
+                <!-- CRM CONNECTION -->
 
                 <input
                     type="hidden"
-                    name="opportunity_id"
-                    value="{{ cus.id|default:'' }}"
+                    name="customer_id"
+                    id="customer_id"
+                    value="{{ form_data.customer_id|default:'' }}"
                 >
 
+                <!-- LINE ITEMS -->
 
-                <!-- =========================================
-                     LINE ITEMS
-                ========================================== -->
-
-                <div class="kai-line-items">
+                <section class="kai-line-items">
 
                     <div class="kai-items-header">
-
-                        <h2 class="kai-items-title">
-
-                            <span class="kai-items-title-icon">
-                                #
-                            </span>
-
-                            Invoice Line Items
-
-                        </h2>
-
+                        <h2 class="kai-items-title">Invoice Line Items</h2>
                     </div>
 
-
                     <div class="kai-items-table-wrapper">
-
-                        <table
-                            class="kai-items-table"
-                            id="itemsTable"
-                        >
+                        <table class="kai-items-table" id="itemsTable">
 
                             <thead>
-
                                 <tr>
-
-                                    <th>
-                                        Description
-                                    </th>
-
-                                    <th style="width: 100px;">
-                                        Quantity
-                                    </th>
-
-                                    <th style="width: 150px;">
-                                        Unit Price
-                                    </th>
-
-                                    <th style="width: 55px; text-align:center;">
-                                        Action
-                                    </th>
-
+                                    <th>Description</th>
+                                    <th style="width:100px;">Quantity</th>
+                                    <th style="width:150px;">Unit Price</th>
+                                    <th style="width:65px;text-align:center;">Action</th>
                                 </tr>
-
                             </thead>
 
-
                             <tbody>
-
-                                <tr>
-
-                                    <td>
-
-                                        <input
-                                            type="text"
-                                            name="desc[]"
-                                            value="{{ opp_param.opportunity_name|default:'' }}"
-                                            placeholder="Item or service description"
-                                            class="kai-item-input"
-                                            required
-                                        >
-
-                                    </td>
-
-
-                                    <td>
-
-                                        <input
-                                            type="number"
-                                            name="qty[]"
-                                            value="1"
-                                            min="1"
-                                            class="kai-item-input"
-                                            required
-                                        >
-
-                                    </td>
-
-
-                                    <td>
-
-                                        <input
-                                            type="number"
-                                            name="price[]"
-                                            value="{{ opp_param.money|default:'0.00' }}"
-                                            step="0.01"
-                                            min="0"
-                                            placeholder="0.00"
-                                            class="kai-item-input"
-                                            required
-                                        >
-
-                                    </td>
-
-
-                                    <td style="text-align:center;">
-
-                                        <button
-                                            type="button"
-                                            onclick="deleteItemRow(this)"
-                                            class="kai-delete-item"
-                                            title="Remove item"
-                                        >
-                                            &times;
-                                        </button>
-
-                                    </td>
-
-                                </tr>
-
+                                {% if form_data.desc %}
+                                    {% for description in form_data.desc %}
+                                    <tr>
+                                        <td>
+                                            <input
+                                                type="text"
+                                                name="desc[]"
+                                                class="kai-item-input"
+                                                value="{{ description }}"
+                                                maxlength="255"
+                                                placeholder="Item or service"
+                                                required
+                                            >
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="number"
+                                                name="qty[]"
+                                                class="kai-item-input"
+                                                min="1"
+                                                step="1"
+                                                value="{{ form_data.qty|default_if_none:'' }}"
+                                                required
+                                            >
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="number"
+                                                name="price[]"
+                                                class="kai-item-input"
+                                                min="0"
+                                                step="0.01"
+                                                placeholder="0.00"
+                                                required
+                                            >
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <button
+                                                type="button"
+                                                class="kai-delete-item"
+                                                aria-label="Remove item"
+                                            >&times;</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td>
+                                            <input
+                                                type="text"
+                                                name="desc[]"
+                                                class="kai-item-input"
+                                                value="{{ opp_param.opportunity_name|default:'' }}"
+                                                maxlength="255"
+                                                placeholder="Item or service description"
+                                                required
+                                            >
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="number"
+                                                name="qty[]"
+                                                class="kai-item-input"
+                                                value="1"
+                                                min="1"
+                                                step="1"
+                                                required
+                                            >
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="number"
+                                                name="price[]"
+                                                class="kai-item-input"
+                                                value="{{ opp_param.money|default:'0.00' }}"
+                                                min="0"
+                                                step="0.01"
+                                                placeholder="0.00"
+                                                required
+                                            >
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <button
+                                                type="button"
+                                                class="kai-delete-item"
+                                                aria-label="Remove item"
+                                            >&times;</button>
+                                        </td>
+                                    </tr>
+                                {% endif %}
                             </tbody>
 
                         </table>
-
                     </div>
-
 
                     <button
                         type="button"
-                        onclick="addItemRow()"
                         class="kai-add-item"
+                        id="addItemButton"
                     >
                         + Add Item Row
                     </button>
 
-                </div>
+                    <!-- LIVE TOTALS -->
 
+                    <div class="kai-summary">
+                        <div class="kai-summary-row">
+                            <span>Subtotal</span>
+                            <strong id="subtotalDisplay">KES 0.00</strong>
+                        </div>
 
-                <!-- =========================================
-                     FORM ACTIONS
-                ========================================== -->
+                        <div class="kai-summary-row">
+                            <span>Tax</span>
+                            <strong id="taxDisplay">KES 0.00</strong>
+                        </div>
+
+                        <div class="kai-summary-row kai-summary-total">
+                            <span>Grand Total</span>
+                            <strong id="grandTotalDisplay">KES 0.00</strong>
+                        </div>
+
+                        <small class="kai-help-text">
+                            These are previews. The server calculates and saves
+                            the official document totals.
+                        </small>
+                    </div>
+                </section>
+
+                <!-- ACTIONS -->
 
                 <div class="kai-form-actions">
-
-                    <a
-                        href="{% url 'dashboard' %}"
-                        class="kai-cancel-button"
-                    >
+                    <a href="{% url 'dashboard' %}" class="kai-cancel-button">
                         Cancel
                     </a>
 
-
-                    <button
-                        type="submit"
-                        class="kai-submit-button"
-                    >
-                        Generate & Save Document
+                    <button type="submit" class="kai-submit-button">
+                        Generate &amp; Save Document
                     </button>
-
                 </div>
 
             </form>
-
         </div>
-
     </main>
-
 </div>
 
-
-<!-- =========================================
-     JAVASCRIPT
-========================================== -->
-
 <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("billingForm");
+    const docType = document.getElementById("doc_type");
+    const bankGroup = document.getElementById("bankAccountGroup");
+    const bankSelect = document.getElementById("bank_account");
 
-    function addItemRow() {
+    const accountNumberGroup = document.getElementById("accountNumberGroup");
+    const accountNumberInput = document.getElementById("account_number");
+    const accountNumberHelp = document.getElementById("accountNumberHelp");
 
-        const tbody =
-            document.querySelector("#itemsTable tbody");
+    const quotationExtras = document.getElementById("quotationExtras");
+    const taxInput = document.getElementById("tax_rate");
 
-        const rowHtml = `
+    const subtotalDisplay = document.getElementById("subtotalDisplay");
+    const taxDisplay = document.getElementById("taxDisplay");
+    const grandTotalDisplay = document.getElementById("grandTotalDisplay");
 
-            <tr>
+    /*
+     * IMPORTANT:
+     * Replace these example values with your actual bank account numbers.
+     */
+    const bankAccounts = {
+        equity_kes: {
+            name: "Equity Bank — KES",
+            number: "0260287472450"
+        },
+        equity_usd: {
+            name: "Equity Bank — USD",
+            number: "0260287472558"
+        },
+        ncba: {
+            name: "NCBA Bank - KES",
+            number: "9422020017"
+        },
+        ncba: {
+            name: "NCBA Bank - USD",
+            number: "1010379221"
+        }
+    };
 
-                <td>
+    function updateAccountNumber() {
+        const selectedBank = bankSelect.value;
+        const account = bankAccounts[selectedBank];
 
-                    <input
-                        type="text"
-                        name="desc[]"
-                        placeholder="Item or service description"
-                        class="kai-item-input"
-                        required
-                    >
-
-                </td>
-
-
-                <td>
-
-                    <input
-                        type="number"
-                        name="qty[]"
-                        value="1"
-                        min="1"
-                        class="kai-item-input"
-                        required
-                    >
-
-                </td>
-
-
-                <td>
-
-                    <input
-                        type="number"
-                        name="price[]"
-                        step="0.01"
-                        min="0"
-                        placeholder="0.00"
-                        class="kai-item-input"
-                        required
-                    >
-
-                </td>
-
-
-                <td style="text-align:center;">
-
-                    <button
-                        type="button"
-                        onclick="deleteItemRow(this)"
-                        class="kai-delete-item"
-                        title="Remove item"
-                    >
-                        &times;
-                    </button>
-
-                </td>
-
-            </tr>
-
-        `;
-
-        tbody.insertAdjacentHTML(
-            "beforeend",
-            rowHtml
-        );
+        if (account) {
+            accountNumberInput.value = account.number;
+            accountNumberHelp.textContent =
+                "Account number for " + account.name + ".";
+        } else {
+            accountNumberInput.value = "";
+            accountNumberHelp.textContent =
+                "Select a bank account to display its account number.";
+        }
     }
 
+    function updateDocumentFields() {
+        const isInvoice = docType.value === "invoice";
 
-    function deleteItemRow(button) {
+        bankGroup.style.display = isInvoice ? "flex" : "none";
+        accountNumberGroup.style.display = isInvoice ? "flex" : "none";
 
-        const rows =
-            document.querySelectorAll(
-                "#itemsTable tbody tr"
-            );
+        bankSelect.required = isInvoice;
 
-        if (rows.length > 1) {
+        quotationExtras.style.display = isInvoice ? "none" : "block";
 
-            button
-                .closest("tr")
-                .remove();
-
+        if (!isInvoice) {
+            bankSelect.value = "";
+            accountNumberInput.value = "";
         } else {
+            updateAccountNumber();
+        }
+    }
 
-            alert(
-                "A document requires at least one line item."
-            );
-
+    function getCurrencyPrefix() {
+        if (docType.value !== "invoice") {
+            return "KES ";
         }
 
+        return bankSelect.value === "equity_usd" ? "USD " : "KES ";
     }
 
+    function formatMoney(value) {
+        return getCurrencyPrefix() + value.toLocaleString("en-KE", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    function updateTotals() {
+        let subtotal = 0;
+
+        document.querySelectorAll("#itemsTable tbody tr").forEach(function (row) {
+            const quantity = parseFloat(
+                row.querySelector('[name="qty[]"]').value
+            ) || 0;
+
+            const price = parseFloat(
+                row.querySelector('[name="price[]"]').value
+            ) || 0;
+
+            subtotal += quantity * price;
+        });
+
+        const taxRate = parseFloat(taxInput.value) || 0;
+        const tax = subtotal * taxRate / 100;
+        const total = subtotal + tax;
+
+        subtotalDisplay.textContent = formatMoney(subtotal);
+        taxDisplay.textContent = formatMoney(tax);
+        grandTotalDisplay.textContent = formatMoney(total);
+    }
+
+    function deleteItemRow(button) {
+        const rows = document.querySelectorAll("#itemsTable tbody tr");
+
+        if (rows.length <= 1) {
+            alert("A document requires at least one line item.");
+            return;
+        }
+
+        button.closest("tr").remove();
+        updateTotals();
+    }
+
+    function addItemRow() {
+        const tbody = document.querySelector("#itemsTable tbody");
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>
+                <input
+                    type="text"
+                    name="desc[]"
+                    class="kai-item-input"
+                    maxlength="255"
+                    placeholder="Item or service description"
+                    required
+                >
+            </td>
+            <td>
+                <input
+                    type="number"
+                    name="qty[]"
+                    class="kai-item-input"
+                    value="1"
+                    min="1"
+                    step="1"
+                    required
+                >
+            </td>
+            <td>
+                <input
+                    type="number"
+                    name="price[]"
+                    class="kai-item-input"
+                    min="0"
+                    step="0.01"
+                    placeholder="0.00"
+                    required
+                >
+            </td>
+            <td style="text-align:center;">
+                <button
+                    type="button"
+                    class="kai-delete-item"
+                    aria-label="Remove item"
+                >&times;</button>
+            </td>
+        `;
+
+        tbody.appendChild(row);
+        updateTotals();
+    }
+
+    document.getElementById("addItemButton").addEventListener(
+        "click",
+        addItemRow
+    );
+
+    document.getElementById("itemsTable").addEventListener(
+        "click",
+        function (event) {
+            const button = event.target.closest(".kai-delete-item");
+
+            if (button) {
+                deleteItemRow(button);
+            }
+        }
+    );
+
+    form.addEventListener("input", function (event) {
+        if (
+            event.target.matches(
+                '[name="qty[]"], [name="price[]"], #tax_rate'
+            )
+        ) {
+            updateTotals();
+        }
+    });
+
+    docType.addEventListener("change", function () {
+        updateDocumentFields();
+        updateTotals();
+    });
+
+    bankSelect.addEventListener("change", function () {
+        updateAccountNumber();
+        updateTotals();
+    });
+
+    taxInput.addEventListener("input", updateTotals);
+
+    updateDocumentFields();
+    updateTotals();
+});
 </script>
 
 {% endblock %}
